@@ -4,13 +4,16 @@ import { getFearAndGreedIndex } from "./lib/feat-and-greed";
 import { sumBy, maxBy, minBy } from "lodash";
 import { getSupplyInProfitIndex } from "./lib/supply-in-profit";
 import { CURRENCIES, INVESTED } from "./lib/constants";
+import { getNuplIndex } from "./lib/nupl";
 
 async function main() {
-  const [coinsObj, fearAndGreedIndex, supplyInProfitIndex] = await Promise.all([
-    getCryptoCurrencies(),
-    getFearAndGreedIndex(),
-    getSupplyInProfitIndex(),
-  ]);
+  const [coinsObj, fearAndGreedIndex, supplyInProfitIndex, nuplIndex] =
+    await Promise.all([
+      getCryptoCurrencies(),
+      getFearAndGreedIndex(),
+      getSupplyInProfitIndex(),
+      getNuplIndex(),
+    ]);
 
   const coinsMapper = CURRENCIES.map((cur) => {
     const coin = coinsObj?.[cur.symbol];
@@ -54,9 +57,13 @@ async function main() {
     `Lợi nhuận là ${total - INVESTED}$`,
     `Fear And Greed Index: ${fearAndGreedIndex}`,
     `Bitcoin Supply In Profit Index: ${supplyInProfitIndex}`,
+    `Bitcoin Net Unrealized Profit/Loss: ${nuplIndex}`,
   ];
 
-  const shouldSell = fearAndGreedIndex > 70 || supplyInProfitIndex > 80;
+  const shouldSell =
+    fearAndGreedIndex > 70 ||
+    supplyInProfitIndex > 80 ||
+    (nuplIndex > 0 && nuplIndex < 30);
 
   if (shouldSell) {
     results.push(`Bạn nên bán bớt đi 30$: ${minAlphaCoin.symbol}`);

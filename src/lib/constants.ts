@@ -38,3 +38,5 @@ export const CURRENCIES = [
     amount: 0,
   },
 ];
+
+export const CRYPTO_QUANT_API = process.env.CRYPTO_QUANT_API;
