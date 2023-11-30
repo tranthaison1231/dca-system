@@ -27,8 +27,8 @@
               <Table.Cell>{coin.symbol}</Table.Cell>
               <Table.Cell>{coin.amount}</Table.Cell>
               <Table.Cell>{coin.price}$</Table.Cell>
-              <Table.Cell>{coin.marketCap}$</Table.Cell>
               <Table.Cell>{coin.value}$</Table.Cell>
+              <Table.Cell>{coin.marketCap}$</Table.Cell>
             </Table.Row>
           {/each}
         </Table.Body>
