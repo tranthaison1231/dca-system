@@ -5,8 +5,12 @@
   import * as Table from "$lib/components/ui/table";
   import { cn } from "$lib/utils/style";
   import PieChart from "$lib/components/charts/PieChart.svelte";
+  import { formatMoney, formatNumber } from "$lib/utils/number";
 
   export let data: PageData;
+
+  $: minCoinAmount = (data.price / data.minAlphaCoin.price).toFixed(2);
+  $: maxCoinAmount = (data.price / data.maxAlphaCoin.price).toFixed(2);
 </script>
 
 <div>
@@ -16,25 +20,29 @@
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            {#each ["Name", "Amount", "Price", "Total", "Market Cap"] as name}
-              <Table.Head class="font-bold">{name}</Table.Head>
-            {/each}
+            <Table.Head class="font-bold">Name</Table.Head>
+            <Table.Head class="font-bold text-right">Amount</Table.Head>
+            <Table.Head class="font-bold">Price</Table.Head>
+            <Table.Head class="font-bold">Total</Table.Head>
+            <Table.Head class="font-bold">Market Cap</Table.Head>
           </Table.Row>
         </Table.Header>
         <Table.Body>
           {#each data.coinPercentMap as coin, i (i)}
             <Table.Row>
               <Table.Cell>{coin.symbol}</Table.Cell>
-              <Table.Cell>{coin.amount}</Table.Cell>
-              <Table.Cell>${coin.price}</Table.Cell>
-              <Table.Cell>${coin.value}</Table.Cell>
-              <Table.Cell>${coin.marketCap}</Table.Cell>
+              <Table.Cell class="text-right"
+                >{formatNumber(coin.amount)}</Table.Cell
+              >
+              <Table.Cell>{formatMoney(coin.price)}</Table.Cell>
+              <Table.Cell>{formatMoney(coin.value)}</Table.Cell>
+              <Table.Cell>{formatMoney(coin.marketCap)}</Table.Cell>
             </Table.Row>
           {/each}
           <Table.Row>
             <Table.Cell colspan={3} class="font-bold">Total</Table.Cell>
-            <Table.Cell>${data.total}</Table.Cell>
-            <Table.Cell>${data.totalMarket}</Table.Cell>
+            <Table.Cell>{formatMoney(data.total)}</Table.Cell>
+            <Table.Cell>{formatMoney(data.totalMarket)}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell colspan={3} class="font-bold">Invested</Table.Cell>
@@ -46,7 +54,7 @@
               class={cn({
                 "text-green-500": data.total - INVESTED > 0,
                 "text-red-500": data.total - INVESTED < 0,
-              })}>${data.total - INVESTED}</Table.Cell
+              })}>{formatMoney(data.total - INVESTED)}</Table.Cell
             >
           </Table.Row>
         </Table.Body>
@@ -57,7 +65,7 @@
         <Tooltip.Root>
           <Tooltip.Trigger class="block mt-4"
             ><p>
-              Fear And Greed Index: {data.fearAndGreedIndex}
+              Fear And Greed: {data.fearAndGreedIndex.toFixed(2)}
             </p></Tooltip.Trigger
           >
           <Tooltip.Content>
@@ -67,7 +75,7 @@
         <Tooltip.Root>
           <Tooltip.Trigger class="block">
             <p>
-              Bitcoin Supply In Profit Index: {data.supplyInProfitIndex}
+              Supply In Profit: {data.supplyInProfitIndex.toFixed(2)}
             </p></Tooltip.Trigger
           >
           <Tooltip.Content>
@@ -77,7 +85,7 @@
         <Tooltip.Root>
           <Tooltip.Trigger class="block"
             ><p>
-              Bitcoin Net Unrealized Profit/Loss: {data.nuplIndex}
+              Bitcoin NUPL: {data.nuplIndex.toFixed(2)}
             </p></Tooltip.Trigger
           >
           <Tooltip.Content>
@@ -88,15 +96,17 @@
         <p>
           {#if data.shouldSell}
             <span class="text-red-500"
-              >Bạn nên bán bớt đi {data.price}$: {data.minAlphaCoin
-                .symbol}</span
+              >Nên bán ${data.price}: {data.minAlphaCoin.symbol} ({minCoinAmount})</span
             >
           {:else if data.maxAlphaCoin.symbol === "USDT"}
-            Bạn nên bán bớt đi {data.price}$ {data.minAlphaCoin.symbol} và mua thêm
-            {data.price}$ {data.maxAlphaCoin.symbol}
+            <span class="text-blue-500">
+              Nên bán ${data.price}
+              {data.minAlphaCoin.symbol} ({minCoinAmount}) và mua thêm ${data.price}
+              USDT</span
+            >
           {:else}
             <span class="text-green-500"
-              >Bạn nên mua thêm {data.price}$: {data.maxAlphaCoin.symbol}</span
+              >Bạn nên mua thêm {data.price}$: {data.maxAlphaCoin.symbol} ({maxCoinAmount})</span
             >
           {/if}
         </p>
