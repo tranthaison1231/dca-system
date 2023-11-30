@@ -3,22 +3,21 @@
   import { INVESTED } from "$lib/constants";
   import type { PageData } from "./$types";
   import * as Table from "$lib/components/ui/table";
+  import { cn } from "$lib/utils";
 
   export let data: PageData;
 </script>
 
-<div class="mt-20">
-  <h1 class="text-3xl mb-3 text-center">Hệ thống DCA Crypto</h1>
+<div>
+  <h1 class="text-3xl mb-3 text-center text-black">Hệ thống DCA Crypto</h1>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mt-10">
-    <div class="col-span-2">
+    <div class="col-span-2 border p-5 rounded-md shadow-xl">
       <Table.Root>
         <Table.Header>
           <Table.Row>
-            <Table.Head>Name</Table.Head>
-            <Table.Head>Amount</Table.Head>
-            <Table.Head>Price</Table.Head>
-            <Table.Head>Total</Table.Head>
-            <Table.Head>Market Cap</Table.Head>
+            {#each ["Name", "Amount", "Price", "Total", "Market Cap"] as name}
+              <Table.Head class="font-bold">{name}</Table.Head>
+            {/each}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -26,19 +25,35 @@
             <Table.Row>
               <Table.Cell>{coin.symbol}</Table.Cell>
               <Table.Cell>{coin.amount}</Table.Cell>
-              <Table.Cell>{coin.price}$</Table.Cell>
-              <Table.Cell>{coin.value}$</Table.Cell>
-              <Table.Cell>{coin.marketCap}$</Table.Cell>
+              <Table.Cell>${coin.price}</Table.Cell>
+              <Table.Cell>${coin.value}</Table.Cell>
+              <Table.Cell>${coin.marketCap}</Table.Cell>
             </Table.Row>
           {/each}
+          <Table.Row>
+            <Table.Cell colspan={3} class="font-bold">Total</Table.Cell>
+            <Table.Cell>${data.total}</Table.Cell>
+            <Table.Cell>${data.totalMarket}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell colspan={3} class="font-bold">Invested</Table.Cell>
+            <Table.Cell>${INVESTED}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell colspan={3} class="font-bold">Profit</Table.Cell>
+            <Table.Cell
+              class={cn({
+                "text-green-500": data.total - INVESTED > 0,
+                "text-red-500": data.total - INVESTED < 0,
+              })}>${data.total - INVESTED}</Table.Cell
+            >
+          </Table.Row>
         </Table.Body>
       </Table.Root>
     </div>
-    <div class="col-span-1">
-      <p class="mt-3">Total Market Cap: {data.totalMarket}</p>
-      <p>Vốn đầu tư: {INVESTED}</p>
-      <p>Tổng tài sản: {data.total}</p>
-      <p>Lợi nhuận là {data.total - INVESTED}</p>
+    <div
+      class="col-span-2 md:col-span-1 border p-5 rounded-md shadow-xl h-fit space-y-4"
+    >
       <Tooltip.Root>
         <Tooltip.Trigger class="block mt-4"
           ><p>
@@ -70,7 +85,7 @@
         </Tooltip.Content>
       </Tooltip.Root>
 
-      <p class="mt-10">
+      <p>
         {#if data.shouldSell}
           <span class="text-red-500"
             >Bạn nên bán bớt đi {data.price}$: {data.minAlphaCoin.symbol}</span
