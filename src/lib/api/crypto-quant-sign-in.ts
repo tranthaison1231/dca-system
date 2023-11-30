@@ -1,11 +1,11 @@
-import { CRYPTO_QUANT_API } from "./constants";
+import { CRYPTO_QUANT_API } from "../constants";
 
 export async function signIn() {
   try {
     const res = await fetch(`${CRYPTO_QUANT_API}/v1/sign-in`, {
       body: JSON.stringify({
-        email: process.env.CRYPTO_QUANT_EMAIL,
-        password: process.env.CRYPTO_QUANT_PASSWORD,
+        email: import.meta.env.VITE_CRYPTO_QUANT_EMAIL,
+        password: import.meta.env.VITE_CRYPTO_QUANT_PASSWORD,
         stayLoggedIn: false,
       }),
       headers: {

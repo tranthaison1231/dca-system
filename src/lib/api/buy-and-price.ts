@@ -1,7 +1,7 @@
 export const calculateBuyAndSellPrice = (
   fearAndGreedIndex: number,
   supplyInProfitIndex: number,
-  nuplIndex
+  nuplIndex: number
 ) => {
   let price = 30;
   if (

@@ -3,19 +3,19 @@ export const INVESTED = 12000;
 export const CURRENCIES = [
   {
     symbol: "BTC",
-    amount: 0.10971063,
+    amount: 0.10971074,
   },
   {
     symbol: "ETH",
-    amount: 0.59427798,
+    amount: 0.59429029,
   },
   {
     symbol: "USDT",
-    amount: 332,
+    amount: 362,
   },
   {
     symbol: "BNB",
-    amount: 0.815,
+    amount: 0.81559891,
   },
   {
     symbol: "XRP",
@@ -27,7 +27,7 @@ export const CURRENCIES = [
   },
   {
     symbol: "ADA",
-    amount: 3204,
+    amount: 3126,
   },
   {
     symbol: "DOGE",
@@ -39,4 +39,4 @@ export const CURRENCIES = [
   },
 ];
 
-export const CRYPTO_QUANT_API = process.env.CRYPTO_QUANT_API;
+export const CRYPTO_QUANT_API = import.meta.env.VITE_CRYPTO_QUANT_API;

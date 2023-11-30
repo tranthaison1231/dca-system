@@ -1,11 +1,15 @@
 export async function getCryptoCurrencies() {
   try {
     const res = await fetch(
-      `${process.env.PRO_COIN_MARKET_CAP_API}/v1/cryptocurrency/listings/latest`,
+      `${
+        import.meta.env.VITE_PRO_COIN_MARKET_CAP_API
+      }/v1/cryptocurrency/listings/latest`,
       {
         method: "GET",
         headers: {
-          "X-CMC_PRO_API_KEY": String(process.env.PRO_COIN_MARKET_CAP_KEY),
+          "X-CMC_PRO_API_KEY": String(
+            import.meta.env.VITE_PRO_COIN_MARKET_CAP_KEY
+          ),
         },
       }
     );
