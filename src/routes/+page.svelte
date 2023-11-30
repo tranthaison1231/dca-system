@@ -25,7 +25,7 @@
           {#each data.coinPercentMap as coin, i (i)}
             <Table.Row>
               <Table.Cell>{coin.symbol}</Table.Cell>
-              <Table.Cell>{coin.amount}$</Table.Cell>
+              <Table.Cell>{coin.amount}</Table.Cell>
               <Table.Cell>{coin.price}$</Table.Cell>
               <Table.Cell>{coin.marketCap}$</Table.Cell>
               <Table.Cell>{coin.value}$</Table.Cell>
