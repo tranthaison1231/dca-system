@@ -1,4 +1,4 @@
-import { CRYPTO_QUANT_API } from "../constants";
+import { CRYPTO_QUANT_API } from "../utils/constants";
 
 export async function signIn() {
   try {

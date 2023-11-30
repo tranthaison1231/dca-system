@@ -1,9 +1,10 @@
 <script lang="ts">
   import * as Tooltip from "$lib/components/ui/tooltip";
-  import { INVESTED } from "$lib/constants";
+  import { INVESTED } from "$lib/utils/constants";
   import type { PageData } from "./$types";
   import * as Table from "$lib/components/ui/table";
-  import { cn } from "$lib/utils";
+  import { cn } from "$lib/utils/style";
+  import PieChart from "$lib/components/charts/PieChart.svelte";
 
   export let data: PageData;
 </script>
@@ -51,54 +52,79 @@
         </Table.Body>
       </Table.Root>
     </div>
-    <div
-      class="col-span-2 md:col-span-1 border p-5 rounded-md shadow-xl h-fit space-y-4"
-    >
-      <Tooltip.Root>
-        <Tooltip.Trigger class="block mt-4"
-          ><p>
-            Fear And Greed Index: {data.fearAndGreedIndex}
-          </p></Tooltip.Trigger
-        >
-        <Tooltip.Content>
-          <p>{`We should sell when it > 70`}</p>
-        </Tooltip.Content>
-      </Tooltip.Root>
-      <Tooltip.Root>
-        <Tooltip.Trigger class="block">
-          <p>
-            Bitcoin Supply In Profit Index: {data.supplyInProfitIndex}
-          </p></Tooltip.Trigger
-        >
-        <Tooltip.Content>
-          <p>{`We should sell when it > 80`}</p>
-        </Tooltip.Content>
-      </Tooltip.Root>
-      <Tooltip.Root>
-        <Tooltip.Trigger class="block"
-          ><p>
-            Bitcoin Net Unrealized Profit/Loss: {data.nuplIndex}
-          </p></Tooltip.Trigger
-        >
-        <Tooltip.Content>
-          <p>{`We should sell when it > 0.5, we should buy when it < 0`}</p>
-        </Tooltip.Content>
-      </Tooltip.Root>
+    <div class="col-span-2 md:col-span-1 space-y-8">
+      <div class="border p-5 rounded-md shadow-xl h-fit space-y-4">
+        <Tooltip.Root>
+          <Tooltip.Trigger class="block mt-4"
+            ><p>
+              Fear And Greed Index: {data.fearAndGreedIndex}
+            </p></Tooltip.Trigger
+          >
+          <Tooltip.Content>
+            <p>{`We should sell when it > 70`}</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.Trigger class="block">
+            <p>
+              Bitcoin Supply In Profit Index: {data.supplyInProfitIndex}
+            </p></Tooltip.Trigger
+          >
+          <Tooltip.Content>
+            <p>{`We should sell when it > 80`}</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
+        <Tooltip.Root>
+          <Tooltip.Trigger class="block"
+            ><p>
+              Bitcoin Net Unrealized Profit/Loss: {data.nuplIndex}
+            </p></Tooltip.Trigger
+          >
+          <Tooltip.Content>
+            <p>{`We should sell when it > 0.5, we should buy when it < 0`}</p>
+          </Tooltip.Content>
+        </Tooltip.Root>
 
-      <p>
-        {#if data.shouldSell}
-          <span class="text-red-500"
-            >Bạn nên bán bớt đi {data.price}$: {data.minAlphaCoin.symbol}</span
-          >
-        {:else if data.maxAlphaCoin.symbol === "USDT"}
-          Bạn nên bán bớt đi {data.price}$ {data.minAlphaCoin.symbol} và mua thêm
-          {data.price}$ {data.maxAlphaCoin.symbol}
-        {:else}
-          <span class="text-green-500"
-            >Bạn nên mua thêm {data.price}$: {data.maxAlphaCoin.symbol}</span
-          >
-        {/if}
-      </p>
+        <p>
+          {#if data.shouldSell}
+            <span class="text-red-500"
+              >Bạn nên bán bớt đi {data.price}$: {data.minAlphaCoin
+                .symbol}</span
+            >
+          {:else if data.maxAlphaCoin.symbol === "USDT"}
+            Bạn nên bán bớt đi {data.price}$ {data.minAlphaCoin.symbol} và mua thêm
+            {data.price}$ {data.maxAlphaCoin.symbol}
+          {:else}
+            <span class="text-green-500"
+              >Bạn nên mua thêm {data.price}$: {data.maxAlphaCoin.symbol}</span
+            >
+          {/if}
+        </p>
+      </div>
+      <div class="border p-5 rounded-md shadow-xl">
+        <PieChart
+          data={{
+            labels: data.coinPercentMap.map((coin) => coin.symbol),
+            datasets: [
+              {
+                label: "Total",
+                data: data.coinPercentMap.map((coin) => coin.value),
+                backgroundColor: [
+                  "#FF6384",
+                  "#36A2EB",
+                  "#FFCE56",
+                  "#4BC0C0",
+                  "#9966FF",
+                  "#FF9F40",
+                  "#C0C0C0",
+                  "#00FF00",
+                  "#FF00FF",
+                ],
+              },
+            ],
+          }}
+        />
+      </div>
     </div>
   </div>
 </div>

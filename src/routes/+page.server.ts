@@ -1,5 +1,5 @@
 import { calculateBuyAndSellPrice } from "$lib/api/buy-and-price";
-import { CURRENCIES } from "$lib/constants";
+import { CURRENCIES } from "$lib/utils/constants";
 import { getCryptoCurrencies } from "$lib/api/crypto-currencies";
 import { getFearAndGreedIndex } from "$lib/api/feat-and-greed";
 import { getNuplIndex } from "$lib/api/nupl";

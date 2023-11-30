@@ -1,4 +1,4 @@
-import { CRYPTO_QUANT_API } from "../constants";
+import { CRYPTO_QUANT_API } from "../utils/constants";
 import { signIn } from "./crypto-quant-sign-in";
 
 export async function getNuplIndex() {
