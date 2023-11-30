@@ -1,11 +1,12 @@
 <script lang="ts">
+  import PieChart from "$lib/components/charts/PieChart.svelte";
+  import * as Table from "$lib/components/ui/table";
   import * as Tooltip from "$lib/components/ui/tooltip";
   import { INVESTED } from "$lib/utils/constants";
-  import type { PageData } from "./$types";
-  import * as Table from "$lib/components/ui/table";
-  import { cn } from "$lib/utils/style";
-  import PieChart from "$lib/components/charts/PieChart.svelte";
+  import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
   import { formatMoney, formatNumber } from "$lib/utils/number";
+  import { cn } from "$lib/utils/style";
+  import type { PageData } from "./$types";
 
   export let data: PageData;
 
@@ -30,7 +31,14 @@
         <Table.Body>
           {#each data.coinPercentMap as coin, i (i)}
             <Table.Row>
-              <Table.Cell>{coin.symbol}</Table.Cell>
+              <Table.Cell>
+                <img
+                  class="w-6 h-6 mr-2 inline"
+                  alt={coin.symbol}
+                  src={getCryptoLogo(coin.symbol)}
+                />
+                {coin.symbol}
+              </Table.Cell>
               <Table.Cell class="text-right"
                 >{formatNumber(coin.amount)}</Table.Cell
               >
