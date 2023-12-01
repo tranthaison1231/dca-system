@@ -3,19 +3,19 @@ export const INVESTED = 12000;
 export const CURRENCIES = [
   {
     symbol: "BTC",
-    amount: 0.10971074,
+    amount: 0.10971092,
   },
   {
     symbol: "ETH",
-    amount: 0.59429029,
+    amount: 0.59430315,
   },
   {
     symbol: "USDT",
-    amount: 362,
+    amount: 392,
   },
   {
     symbol: "BNB",
-    amount: 0.81559891,
+    amount: 0.8156,
   },
   {
     symbol: "XRP",
@@ -27,7 +27,7 @@ export const CURRENCIES = [
   },
   {
     symbol: "ADA",
-    amount: 3126,
+    amount: 3046,
   },
   {
     symbol: "DOGE",
