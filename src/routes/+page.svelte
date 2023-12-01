@@ -1,5 +1,6 @@
 <script lang="ts">
   import PieChart from "$lib/components/charts/PieChart.svelte";
+  import Progress from "$lib/components/ui/progress/progress.svelte";
   import * as Table from "$lib/components/ui/table";
   import * as Tooltip from "$lib/components/ui/tooltip";
   import { INVESTED } from "$lib/utils/constants";
@@ -15,17 +16,19 @@
 </script>
 
 <div>
-  <h1 class="text-3xl mb-3 text-center text-black">Hệ thống DCA Crypto</h1>
+  <h1 class="text-2xl mb-3 text-center text-black font-bold">
+    Hệ thống DCA Crypto
+  </h1>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mt-10">
     <div class="col-span-2 border p-5 rounded-md shadow-xl">
       <Table.Root>
         <Table.Header>
-          <Table.Row>
+          <Table.Row class="uppercase">
             <Table.Head class="font-bold">Name</Table.Head>
             <Table.Head class="font-bold text-right">Amount</Table.Head>
             <Table.Head class="font-bold">Price</Table.Head>
-            <Table.Head class="font-bold">Total</Table.Head>
-            <Table.Head class="font-bold">Market Cap</Table.Head>
+            <Table.Head class="font-bold text-right">Total</Table.Head>
+            <Table.Head class="font-bold text-right">Market Cap</Table.Head>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -43,23 +46,38 @@
                 >{formatNumber(coin.amount)}</Table.Cell
               >
               <Table.Cell>{formatMoney(coin.price)}</Table.Cell>
-              <Table.Cell>{formatMoney(coin.value)}</Table.Cell>
-              <Table.Cell>{formatMoney(coin.marketCap)}</Table.Cell>
+              <Table.Cell class="text-right">
+                <p>{formatMoney(coin.value)}</p>
+                <p class="tex-xs text-gray-400">
+                  {formatNumber(coin.percent, 2)}%
+                </p>
+                <Progress value={coin.percent} />
+              </Table.Cell>
+              <Table.Cell class="text-right">
+                <p>{formatMoney(coin.marketCap)}</p>
+                <p class="tex-xs text-gray-400">
+                  {formatNumber(coin.marketCapPercent, 2)}%
+                </p>
+                <Progress value={coin.marketCapPercent} /></Table.Cell
+              >
             </Table.Row>
           {/each}
           <Table.Row>
             <Table.Cell colspan={3} class="font-bold">Total</Table.Cell>
-            <Table.Cell>{formatMoney(data.total)}</Table.Cell>
-            <Table.Cell>{formatMoney(data.totalMarket)}</Table.Cell>
+            <Table.Cell class="text-right">{formatMoney(data.total)}</Table.Cell
+            >
+            <Table.Cell class="text-right"
+              >{formatMoney(data.totalMarket)}</Table.Cell
+            >
           </Table.Row>
           <Table.Row>
             <Table.Cell colspan={3} class="font-bold">Invested</Table.Cell>
-            <Table.Cell>${INVESTED}</Table.Cell>
+            <Table.Cell class="text-right">${INVESTED}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell colspan={3} class="font-bold">Profit</Table.Cell>
             <Table.Cell
-              class={cn({
+              class={cn("text-right", {
                 "text-green-500": data.total - INVESTED > 0,
                 "text-red-500": data.total - INVESTED < 0,
               })}>{formatMoney(data.total - INVESTED)}</Table.Cell
@@ -101,7 +119,7 @@
           </Tooltip.Content>
         </Tooltip.Root>
 
-        <p>
+        <p class="font-bold tex-3xl">
           {#if data.shouldSell}
             <span class="text-red-500"
               >Nên bán ${data.price}: {data.minAlphaCoin.symbol} ({minCoinAmount})</span

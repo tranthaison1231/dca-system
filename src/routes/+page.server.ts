@@ -6,7 +6,11 @@ import { getNuplIndex } from "$lib/api/nupl";
 import { getSupplyInProfitIndex } from "$lib/api/supply-in-profit";
 import { maxBy, minBy, sumBy } from "lodash-es";
 
-export async function load() {
+export async function load(event) {
+  event.setHeaders({
+    "cache-control": "max-age=60",
+  });
+
   const [coinsObj, fearAndGreedIndex, supplyInProfitIndex, nuplIndex] =
     await Promise.all([
       getCryptoCurrencies(),
