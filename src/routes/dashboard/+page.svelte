@@ -1,6 +1,4 @@
 <script lang="ts">
-  import UserButton from "clerk-sveltekit/client/UserButton.svelte";
-  import SignedIn from "clerk-sveltekit/client/SignedIn.svelte";
   import PieChart from "$lib/components/charts/PieChart.svelte";
   import Progress from "$lib/components/ui/progress/progress.svelte";
   import * as Table from "$lib/components/ui/table";
@@ -17,19 +15,6 @@
   $: maxCoinAmount = (data.price / data.maxAlphaCoin.price).toFixed(2);
 </script>
 
-<div class="flex justify-end">
-  <SignedIn>
-    <UserButton
-      afterSignOutUrl="/"
-      appearance={{
-        elements: {
-          userButtonPopoverFooter: "hidden",
-          userButtonPopoverActionButton__manageAccount: "hidden",
-        },
-      }}
-    />
-  </SignedIn>
-</div>
 <div>
   <h1 class="text-2xl mb-3 text-center text-black font-bold">
     Hệ thống DCA Crypto
@@ -61,19 +46,23 @@
                 >{formatNumber(coin.amount)}</Table.Cell
               >
               <Table.Cell>{formatMoney(coin.price)}</Table.Cell>
-              <Table.Cell class="text-right">
-                <p>{formatMoney(coin.value)}</p>
-                <p class="tex-xs text-gray-400">
-                  {formatNumber(coin.percent, 2)}%
-                </p>
-                <Progress value={coin.percent} />
+              <Table.Cell class="text-right mr-0">
+                <div class="flex items-end flex-col gap-1">
+                  <p>{formatMoney(coin.value)}</p>
+                  <p class="tex-xs text-gray-400">
+                    {formatNumber(coin.percent, 2)}%
+                  </p>
+                  <Progress value={coin.percent} />
+                </div>
               </Table.Cell>
-              <Table.Cell class="text-right">
-                <p>{formatMoney(coin.marketCap)}</p>
-                <p class="tex-xs text-gray-400">
-                  {formatNumber(coin.marketCapPercent, 2)}%
-                </p>
-                <Progress value={coin.marketCapPercent} /></Table.Cell
+              <Table.Cell>
+                <div class="flex items-end flex-col gap-1">
+                  <p>{formatMoney(coin.marketCap)}</p>
+                  <p class="tex-xs text-gray-400">
+                    {formatNumber(coin.marketCapPercent, 2)}%
+                  </p>
+                  <Progress value={coin.marketCapPercent} />
+                </div></Table.Cell
               >
             </Table.Row>
           {/each}

@@ -1,14 +1,20 @@
 import { calculateBuyAndSellPrice } from "$lib/api/buy-and-price";
-import { CURRENCIES } from "$lib/utils/constants";
 import { getCryptoCurrencies } from "$lib/api/crypto-currencies";
 import { getFearAndGreedIndex } from "$lib/api/feat-and-greed";
 import { getNuplIndex } from "$lib/api/nupl";
 import { getSupplyInProfitIndex } from "$lib/api/supply-in-profit";
+import prisma from "$lib/db/prisma";
 import { maxBy, minBy, sumBy } from "lodash-es";
 
 export async function load(event) {
   event.setHeaders({
     "cache-control": "max-age=60",
+  });
+
+  const currencies = await prisma.currency.findMany({
+    where: {
+      userId: event.locals.session.userId,
+    },
   });
 
   const [coinsObj, fearAndGreedIndex, supplyInProfitIndex, nuplIndex] =
@@ -19,12 +25,12 @@ export async function load(event) {
       getNuplIndex(),
     ]);
 
-  const coinsMapper = CURRENCIES.map((cur) => {
+  const coinsMapper = currencies.map((cur) => {
     const coin = coinsObj?.[cur.symbol];
-    const value = cur.amount * coin.price;
+    const value = Number(cur.amount) * coin.price;
     return {
       ...coin,
-      amount: cur.amount,
+      amount: Number(cur.amount),
       value: value,
     };
   });
