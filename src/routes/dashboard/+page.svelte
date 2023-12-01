@@ -19,7 +19,15 @@
 
 <div class="flex justify-end">
   <SignedIn>
-    <UserButton afterSignOutUrl="/" />
+    <UserButton
+      afterSignOutUrl="/"
+      appearance={{
+        elements: {
+          userButtonPopoverFooter: "hidden",
+          userButtonPopoverActionButton__manageAccount: "hidden",
+        },
+      }}
+    />
   </SignedIn>
 </div>
 <div>
