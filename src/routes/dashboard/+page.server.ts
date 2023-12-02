@@ -1,10 +1,9 @@
-import { calculateBuyAndSellPrice } from "$lib/api/buy-and-price";
 import { getCryptoCurrencies } from "$lib/api/crypto-currencies";
 import { getFearAndGreedIndex } from "$lib/api/feat-and-greed";
 import { getNuplIndex } from "$lib/api/nupl";
 import { getSupplyInProfitIndex } from "$lib/api/supply-in-profit";
 import prisma from "$lib/db/prisma";
-import { maxBy, minBy, sumBy } from "lodash-es";
+import { sumBy } from "lodash-es";
 
 export async function load(event) {
   event.setHeaders({
@@ -49,24 +48,8 @@ export async function load(event) {
     };
   });
 
-  const maxAlphaCoin = maxBy(coinPercentMap, "alpha");
-  const minAlphaCoin = minBy(coinPercentMap, "alpha");
-
-  const shouldSell =
-    fearAndGreedIndex > 70 || supplyInProfitIndex > 80 || nuplIndex > 0.5;
-
-  const price = calculateBuyAndSellPrice(
-    fearAndGreedIndex,
-    supplyInProfitIndex,
-    nuplIndex
-  );
-
   return {
     coinPercentMap,
-    shouldSell,
-    maxAlphaCoin,
-    minAlphaCoin,
-    price,
     totalMarket,
     total,
     fearAndGreedIndex,

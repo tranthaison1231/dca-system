@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { calculateBuyAndSellPrice } from "$lib/api/buy-and-price";
   import PieChart from "$lib/components/charts/PieChart.svelte";
   import Progress from "$lib/components/ui/progress/progress.svelte";
   import * as Table from "$lib/components/ui/table";
@@ -7,12 +8,27 @@
   import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
   import { formatMoney, formatNumber } from "$lib/utils/number";
   import { cn } from "$lib/utils/style";
+  import { maxBy, minBy } from "lodash-es";
   import type { PageData } from "./$types";
 
   export let data: PageData;
 
-  $: minCoinAmount = (data.price / data.minAlphaCoin.price).toFixed(2);
-  $: maxCoinAmount = (data.price / data.maxAlphaCoin.price).toFixed(2);
+  $: price = calculateBuyAndSellPrice(
+    data.fearAndGreedIndex,
+    data.supplyInProfitIndex,
+    data.nuplIndex
+  );
+
+  $: shouldSell =
+    data.fearAndGreedIndex > 70 ||
+    data.supplyInProfitIndex > 80 ||
+    data.nuplIndex > 0.5;
+
+  $: maxAlphaCoin = maxBy(data.coinPercentMap, "alpha");
+  $: minAlphaCoin = minBy(data.coinPercentMap, "alpha");
+
+  $: minCoinAmount = (price / minAlphaCoin.price).toFixed(2);
+  $: maxCoinAmount = (price / maxAlphaCoin.price).toFixed(2);
 </script>
 
 <div>
@@ -124,19 +140,19 @@
         </Tooltip.Root>
 
         <p class="font-bold tex-3xl">
-          {#if data.shouldSell}
+          {#if shouldSell}
             <span class="text-red-500"
-              >Nên bán ${data.price}: {data.minAlphaCoin.symbol} ({minCoinAmount})</span
+              >Nên bán ${price}: {minAlphaCoin.symbol} ({minCoinAmount})</span
             >
-          {:else if data.maxAlphaCoin.symbol === "USDT"}
+          {:else if maxAlphaCoin.symbol === "USDT"}
             <span class="text-blue-500">
-              Nên bán ${data.price}
-              {data.minAlphaCoin.symbol} ({minCoinAmount}) và mua thêm ${data.price}
+              Nên bán ${price}
+              {minAlphaCoin.symbol} ({minCoinAmount}) và mua thêm ${price}
               USDT</span
             >
           {:else}
             <span class="text-green-500"
-              >Bạn nên mua thêm {data.price}$: {data.maxAlphaCoin.symbol} ({maxCoinAmount})</span
+              >Bạn nên mua thêm {price}$: {maxAlphaCoin.symbol} ({maxCoinAmount})</span
             >
           {/if}
         </p>

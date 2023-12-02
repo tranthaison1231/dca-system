@@ -1,17 +1,15 @@
 <script lang="ts">
   import * as Table from "$lib/components/ui/table";
-  import { Edit, Trash } from "lucide-svelte";
-
   import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
   import { formatNumber } from "$lib/utils/number";
   import { createQuery } from "@tanstack/svelte-query";
+  import { Trash } from "lucide-svelte";
+  import EditCurrency from "./EditCurrency.svelte";
 
   const result = createQuery({
     queryKey: ["currencies"],
     queryFn: async () => (await fetch("/api/currencies")).json(),
   });
-
-  $: console.log($result.data);
 </script>
 
 <div>
@@ -26,21 +24,22 @@
       </Table.Row>
     </Table.Header>
     <Table.Body>
-      {#each $result.data ?? [] as coin, i (i)}
+      {#each $result.data?.currencies ?? [] as currency, i (i)}
         <Table.Row>
           <Table.Cell>
             <img
               class="w-6 h-6 mr-2 inline"
-              alt={coin.symbol}
-              src={getCryptoLogo(coin.symbol)}
+              alt={currency.symbol}
+              src={getCryptoLogo(currency.symbol)}
             />
-            {coin.symbol}
+            {currency.symbol}
           </Table.Cell>
-          <Table.Cell class="text-right">{formatNumber(coin.amount)}</Table.Cell
+          <Table.Cell class="text-right"
+            >{formatNumber(currency.amount)}</Table.Cell
           >
           <Table.Cell class="text-right space-x-2">
             <button><Trash color="red" /></button>
-            <button><Edit /></button>
+            <EditCurrency {currency} />
           </Table.Cell>
         </Table.Row>
       {/each}
