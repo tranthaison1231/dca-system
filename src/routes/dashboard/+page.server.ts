@@ -1,28 +1,31 @@
 import { getCryptoCurrencies } from "$lib/api/crypto-currencies";
 import { getFearAndGreedIndex } from "$lib/api/feat-and-greed";
-import { getNuplIndex } from "$lib/api/nupl";
-import { getSupplyInProfitIndex } from "$lib/api/supply-in-profit";
 import prisma from "$lib/db/prisma";
-import { sumBy } from "lodash-es";
 
 export async function load(event) {
   event.setHeaders({
     "cache-control": "max-age=60",
   });
 
-  const currencies = await prisma.currency.findMany({
-    where: {
-      userId: event.locals.session.userId,
-    },
-  });
-
-  const [coinsObj, fearAndGreedIndex, supplyInProfitIndex, nuplIndex] =
-    await Promise.all([
-      getCryptoCurrencies(),
-      getFearAndGreedIndex(),
-      getSupplyInProfitIndex(),
-      getNuplIndex(),
-    ]);
+  const [
+    currencies,
+    coinsObj,
+    fearAndGreedIndex,
+    supplyInProfitIndex,
+    nuplIndex,
+  ] = await Promise.all([
+    prisma.currency.findMany({
+      where: {
+        userId: event.locals.session.userId,
+      },
+    }),
+    getCryptoCurrencies(),
+    getFearAndGreedIndex(),
+    event
+      .fetch("/api/crypto-quant/supply-in-profit")
+      .then(async (res) => await res.json()),
+    event.fetch("/api/crypto-quant/nupl").then(async (res) => await res.json()),
+  ]);
 
   const coinsMapper = currencies.map((cur) => {
     const coin = coinsObj?.[cur.symbol];
@@ -34,24 +37,8 @@ export async function load(event) {
     };
   });
 
-  const total = sumBy(coinsMapper, "value");
-  const totalMarket = sumBy(coinsMapper, "marketCap");
-
-  const coinPercentMap = coinsMapper.map((coin) => {
-    const percent = (coin.value / total) * 100;
-    const marketCapPercent = (coin.marketCap / totalMarket) * 100;
-    return {
-      ...coin,
-      percent: percent,
-      marketCapPercent: marketCapPercent,
-      alpha: marketCapPercent - percent,
-    };
-  });
-
   return {
-    coinPercentMap,
-    totalMarket,
-    total,
+    coinsMapper,
     fearAndGreedIndex,
     supplyInProfitIndex,
     nuplIndex,

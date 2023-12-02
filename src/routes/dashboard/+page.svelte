@@ -8,7 +8,7 @@
   import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
   import { formatMoney, formatNumber } from "$lib/utils/number";
   import { cn } from "$lib/utils/style";
-  import { maxBy, minBy } from "lodash-es";
+  import { maxBy, minBy, sumBy } from "lodash-es";
   import type { PageData } from "./$types";
 
   export let data: PageData;
@@ -24,11 +24,26 @@
     data.supplyInProfitIndex > 80 ||
     data.nuplIndex > 0.5;
 
-  $: maxAlphaCoin = maxBy(data.coinPercentMap, "alpha");
-  $: minAlphaCoin = minBy(data.coinPercentMap, "alpha");
+  $: coinPercentMap =
+    data.coinsMapper?.map((coin) => {
+      const percent = (coin.value / total) * 100;
+      const marketCapPercent = (coin.marketCap / totalMarket) * 100;
+      return {
+        ...coin,
+        percent: percent,
+        marketCapPercent: marketCapPercent,
+        alpha: marketCapPercent - percent,
+      };
+    }) ?? [];
 
-  $: minCoinAmount = (price / minAlphaCoin.price).toFixed(2);
-  $: maxCoinAmount = (price / maxAlphaCoin.price).toFixed(2);
+  $: total = sumBy(data.coinsMapper, "value");
+  $: totalMarket = sumBy(data.coinsMapper, "marketCap");
+
+  $: maxAlphaCoin = maxBy(coinPercentMap, "alpha");
+  $: minAlphaCoin = minBy(coinPercentMap, "alpha");
+
+  $: minCoinAmount = (price / minAlphaCoin?.price).toFixed(2);
+  $: maxCoinAmount = (price / maxAlphaCoin?.price).toFixed(2);
 </script>
 
 <div>
@@ -48,7 +63,7 @@
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {#each data.coinPercentMap as coin, i (i)}
+          {#each coinPercentMap.sort((a, b) => b.marketCap - a.marketCap) as coin, i (i)}
             <Table.Row>
               <Table.Cell>
                 <img
@@ -84,10 +99,9 @@
           {/each}
           <Table.Row>
             <Table.Cell colspan={3} class="font-bold">Total</Table.Cell>
-            <Table.Cell class="text-right">{formatMoney(data.total)}</Table.Cell
-            >
+            <Table.Cell class="text-right">{formatMoney(total)}</Table.Cell>
             <Table.Cell class="text-right"
-              >{formatMoney(data.totalMarket)}</Table.Cell
+              >{formatMoney(totalMarket)}</Table.Cell
             >
           </Table.Row>
           <Table.Row>
@@ -98,9 +112,9 @@
             <Table.Cell colspan={3} class="font-bold">Profit</Table.Cell>
             <Table.Cell
               class={cn("text-right", {
-                "text-green-500": data.total - INVESTED > 0,
-                "text-red-500": data.total - INVESTED < 0,
-              })}>{formatMoney(data.total - INVESTED)}</Table.Cell
+                "text-green-500": total - INVESTED > 0,
+                "text-red-500": total - INVESTED < 0,
+              })}>{formatMoney(total - INVESTED)}</Table.Cell
             >
           </Table.Row>
         </Table.Body>
@@ -160,11 +174,11 @@
       <div class="border p-5 rounded-md shadow-xl">
         <PieChart
           data={{
-            labels: data.coinPercentMap.map((coin) => coin.symbol),
+            labels: coinPercentMap.map((coin) => coin.symbol),
             datasets: [
               {
                 label: "Total",
-                data: data.coinPercentMap.map((coin) => coin.value),
+                data: coinPercentMap.map((coin) => coin.value),
                 backgroundColor: [
                   "#FF6384",
                   "#36A2EB",
