@@ -154,9 +154,9 @@
         <p class="font-medium tex-3xl">
           {#if shouldSell}
             <span class="text-red-500"
-              >Nên bán ${price}: {minAlphaCoin.symbol} ({minCoinAmount})</span
+              >Nên bán ${price}: {minAlphaCoin?.symbol} ({minCoinAmount})</span
             >
-          {:else if maxAlphaCoin.symbol === "USDT"}
+          {:else if maxAlphaCoin?.symbol === "USDT"}
             <span class="text-blue-500">
               Nên bán ${price}
               {minAlphaCoin.symbol} ({minCoinAmount}) và mua thêm ${price}
@@ -164,7 +164,7 @@
             >
           {:else}
             <span class="text-green-500"
-              >Bạn nên mua thêm {price}$: {maxAlphaCoin.symbol} ({maxCoinAmount})</span
+              >Bạn nên mua thêm {price}$: {maxAlphaCoin?.symbol} ({maxCoinAmount})</span
             >
           {/if}
         </p>
