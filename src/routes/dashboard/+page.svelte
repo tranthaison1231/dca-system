@@ -47,8 +47,8 @@
 </script>
 
 <div>
-  <h1 class="text-3xl mb-3 text-center text-primary">Hệ thống DCA Crypto</h1>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mt-10">
+  <h1 class="text-2xl mb-3 text-primary">Report</h1>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mt-4">
     <div class="col-span-2 border p-5 rounded-md shadow-xl">
       <Table.Root>
         <Table.Header>
@@ -151,7 +151,7 @@
           </Tooltip.Content>
         </Tooltip.Root>
 
-        <p class="font-bold tex-3xl">
+        <p class="font-medium tex-3xl">
           {#if shouldSell}
             <span class="text-red-500"
               >Nên bán ${price}: {minAlphaCoin.symbol} ({minCoinAmount})</span

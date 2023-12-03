@@ -8,7 +8,7 @@
 </script>
 
 <svelte:head>
-  <title>Hệ thống DCA Crypto</title>
+  <title>CoinInvest</title>
 </svelte:head>
 
 <Toaster richColors position="top-right" />

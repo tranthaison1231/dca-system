@@ -26,41 +26,41 @@
 </script>
 
 <div>
-  <h1 class="text-2xl mb-3 text-center text-black font-bold">
-    Portfolio Setting
-  </h1>
-  <div class="flex justify-end">
-    <CreateCurrency />
-  </div>
-  <Table.Root class="mt-5">
-    <Table.Header>
-      <Table.Row class="uppercase">
-        <Table.Head class="font-bold">Name</Table.Head>
-        <Table.Head class="font-bold text-right">Amount</Table.Head>
-      </Table.Row>
-    </Table.Header>
-    <Table.Body>
-      {#each $result.data?.currencies ?? [] as currency, i (i)}
-        <Table.Row>
-          <Table.Cell>
-            <img
-              class="w-6 h-6 mr-2 inline"
-              alt={currency.symbol}
-              src={getCryptoLogo(currency.symbol)}
-            />
-            {currency.symbol}
-          </Table.Cell>
-          <Table.Cell class="text-right"
-            >{formatNumber(currency.amount)}</Table.Cell
-          >
-          <Table.Cell class="text-right space-x-2">
-            <button on:click={() => $deleteCurrencyMutate.mutate(currency.id)}
-              ><Trash color="red" /></button
-            >
-            <EditCurrency {currency} />
-          </Table.Cell>
+  <h1 class="text-2xl text-primary">Setting</h1>
+  <div class="border p-5 rounded-md shadow-xl mt-4">
+    <div class="flex justify-end">
+      <CreateCurrency />
+    </div>
+    <Table.Root class="mt-5">
+      <Table.Header>
+        <Table.Row class="uppercase">
+          <Table.Head class="font-bold">Name</Table.Head>
+          <Table.Head class="font-bold text-right">Amount</Table.Head>
         </Table.Row>
-      {/each}
-    </Table.Body>
-  </Table.Root>
+      </Table.Header>
+      <Table.Body>
+        {#each $result.data?.currencies ?? [] as currency, i (i)}
+          <Table.Row>
+            <Table.Cell>
+              <img
+                class="w-6 h-6 mr-2 inline"
+                alt={currency.symbol}
+                src={getCryptoLogo(currency.symbol)}
+              />
+              {currency.symbol}
+            </Table.Cell>
+            <Table.Cell class="text-right"
+              >{formatNumber(currency.amount)}</Table.Cell
+            >
+            <Table.Cell class="text-right space-x-2">
+              <button on:click={() => $deleteCurrencyMutate.mutate(currency.id)}
+                ><Trash color="red" /></button
+              >
+              <EditCurrency {currency} />
+            </Table.Cell>
+          </Table.Row>
+        {/each}
+      </Table.Body>
+    </Table.Root>
+  </div>
 </div>
