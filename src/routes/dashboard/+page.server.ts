@@ -1,4 +1,5 @@
 import { getCryptoCurrencies } from "$lib/api/crypto-currencies";
+import { getNuplIndex, getSupplyInProfitIndex } from "$lib/api/crypto-quant.js";
 import { getFearAndGreedIndex } from "$lib/api/feat-and-greed";
 import prisma from "$lib/db/prisma";
 
@@ -17,10 +18,8 @@ export async function load(event) {
     }),
     getCryptoCurrencies(),
     getFearAndGreedIndex(),
-    event
-      .fetch("/api/crypto-quant/supply-in-profit")
-      .then(async (res) => await res.json()),
-    event.fetch("/api/crypto-quant/nupl").then(async (res) => await res.json()),
+    getSupplyInProfitIndex(),
+    getNuplIndex(),
   ]);
 
   const coinsMapper = currencies.map((cur) => {

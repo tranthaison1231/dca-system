@@ -2,3 +2,5 @@
 node_modules
 dist
 .svelte-kit
+.vercel
+.env.development.local

@@ -19,6 +19,7 @@
     "chart.js": "^4.4.0",
     "clerk-sveltekit": "^0.3.0",
     "clsx": "^2.0.0",
+    "ioredis": "^5.3.2",
     "lodash-es": "^4.17.21",
     "lucide-svelte": "^0.294.0",
     "prisma": "^5.6.0",

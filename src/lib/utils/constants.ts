@@ -38,5 +38,3 @@ export const CURRENCIES = [
     amount: 0,
   },
 ];
-
-export const CRYPTO_QUANT_API = import.meta.env.VITE_CRYPTO_QUANT_API;

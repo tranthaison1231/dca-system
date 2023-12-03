@@ -1,15 +1,16 @@
+import {
+  VITE_PRO_COIN_MARKET_CAP_API,
+  VITE_PRO_COIN_MARKET_CAP_KEY,
+} from "$env/static/private";
+
 export async function getCryptoCurrencies() {
   try {
     const res = await fetch(
-      `${
-        import.meta.env.VITE_PRO_COIN_MARKET_CAP_API
-      }/v1/cryptocurrency/listings/latest`,
+      `${VITE_PRO_COIN_MARKET_CAP_API}/v1/cryptocurrency/listings/latest`,
       {
         method: "GET",
         headers: {
-          "X-CMC_PRO_API_KEY": String(
-            import.meta.env.VITE_PRO_COIN_MARKET_CAP_KEY
-          ),
+          "X-CMC_PRO_API_KEY": String(VITE_PRO_COIN_MARKET_CAP_KEY),
         },
       }
     );

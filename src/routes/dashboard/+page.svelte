@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { calculateBuyAndSellPrice } from "$lib/api/buy-and-price";
+  import { calculateBuyAndSellPrice } from "$lib/services/buy-and-price";
   import PieChart from "$lib/components/charts/PieChart.svelte";
   import Progress from "$lib/components/ui/progress/progress.svelte";
   import * as Table from "$lib/components/ui/table";
