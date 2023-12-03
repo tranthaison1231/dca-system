@@ -1,4 +1,4 @@
-import prisma from "$lib/db/prisma.js";
+import prisma from "$lib/db/prisma";
 import { changeImageType } from "$lib/utils/image";
 import { Prisma } from "@prisma/client";
 import { error, json } from "@sveltejs/kit";
