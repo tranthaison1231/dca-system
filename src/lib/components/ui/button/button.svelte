@@ -23,7 +23,7 @@
   disabled={loading}
 >
   {#if loading}
-    <Loader2 />
+    <Loader2 class="mr-2 h-4 w-4 animate-spin" />
   {/if}
   <slot />
 </ButtonPrimitive.Root>
