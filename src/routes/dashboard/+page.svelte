@@ -47,9 +47,7 @@
 </script>
 
 <div>
-  <h1 class="text-2xl mb-3 text-center text-black font-bold">
-    Hệ thống DCA Crypto
-  </h1>
+  <h1 class="text-3xl mb-3 text-center text-primary">Hệ thống DCA Crypto</h1>
   <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full mt-10">
     <div class="col-span-2 border p-5 rounded-md shadow-xl">
       <Table.Root>

@@ -19,3 +19,17 @@ export async function PUT(event) {
     currency: currency,
   });
 }
+
+export async function DELETE(event) {
+  const currencyId = event.params.id;
+
+  await prisma.currency.delete({
+    where: {
+      id: currencyId,
+    },
+  });
+  return json({
+    status: "success",
+    message: "Currency deleted successfully",
+  });
+}

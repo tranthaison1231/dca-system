@@ -71,7 +71,6 @@
 @layer base {
   * {
     @apply border-border;
-    color: rgb(117 118 147 /1);
   }
   body {
     @apply bg-background text-foreground;

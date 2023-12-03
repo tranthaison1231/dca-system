@@ -20,3 +20,19 @@ export async function GET(event) {
     currencies: currencies,
   });
 }
+
+export async function POST(event) {
+  const body = await event.request.json();
+
+  const currency = await prisma.currency.create({
+    data: {
+      ...body,
+      amount: String(body.amount),
+      userId: event.locals.session.userId,
+    },
+  });
+  return json({
+    status: "success",
+    currency: currency,
+  });
+}

@@ -3,23 +3,20 @@
   import * as Dialog from "$lib/components/ui/dialog";
   import Input from "$lib/components/ui/input/input.svelte";
   import Label from "$lib/components/ui/label/label.svelte";
-  import { createMutation, useQueryClient } from "@tanstack/svelte-query";
   import { updateCurrencySchema } from "$lib/utils/schema";
-  import type * as z from "zod";
-  import { Edit } from "lucide-svelte";
-  import { superForm, superValidateSync } from "sveltekit-superforms/client";
-  import type { Currency } from "@prisma/client";
+  import { createMutation, useQueryClient } from "@tanstack/svelte-query";
   import { toast } from "svelte-sonner";
+  import { superForm, superValidateSync } from "sveltekit-superforms/client";
+  import type * as z from "zod";
 
-  export let currency: Currency;
   export let open = false;
 
   const queryClient = useQueryClient();
 
-  const updateCurrencyMutate = createMutation({
+  const createCurrencyMutate = createMutation({
     mutationFn: async (data: z.infer<typeof updateCurrencySchema>) =>
-      fetch(`/api/currencies/${currency.id}`, {
-        method: "PUT",
+      fetch(`/api/currencies`, {
+        method: "POST",
         body: JSON.stringify(data),
       }),
   });
@@ -33,10 +30,10 @@
       onUpdate: async ({ form }) => {
         if (form.valid) {
           try {
-            const result = await $updateCurrencyMutate.mutateAsync(form.data);
+            const result = await $createCurrencyMutate.mutateAsync(form.data);
             if (result.status === 200) {
               queryClient.invalidateQueries({ queryKey: ["currencies"] });
-              toast.success("Currency has been updated!");
+              toast.success("Currency has been created!");
               open = false;
             }
           } catch (error) {
@@ -50,11 +47,11 @@
 
 <Dialog.Root bind:open>
   <Dialog.Trigger>
-    <button><Edit /></button>
+    <Button>Create</Button>
   </Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>
-      <Dialog.Title>Edit currency</Dialog.Title>
+      <Dialog.Title>Create new currency</Dialog.Title>
     </Dialog.Header>
     <form method="POST" use:enhance>
       <Label>Name</Label>
@@ -75,7 +72,7 @@
           >{/if}
       </div>
       <Dialog.Footer class="mt-5">
-        <Button type="submit" loading={$updateCurrencyMutate.isPending}
+        <Button type="submit" loading={$createCurrencyMutate.isPending}
           >Save</Button
         >
       </Dialog.Footer>

@@ -32,12 +32,15 @@ dependencies:
   prisma:
     specifier: ^5.6.0
     version: 5.6.0
+  svelte-sonner:
+    specifier: ^0.3.6
+    version: 0.3.6(svelte@4.2.7)
   sveltekit-superforms:
     specifier: ^1.11.0
     version: 1.11.0(@sveltejs/kit@1.27.6)(svelte@4.2.7)(zod@3.22.4)
   tailwind-merge:
-    specifier: ^2.0.0
-    version: 2.0.0
+    specifier: ^2.1.0
+    version: 2.1.0
   tailwind-variants:
     specifier: ^0.1.18
     version: 0.1.18(tailwindcss@3.3.5)
@@ -86,8 +89,8 @@ devDependencies:
     specifier: ^2.6.2
     version: 2.6.2
   tsx:
-    specifier: ^4.6.1
-    version: 4.6.1
+    specifier: ^4.6.2
+    version: 4.6.2
   typescript:
     specifier: ^5.3.2
     version: 5.3.2
@@ -2958,6 +2961,14 @@ packages:
       typescript: 5.3.2
     dev: true
 
+  /svelte-sonner@0.3.6(svelte@4.2.7):
+    resolution: {integrity: sha512-MwVhh4nxCqTBLHYamRw+q9erZC2Y4wuL8mUa7phgq/9kq9VdTr+/6S1PX1CnALJPy2rkc7TlIECYTJavUkoWlg==}
+    peerDependencies:
+      svelte: '>=3 <5'
+    dependencies:
+      svelte: 4.2.7
+    dev: false
+
   /svelte@4.2.7:
     resolution: {integrity: sha512-UExR1KS7raTdycsUrKLtStayu4hpdV3VZQgM0akX8XbXgLBlosdE/Sf3crOgyh9xIjqSYB3UEBuUlIQKRQX2hg==}
     engines: {node: '>=16'}
@@ -3005,8 +3016,8 @@ packages:
     resolution: {integrity: sha512-3mFKyCo/MBcgyOTlrY8T7odzZFx+w+qKSMAmdFzRvqBfLlSigU6TZnlFHK0lkMwj9Bj8OYU+9yW9lmGuS0QEnQ==}
     dev: false
 
-  /tailwind-merge@2.0.0:
-    resolution: {integrity: sha512-WO8qghn9yhsldLSg80au+3/gY9E4hFxIvQ3qOmlpXnqpDKoMruKfi/56BbbMg6fHTQJ9QD3cc79PoWqlaQE4rw==}
+  /tailwind-merge@2.1.0:
+    resolution: {integrity: sha512-l11VvI4nSwW7MtLSLYT4ldidDEUwQAMWuSHk7l4zcXZDgnCRa0V3OdCwFfM7DCzakVXMNRwAeje9maFFXT71dQ==}
     dependencies:
       '@babel/runtime': 7.23.5
     dev: false
@@ -3131,8 +3142,8 @@ packages:
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
 
-  /tsx@4.6.1:
-    resolution: {integrity: sha512-OQ4TAPHXAPUo/NZAmmIybl0o8LFOTlycQxFepLBAp6EV87U88fOKYGCQI2viGAEOVU9UW/cgQcxcOMnfEKVY3Q==}
+  /tsx@4.6.2:
+    resolution: {integrity: sha512-QPpBdJo+ZDtqZgAnq86iY/PD2KYCUPSUGIunHdGwyII99GKH+f3z3FZ8XNFLSGQIA4I365ui8wnQpl8OKLqcsg==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     dependencies:

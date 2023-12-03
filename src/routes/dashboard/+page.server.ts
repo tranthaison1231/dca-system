@@ -3,10 +3,6 @@ import { getFearAndGreedIndex } from "$lib/api/feat-and-greed";
 import prisma from "$lib/db/prisma";
 
 export async function load(event) {
-  event.setHeaders({
-    "cache-control": "max-age=60",
-  });
-
   const [
     currencies,
     coinsObj,

@@ -2,13 +2,26 @@
   import * as Table from "$lib/components/ui/table";
   import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
   import { formatNumber } from "$lib/utils/number";
-  import { createQuery } from "@tanstack/svelte-query";
+  import { createMutation, createQuery } from "@tanstack/svelte-query";
   import { Trash } from "lucide-svelte";
+  import CreateCurrency from "./CreateCurrency.svelte";
   import EditCurrency from "./EditCurrency.svelte";
+  import { toast } from "svelte-sonner";
 
   const result = createQuery({
     queryKey: ["currencies"],
     queryFn: async () => (await fetch("/api/currencies")).json(),
+  });
+
+  const deleteCurrencyMutate = createMutation({
+    mutationFn: async (id: string) =>
+      fetch(`/api/currencies/${id}`, {
+        method: "DELETE",
+      }),
+    onSuccess: () => {
+      toast.success("Currency has been deleted!");
+      $result.refetch();
+    },
   });
 </script>
 
@@ -16,7 +29,10 @@
   <h1 class="text-2xl mb-3 text-center text-black font-bold">
     Portfolio Setting
   </h1>
-  <Table.Root>
+  <div class="flex justify-end">
+    <CreateCurrency />
+  </div>
+  <Table.Root class="mt-5">
     <Table.Header>
       <Table.Row class="uppercase">
         <Table.Head class="font-bold">Name</Table.Head>
@@ -38,7 +54,9 @@
             >{formatNumber(currency.amount)}</Table.Cell
           >
           <Table.Cell class="text-right space-x-2">
-            <button><Trash color="red" /></button>
+            <button on:click={() => $deleteCurrencyMutate.mutate(currency.id)}
+              ><Trash color="red" /></button
+            >
             <EditCurrency {currency} />
           </Table.Cell>
         </Table.Row>
