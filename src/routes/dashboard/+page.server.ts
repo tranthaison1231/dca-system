@@ -1,4 +1,4 @@
-import { getNuplIndex, getSupplyInProfitIndex } from "$lib/api/crypto-quant";
+import { getSupplyInProfitIndex } from "$lib/api/crypto-quant";
 import { getFearAndGreedIndex } from "$lib/api/feat-and-greed";
 import prisma from "$lib/db/prisma";
 import { redirect } from "@sveltejs/kit";
@@ -8,7 +8,7 @@ export async function load(event) {
     throw redirect(302, "/sign-in");
   }
 
-  const [currencies, fearAndGreedIndex, supplyInProfitIndex, nuplIndex] =
+  const [currencies, fearAndGreedIndex, supplyInProfitIndex] =
     await Promise.all([
       prisma.currency.findMany({
         where: {
@@ -17,13 +17,13 @@ export async function load(event) {
       }),
       getFearAndGreedIndex(),
       getSupplyInProfitIndex(),
-      getNuplIndex(),
+      // getNuplIndex(),
     ]);
 
   return {
     currencies: currencies,
     fearAndGreedIndex,
     supplyInProfitIndex,
-    nuplIndex,
+    nuplIndex: 0,
   };
 }
