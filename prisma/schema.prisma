@@ -15,7 +15,7 @@ model Currency {
   name            String?
   symbol          String
   amount          String
-  coinMarketCapId String? @unique
+  url             String @unique
   userId          String
   createdAt       DateTime @default(now())
 

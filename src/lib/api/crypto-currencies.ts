@@ -35,7 +35,6 @@ export async function getCryptoCurrencies() {
 
     return coinsObj;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }

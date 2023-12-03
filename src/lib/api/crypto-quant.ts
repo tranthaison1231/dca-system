@@ -28,12 +28,7 @@ export async function signIn() {
 
   const data = await res.json();
 
-  await redis.set(
-    "crypto-quant-access-token",
-    data.accessToken,
-    "EX",
-    60 * 60 * 24
-  );
+  await redis.set("crypto-quant-access-token", data.accessToken, "EX", 30 * 60);
 
   return data;
 }

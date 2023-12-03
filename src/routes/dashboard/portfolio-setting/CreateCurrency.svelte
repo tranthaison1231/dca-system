@@ -4,41 +4,57 @@
   import Input from "$lib/components/ui/input/input.svelte";
   import Label from "$lib/components/ui/label/label.svelte";
   import { updateCurrencySchema } from "$lib/utils/schema";
+  import type { Currency } from "@prisma/client";
   import { createMutation, useQueryClient } from "@tanstack/svelte-query";
   import { toast } from "svelte-sonner";
   import { superForm, superValidateSync } from "sveltekit-superforms/client";
   import type * as z from "zod";
+  import CryptoSearch from "./CoinSearch.svelte";
 
   export let open = false;
+  let coin: Partial<Currency> | null = null;
 
   const queryClient = useQueryClient();
 
-  const createCurrencyMutate = createMutation({
-    mutationFn: async (data: z.infer<typeof updateCurrencySchema>) =>
-      fetch(`/api/currencies`, {
-        method: "POST",
-        body: JSON.stringify(data),
+  async function createCurrency(data: z.infer<typeof updateCurrencySchema>) {
+    const res = await fetch(`/api/currencies`, {
+      method: "POST",
+      body: JSON.stringify({
+        ...data,
+        ...coin,
       }),
+    });
+    const json = await res.json();
+    if (!(res.status === 200)) {
+      throw new Error(json.message);
+    }
+    return json;
+  }
+
+  const createCurrencyMutate = createMutation({
+    mutationFn: createCurrency,
+    onError: (error) => {
+      toast.error(error.message);
+    },
+    onSuccess: () => {
+      toast.success("Currency has been created!");
+      queryClient.invalidateQueries({ queryKey: ["currencies"] });
+      open = false;
+      reset();
+      coin = null;
+    },
   });
 
-  const { form, errors, constraints, enhance } = superForm(
+  const { form, errors, constraints, enhance, reset } = superForm(
     superValidateSync(updateCurrencySchema),
     {
       SPA: true,
       validators: updateCurrencySchema,
       taintedMessage: false,
       onUpdate: async ({ form }) => {
-        if (form.valid) {
-          try {
-            const result = await $createCurrencyMutate.mutateAsync(form.data);
-            if (result.status === 200) {
-              queryClient.invalidateQueries({ queryKey: ["currencies"] });
-              toast.success("Currency has been created!");
-              open = false;
-            }
-          } catch (error) {
-            toast.error("Something went wrong");
-          }
+        if (!coin) toast.error("Please select a coin");
+        if (form.valid && coin) {
+          $createCurrencyMutate.mutate(form.data);
         }
       },
     }
@@ -54,11 +70,10 @@
       <Dialog.Title>Create new currency</Dialog.Title>
     </Dialog.Header>
     <form method="POST" use:enhance>
-      <Label>Name</Label>
-      <Input bind:value={$form.symbol} {...$constraints.symbol} />
-      {#if $errors.symbol}<span class="mt-1 col-span-3 text-red-500"
-          >{$errors.symbol}</span
-        >{/if}
+      <div class="flex flex-col">
+        <Label class="mb-1">Coin</Label>
+        <CryptoSearch bind:value={coin} />
+      </div>
       <div class="mt-4">
         <Label>Amount</Label>
         <Input

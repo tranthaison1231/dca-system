@@ -2,6 +2,13 @@ import prisma from "$lib/db/prisma";
 import { json } from "@sveltejs/kit";
 
 export async function PUT(event) {
+  if (!event.locals.session) {
+    return json({
+      status: "error",
+      message: "Not logged in",
+    });
+  }
+
   const body = await event.request.json();
   const currencyId = event.params.id;
 

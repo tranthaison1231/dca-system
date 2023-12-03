@@ -11,7 +11,7 @@
   <title>CoinInvest</title>
 </svelte:head>
 
-<Toaster richColors position="top-right" />
+<Toaster richColors position="top-right" duration={3000} closeButton />
 <QueryClientProvider client={data.queryClient}>
   <slot />
 </QueryClientProvider>

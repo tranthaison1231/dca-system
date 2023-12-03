@@ -5,7 +5,7 @@ export const formatMoney = (number: number) => {
   }).format(number);
 };
 
-export const formatNumber = (number: number, maxDecimals = 6) => {
+export const formatNumber = (number: number, maxDecimals = 8) => {
   return new Intl.NumberFormat("en-US", {
     minimumFractionDigits: maxDecimals,
   }).format(number);

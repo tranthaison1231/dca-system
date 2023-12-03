@@ -28,6 +28,7 @@
     superValidateSync(updateCurrencySchema),
     {
       SPA: true,
+      id: currency.id,
       validators: updateCurrencySchema,
       taintedMessage: false,
       onUpdate: async ({ form }) => {
@@ -57,11 +58,15 @@
       <Dialog.Title>Edit currency</Dialog.Title>
     </Dialog.Header>
     <form method="POST" use:enhance>
-      <Label>Name</Label>
-      <Input bind:value={$form.symbol} {...$constraints.symbol} />
-      {#if $errors.symbol}<span class="mt-1 col-span-3 text-red-500"
-          >{$errors.symbol}</span
-        >{/if}
+      <Label>Coin</Label>
+      <div class="flex gap-2 items-center">
+        <img
+          src={currency?.url}
+          alt={currency.name}
+          class="w-5 h-5 object-cover"
+        />
+        <span>{currency?.name}</span>
+      </div>
       <div class="mt-4">
         <Label>Amount</Label>
         <Input

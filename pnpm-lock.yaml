@@ -23,6 +23,9 @@ dependencies:
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  cmdk-sv:
+    specifier: ^0.0.12
+    version: 0.0.12(svelte@4.2.7)
   ioredis:
     specifier: ^5.3.2
     version: 5.3.2
@@ -1425,6 +1428,16 @@ packages:
   /cluster-key-slot@1.1.2:
     resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /cmdk-sv@0.0.12(svelte@4.2.7):
+    resolution: {integrity: sha512-d+eILSOb2W+/3U/j7xGTgGRrZkFB/z4Xlvj0ADrWhf34y9YLzJon3JCGP2hMil5IrVm0P/+IFIeCF5l3//kcjA==}
+    peerDependencies:
+      svelte: ^4.0.0
+    dependencies:
+      bits-ui: 0.9.9(svelte@4.2.7)
+      nanoid: 5.0.3
+      svelte: 4.2.7
     dev: false
 
   /code-red@1.0.4:

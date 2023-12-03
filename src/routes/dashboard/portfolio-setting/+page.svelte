@@ -75,7 +75,7 @@
                 <img
                   class="w-6 h-6 mr-2 inline"
                   alt={currency.symbol}
-                  src={getCryptoLogo(currency.symbol)}
+                  src={currency.url || getCryptoLogo(currency.symbol)}
                 />
                 {currency.symbol}
               </Table.Cell>

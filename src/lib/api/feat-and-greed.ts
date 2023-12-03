@@ -17,7 +17,6 @@ export async function getFearAndGreedIndex() {
     const latestValue = data.dataList[data.dataList.length - 1].score;
     return latestValue;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
