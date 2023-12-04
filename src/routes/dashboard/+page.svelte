@@ -145,8 +145,7 @@
             </Table.Row>
             <Table.Row>
               <Table.Cell colspan={3} class="font-bold">Invested</Table.Cell>
-              <Table.Cell class="text-right"
-                >${formatMoney(INVESTED)}</Table.Cell
+              <Table.Cell class="text-right">{formatMoney(INVESTED)}</Table.Cell
               >
             </Table.Row>
             <Table.Row>
