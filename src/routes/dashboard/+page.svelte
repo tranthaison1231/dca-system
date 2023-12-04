@@ -15,9 +15,6 @@
   const result = createQuery({
     queryKey: ["currencies/listing"],
     queryFn: async () => (await fetch("/api/currencies/listing")).json(),
-    initialData: {
-      currencies: [],
-    },
   });
 
   const fearAndGreedResult = createQuery({
@@ -80,7 +77,10 @@
 
 <div>
   <h1 class="text-2xl mb-3 text-primary">Report</h1>
-  {#if $result.data?.currencies?.length === 0}
+
+  {#if $result.isPending || $fearAndGreedResult.isPending || $nuplResult.isPending || $supplyInProfitResult.isPending}
+    <p class="mt-4">Loading...</p>
+  {:else if $result.data?.currencies.length === 0}
     <p class="mt-4">
       You don't have any currency yet. Please click <a
         class={buttonVariants({ variant: "default" })}
