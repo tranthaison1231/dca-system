@@ -34,7 +34,7 @@
   });
 
   const supplyInProfitResult = createQuery({
-    queryKey: ["nupl"],
+    queryKey: ["supply-in-profit"],
     queryFn: async () =>
       (await fetch("/api/crypto-quant/supply-in-profit")).json(),
     initialData: {
@@ -145,7 +145,9 @@
             </Table.Row>
             <Table.Row>
               <Table.Cell colspan={3} class="font-bold">Invested</Table.Cell>
-              <Table.Cell class="text-right">${INVESTED}</Table.Cell>
+              <Table.Cell class="text-right"
+                >${formatMoney(INVESTED)}</Table.Cell
+              >
             </Table.Row>
             <Table.Row>
               <Table.Cell colspan={3} class="font-bold">Profit</Table.Cell>
