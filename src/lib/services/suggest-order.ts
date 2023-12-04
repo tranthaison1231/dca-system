@@ -1,13 +1,11 @@
-import type { Currency } from "@prisma/client";
-import { sortBy, last } from "lodash-es";
+import type { ExtendCurrency } from "$lib/utils/type";
+import { last, sortBy } from "lodash-es";
 
 interface SuggestOrder {
   fearAndGreed: number;
   supplyInProfit: number;
   nupl: number;
-  currencies: (Currency & {
-    percent: number;
-  })[];
+  currencies: ExtendCurrency[];
 }
 
 export const suggestOrder = ({
