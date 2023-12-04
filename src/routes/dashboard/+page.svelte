@@ -185,8 +185,8 @@
                     "text-green-500":
                       currency.statistics.priceChangePercentage24h > 0,
                   })}
-                  >{currency.statistics.priceChangePercentage24h.toFixed(
-                    2
+                  >{Math.round(
+                    currency.statistics.priceChangePercentage24h
                   )}%</Table.Cell
                 >
                 <Table.Cell
@@ -196,8 +196,8 @@
                     "text-green-500":
                       currency.statistics.priceChangePercentage7d > 0,
                   })}
-                  >{currency.statistics.priceChangePercentage7d.toFixed(
-                    2
+                  >{Math.round(
+                    currency.statistics.priceChangePercentage7d
                   )}%</Table.Cell
                 >
                 <Table.Cell
@@ -207,8 +207,8 @@
                     "text-green-500":
                       currency.statistics.priceChangePercentage30d > 0,
                   })}
-                  >{currency.statistics.priceChangePercentage30d.toFixed(
-                    2
+                  >{Math.round(
+                    currency.statistics.priceChangePercentage30d
                   )}%</Table.Cell
                 >
                 <Table.Cell
@@ -218,8 +218,8 @@
                     "text-green-500":
                       currency.statistics.priceChangePercentage60d > 0,
                   })}
-                  >{currency.statistics.priceChangePercentage60d.toFixed(
-                    2
+                  >{Math.round(
+                    currency.statistics.priceChangePercentage60d
                   )}%</Table.Cell
                 >
                 <Table.Cell class="text-right mr-0">
