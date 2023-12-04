@@ -79,6 +79,7 @@
         <Input
           type="number"
           step="any"
+          min="0"
           bind:value={$form.amount}
           {...$constraints.amount}
         />
