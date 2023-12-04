@@ -8,25 +8,56 @@
   import { formatMoney, formatNumber } from "$lib/utils/number";
   import { cn } from "$lib/utils/style";
   import { maxBy, minBy, sumBy } from "lodash-es";
-  import type { PageData } from "./$types";
   import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
   import { buttonVariants } from "$lib/components/ui/button";
+  import { createQuery } from "@tanstack/svelte-query";
 
-  export let data: PageData;
+  const result = createQuery({
+    queryKey: ["currencies/listing"],
+    queryFn: async () => (await fetch("/api/currencies/listing")).json(),
+    initialData: {
+      currencies: [],
+    },
+  });
+
+  const fearAndGreedResult = createQuery({
+    queryKey: ["fear-and-greed"],
+    queryFn: async () => (await fetch("/api/cmc/fear-and-greed")).json(),
+    initialData: {
+      value: 0,
+    },
+  });
+
+  const nuplResult = createQuery({
+    queryKey: ["nupl"],
+    queryFn: async () => (await fetch("/api/crypto-quant/nupl")).json(),
+    initialData: {
+      value: 0,
+    },
+  });
+
+  const supplyInProfitResult = createQuery({
+    queryKey: ["nupl"],
+    queryFn: async () =>
+      (await fetch("/api/crypto-quant/supply-in-profit")).json(),
+    initialData: {
+      value: 0,
+    },
+  });
 
   $: price = calculateBuyAndSellPrice(
-    data.fearAndGreedIndex,
-    data.supplyInProfitIndex,
-    data.nuplIndex
+    $fearAndGreedResult.data?.value,
+    $supplyInProfitResult.data?.value,
+    $nuplResult.data?.value
   );
 
   $: shouldSell =
-    data.fearAndGreedIndex > 70 ||
-    data.supplyInProfitIndex > 80 ||
-    data.nuplIndex > 0.5;
+    $fearAndGreedResult.data?.value > 70 ||
+    $supplyInProfitResult.data?.value > 80 ||
+    $nuplResult.data?.value > 0.5;
 
   $: currencyPercentMap =
-    data.currencies?.map((currency) => {
+    $result.data?.currencies?.map((currency) => {
       const percent = (currency.value / total) * 100;
       const marketCapPercent = (currency.marketCap / totalMarket) * 100;
       return {
@@ -37,8 +68,8 @@
       };
     }) ?? [];
 
-  $: total = sumBy(data.currencies, "value");
-  $: totalMarket = sumBy(data.currencies, "marketCap");
+  $: total = sumBy($result.data?.currencies, "value");
+  $: totalMarket = sumBy($result.data?.currencies, "marketCap");
 
   $: maxAlphaCoin = maxBy(currencyPercentMap, "alpha");
   $: minAlphaCoin = minBy(currencyPercentMap, "alpha");
@@ -49,7 +80,7 @@
 
 <div>
   <h1 class="text-2xl mb-3 text-primary">Report</h1>
-  {#if !data.currencies.length}
+  {#if $result.data?.currencies?.length === 0}
     <p class="mt-4">
       You don't have any currency yet. Please click <a
         class={buttonVariants({ variant: "default" })}
@@ -79,7 +110,7 @@
                     alt={currency.symbol}
                     src={currency.url || getCryptoLogo(currency.symbol)}
                   />
-                  {currency.symbol}
+                  {currency.name}
                 </Table.Cell>
                 <Table.Cell class="text-right"
                   >{formatNumber(currency.amount)}</Table.Cell
@@ -133,7 +164,7 @@
           <Tooltip.Root>
             <Tooltip.Trigger class="block mt-4"
               ><p>
-                Fear And Greed: {data.fearAndGreedIndex.toFixed(2)}
+                Fear And Greed: {$fearAndGreedResult.data?.value?.toFixed(2)}
               </p></Tooltip.Trigger
             >
             <Tooltip.Content>
@@ -143,7 +174,9 @@
           <Tooltip.Root>
             <Tooltip.Trigger class="block">
               <p>
-                Supply In Profit: {data.supplyInProfitIndex.toFixed(2)}
+                Supply In Profit: {$supplyInProfitResult.data?.value?.toFixed(
+                  2
+                )}
               </p></Tooltip.Trigger
             >
             <Tooltip.Content>
@@ -153,7 +186,7 @@
           <Tooltip.Root>
             <Tooltip.Trigger class="block"
               ><p>
-                Bitcoin NUPL: {data.nuplIndex.toFixed(2)}
+                Bitcoin NUPL: {$nuplResult.data?.value?.toFixed(2)}
               </p></Tooltip.Trigger
             >
             <Tooltip.Content>
@@ -182,11 +215,13 @@
         <div class="border p-5 rounded-md shadow-xl">
           <PieChart
             data={{
-              labels: currencyPercentMap.map((currency) => currency.symbol),
+              labels: $result.data?.currencies.map((currency) => currency.name),
               datasets: [
                 {
                   label: "Total",
-                  data: currencyPercentMap.map((currency) => currency.value),
+                  data: $result.data?.currencies.map(
+                    (currency) => currency.value
+                  ),
                   backgroundColor: [
                     "#FF6384",
                     "#36A2EB",

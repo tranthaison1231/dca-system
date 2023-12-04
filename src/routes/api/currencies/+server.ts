@@ -52,6 +52,7 @@ export async function POST(event) {
         userId: event.locals.session.userId,
       },
     });
+
     return json({
       status: "success",
       currency: currency,

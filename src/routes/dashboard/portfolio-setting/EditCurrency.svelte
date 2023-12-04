@@ -25,7 +25,12 @@
   });
 
   const { form, errors, constraints, enhance } = superForm(
-    superValidateSync(updateCurrencySchema),
+    superValidateSync(
+      {
+        amount: Number(currency.amount),
+      },
+      updateCurrencySchema
+    ),
     {
       SPA: true,
       id: currency.id,

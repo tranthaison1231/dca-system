@@ -16,6 +16,7 @@ model Currency {
   symbol          String
   amount          String
   url             String @unique
+  coinGeckoId     String @unique
   userId          String
   createdAt       DateTime @default(now())
 
