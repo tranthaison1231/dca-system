@@ -15,9 +15,9 @@ model Currency {
   name            String?
   symbol          String
   amount          String
-  url             String @unique
-  slug            String @unique
-  userId          String
+  url             String 
+  slug            String
+  userId          String 
   createdAt       DateTime @default(now())
 
   @@map("currencies")
