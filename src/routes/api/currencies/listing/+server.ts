@@ -36,6 +36,7 @@ export async function GET(event) {
     symbol: currency.symbol,
     slug: currency.coinGeckoId,
     url: currency.url,
+    statistics: currency.data?.statistics,
     price: currency.data?.statistics?.price,
     amount: Number(currency.amount),
     value: Number(currency.amount) * currency.data?.statistics?.price,
