@@ -1,3 +1,4 @@
+import { getCMCCurrencyDetail } from "$lib/api/cmc-currency-detail";
 import prisma from "$lib/db/prisma";
 import { json } from "@sveltejs/kit";
 
@@ -22,10 +23,7 @@ export async function GET(event) {
 
   const cmcCurrencies = await Promise.all(
     currencies.map(async (currency) => {
-      const res = await fetch(
-        `https://api.coinmarketcap.com/data-api/v3/cryptocurrency/detail?slug=${currency.coinGeckoId}`
-      );
-      const data = await res.json();
+      const data = await getCMCCurrencyDetail(currency.slug);
       return {
         ...currency,
         ...data,
@@ -36,6 +34,7 @@ export async function GET(event) {
   const formattedCurrencies = cmcCurrencies.map((currency) => ({
     name: currency.name,
     symbol: currency.symbol,
+    slug: currency.coinGeckoId,
     url: currency.url,
     price: currency.data?.statistics?.price,
     amount: Number(currency.amount),

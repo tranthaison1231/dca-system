@@ -1,3 +1,4 @@
+import { getCMCCurrencyDetail } from "$lib/api/cmc-currency-detail";
 import prisma from "$lib/db/prisma";
 import { changeImageType } from "$lib/utils/image";
 import { Prisma } from "@prisma/client";
@@ -43,10 +44,25 @@ export async function POST(event) {
     }
 
     const body = await event.request.json();
+    let slug = body.coinGeckoId;
+
+    const currencyByCoinGeckoId = await getCMCCurrencyDetail(slug);
+
+    if (!currencyByCoinGeckoId.data) {
+      slug = body.symbol;
+      const currencyBySymbol = await getCMCCurrencyDetail(slug);
+      if (!currencyBySymbol.data) {
+        throw error(409, {
+          message: "Currency not found on CoinMarketCap!",
+        });
+      }
+    }
 
     const currency = await prisma.currency.create({
       data: {
-        ...body,
+        slug: slug,
+        name: body.name,
+        symbol: body.symbol,
         url: changeImageType(body.url),
         amount: String(body.amount),
         userId: event.locals.session.userId,
