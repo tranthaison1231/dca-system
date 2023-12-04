@@ -20,5 +20,6 @@ model Currency {
   userId          String 
   createdAt       DateTime @default(now())
 
+  @@unique([slug, symbol, userId], name: "slug_symbol_user_id")
   @@map("currencies")
 }
