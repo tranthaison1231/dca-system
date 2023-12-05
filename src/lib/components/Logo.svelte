@@ -1,7 +1,7 @@
 <svg
   fill="#000000"
-  height="30"
-  width="30"
+  height="32"
+  width="32"
   version="1.1"
   id="Capa_1"
   xmlns="http://www.w3.org/2000/svg"

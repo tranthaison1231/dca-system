@@ -9,14 +9,14 @@ dependencies:
     specifier: 5.6.0
     version: 5.6.0(prisma@5.6.0)
   '@tanstack/svelte-query':
-    specifier: ^5.12.1
-    version: 5.12.1(svelte@4.2.7)
+    specifier: ^5.13.1
+    version: 5.13.1(svelte@4.2.7)
   bits-ui:
-    specifier: ^0.10.0
-    version: 0.10.0(svelte@4.2.7)
+    specifier: ^0.10.1
+    version: 0.10.1(svelte@4.2.7)
   chart.js:
-    specifier: ^4.4.0
-    version: 4.4.0
+    specifier: ^4.4.1
+    version: 4.4.1
   clerk-sveltekit:
     specifier: ^0.3.0
     version: 0.3.0(@sveltejs/kit@1.27.6)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.7)
@@ -49,7 +49,7 @@ dependencies:
     version: 2.1.0
   tailwind-variants:
     specifier: ^0.1.18
-    version: 0.1.18(tailwindcss@3.3.5)
+    version: 0.1.18(tailwindcss@3.3.6)
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -86,8 +86,8 @@ devDependencies:
     specifier: ^3.6.2
     version: 3.6.2(postcss-load-config@5.0.2)(postcss@8.4.32)(svelte@4.2.7)
   tailwindcss:
-    specifier: ^3.3.5
-    version: 3.3.5(ts-node@10.9.1)
+    specifier: ^3.3.6
+    version: 3.3.6(ts-node@10.9.1)
   ts-node:
     specifier: ^10.9.1
     version: 10.9.1(@types/node@16.18.6)(typescript@5.3.2)
@@ -1144,8 +1144,8 @@ packages:
     resolution: {integrity: sha512-WbZztNmKq0t6QjdNmHzezbi/uifYo9j6e2GLJkodsYaYUlzMbAp91RDyeHkIZrm7EfO4wa6Sm5sxJZm5SPlh6w==}
     dev: false
 
-  /@tanstack/svelte-query@5.12.1(svelte@4.2.7):
-    resolution: {integrity: sha512-jEfwJDN+h8Qslos4lIfFbkJM8dOhKMRE7+iuq/OgvAZHJKMHF4Hdt/ElLs5XJz8FsR6yhh8/vh2QBKUls4YFgw==}
+  /@tanstack/svelte-query@5.13.1(svelte@4.2.7):
+    resolution: {integrity: sha512-vIJWRIrQUcpTGW5kanFASBc6ClKyQg4RpocWtkG33Hlz5ItonczL2gEkd+TAOS4vL0wK2R09XYbzajGxI7ZVfg==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -1316,8 +1316,8 @@ packages:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
 
-  /bits-ui@0.10.0(svelte@4.2.7):
-    resolution: {integrity: sha512-a2L8DrI/LDGIheRrrO3ly2gUyJkNSAtvrb+byrMh+S/40GEhXudV6HzVIeEG+Cb1XpJn0szGZN2wFrcYpIJM9g==}
+  /bits-ui@0.10.1(svelte@4.2.7):
+    resolution: {integrity: sha512-xt6GvjPmSK8HTAbQgE3qiWriyGn0r6Eghm+bUA9k5f7Zld48YC1AmXCeRlZ6U8zuuKPMQvczNca1KQ6el8Fjfg==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
@@ -1333,7 +1333,7 @@ packages:
       svelte: ^4.0.0
     dependencies:
       '@melt-ui/svelte': 0.61.2(svelte@4.2.7)
-      nanoid: 5.0.3
+      nanoid: 5.0.4
       svelte: 4.2.7
     dev: false
 
@@ -1408,8 +1408,8 @@ packages:
       supports-color: 7.2.0
     dev: true
 
-  /chart.js@4.4.0:
-    resolution: {integrity: sha512-vQEj6d+z0dcsKLlQvbKIMYFHd3t8W/7L2vfJIbYcfyPcRx92CsHqECpueN8qVGNlKyDcr5wBrYAYKnfu/9Q1hQ==}
+  /chart.js@4.4.1:
+    resolution: {integrity: sha512-C74QN1bxwV1v2PEujhmKjOZ7iUM4w6BWs23Md/6aOZZSlwMzeCIDGuZay++rBgChYru7/+QFeoQW0fQoP534Dg==}
     engines: {pnpm: '>=7'}
     dependencies:
       '@kurkle/color': 0.3.2
@@ -3124,18 +3124,18 @@ packages:
       '@babel/runtime': 7.23.5
     dev: false
 
-  /tailwind-variants@0.1.18(tailwindcss@3.3.5):
+  /tailwind-variants@0.1.18(tailwindcss@3.3.6):
     resolution: {integrity: sha512-yoydMYm3FbZRw7wak+E2sqwYv2Uo3YWRqVZR03DGqDGm0ytzDrEnWO/Q/GMHdhaz8adOvycKw/bwCgQFCfmfhg==}
     engines: {node: '>=16.x', pnpm: '>=7.x'}
     peerDependencies:
       tailwindcss: '*'
     dependencies:
       tailwind-merge: 1.14.0
-      tailwindcss: 3.3.5(ts-node@10.9.1)
+      tailwindcss: 3.3.6(ts-node@10.9.1)
     dev: false
 
-  /tailwindcss@3.3.5(ts-node@10.9.1):
-    resolution: {integrity: sha512-5SEZU4J7pxZgSkv7FP1zY8i2TIAOooNZ1e/OGtxIEv6GltpoiXUqWvLy89+a10qYTB1N5Ifkuw9lqQkN9sscvA==}
+  /tailwindcss@3.3.6(ts-node@10.9.1):
+    resolution: {integrity: sha512-AKjF7qbbLvLaPieoKeTjG1+FyNZT6KaJMJPFeQyLfIp7l82ggH1fbHJSsYIvnbTFQOlkh+gBYpyby5GT1LIdLw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:

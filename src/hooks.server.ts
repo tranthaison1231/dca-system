@@ -5,7 +5,7 @@ import { CLERK_SECRET_KEY } from "$env/static/private";
 
 export const handle: Handle = sequence(
   handleClerk(CLERK_SECRET_KEY, {
-    protectedPaths: ["/dashboard"],
+    protectedPaths: ["/dashboard", "/portfolio", "setting"],
     signInUrl: "/sign-in",
   })
 );

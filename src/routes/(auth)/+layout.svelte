@@ -1,0 +1,16 @@
+<script lang="ts">
+  import Header from "./Header.svelte";
+  import Sidebar from "./Sidebar.svelte";
+</script>
+
+<div class="w-full flex">
+  <div class="hidden md:block">
+    <Sidebar />
+  </div>
+  <div class="w-full">
+    <Header />
+    <div class="p-6 overflow-y-scroll w-full h-[calc(100vh-57px)]">
+      <slot />
+    </div>
+  </div>
+</div>
