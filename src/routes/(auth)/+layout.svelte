@@ -10,7 +10,7 @@
   </div>
   <div class="w-full">
     <Header />
-    <div class="p-6 overflow-y-scroll w-full h-[calc(100vh-118px)]">
+    <div class="p-6 overflow-y-scroll w-full h-[calc(100dvh-118px)]">
       <slot />
     </div>
     <div class="block md:hidden">
