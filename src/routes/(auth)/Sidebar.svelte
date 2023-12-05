@@ -1,6 +1,6 @@
 <script lang="ts">
   import Logo from "$lib/components/Logo.svelte";
-  import { Gauge, LayoutGrid, Settings } from "lucide-svelte";
+  import { BarChart, Gauge, LayoutGrid, Settings } from "lucide-svelte";
   import { page } from "$app/stores";
 
   const SIDEBARS = [
@@ -18,6 +18,11 @@
       name: "Setting",
       path: "/setting",
       icon: Settings,
+    },
+    {
+      name: "Metric",
+      path: "/metrics",
+      icon: BarChart,
     },
   ];
 </script>
