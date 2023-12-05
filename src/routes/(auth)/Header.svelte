@@ -2,7 +2,6 @@
   import Logo from "$lib/components/Logo.svelte";
   import SignedIn from "clerk-sveltekit/client/SignedIn.svelte";
   import UserButton from "clerk-sveltekit/client/UserButton.svelte";
-  import { Settings } from "lucide-svelte";
 </script>
 
 <div class="border-b py-3">
@@ -12,9 +11,6 @@
         <Logo />
       </a>
       <div class="flex gap-3">
-        <a href="/setting">
-          <Settings size={30} />
-        </a>
         <SignedIn>
           <UserButton
             afterSignOutUrl="/"
