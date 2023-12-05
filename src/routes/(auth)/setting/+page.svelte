@@ -7,6 +7,7 @@
   import { toast } from "svelte-sonner";
   import CreateCurrency from "./CreateCurrency.svelte";
   import EditCurrency from "./EditCurrency.svelte";
+  import { sortBy } from "lodash-es";
 
   const result = createQuery({
     queryKey: ["currencies"],
@@ -69,7 +70,7 @@
             </Table.Cell>
           </Table.Row>
         {:else}
-          {#each $result.data?.currencies ?? [] as currency, i (i)}
+          {#each sortBy($result.data?.currencies, "createdAt") ?? [] as currency, i (i)}
             <Table.Row>
               <Table.Cell>
                 <img
