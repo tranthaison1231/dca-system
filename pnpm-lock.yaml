@@ -9,11 +9,11 @@ dependencies:
     specifier: 5.6.0
     version: 5.6.0(prisma@5.6.0)
   '@tanstack/svelte-query':
-    specifier: ^5.13.1
-    version: 5.13.1(svelte@4.2.7)
+    specifier: ^5.13.2
+    version: 5.13.2(svelte@4.2.7)
   bits-ui:
-    specifier: ^0.10.1
-    version: 0.10.1(svelte@4.2.7)
+    specifier: ^0.10.3
+    version: 0.10.3(svelte@4.2.7)
   chart.js:
     specifier: ^4.4.1
     version: 4.4.1
@@ -896,8 +896,8 @@ packages:
       svelte: 4.2.7
     dev: false
 
-  /@melt-ui/svelte@0.64.3(svelte@4.2.7):
-    resolution: {integrity: sha512-6P2H0Kf3mqS3fzCI75k0DHqsMhBYniO4HsOTMqMQFEPKTAiUNRPUD5n8m/p2MQk88ba+RacK+9Mp5GhDdIM9WA==}
+  /@melt-ui/svelte@0.64.4(svelte@4.2.7):
+    resolution: {integrity: sha512-QwqIXd7hGR8a5NML91rTNOilN9FPyPe8zWnmZbqEynCvdlCueLXrvlANEfKMYLd/vJuQpoi5u1jFdqSDMmFFMg==}
     peerDependencies:
       svelte: '>=3 <5'
     dependencies:
@@ -1144,10 +1144,10 @@ packages:
     resolution: {integrity: sha512-WbZztNmKq0t6QjdNmHzezbi/uifYo9j6e2GLJkodsYaYUlzMbAp91RDyeHkIZrm7EfO4wa6Sm5sxJZm5SPlh6w==}
     dev: false
 
-  /@tanstack/svelte-query@5.13.1(svelte@4.2.7):
-    resolution: {integrity: sha512-vIJWRIrQUcpTGW5kanFASBc6ClKyQg4RpocWtkG33Hlz5ItonczL2gEkd+TAOS4vL0wK2R09XYbzajGxI7ZVfg==}
+  /@tanstack/svelte-query@5.13.2(svelte@4.2.7):
+    resolution: {integrity: sha512-WtgHNUDaYERNMMzYDdiOH53b2r8I4vlNKS2Pmm5v8CXKNkkFLOY/JcLFqQRel3V8Rb4qM0BMdCfOFVtcg6CAiw==}
     peerDependencies:
-      svelte: '>=3 <5'
+      svelte: ^3.54.0 || ^4.0.0 || ^5.0.0-next.0
     dependencies:
       '@tanstack/query-core': 5.12.1
       svelte: 4.2.7
@@ -1316,13 +1316,13 @@ packages:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
 
-  /bits-ui@0.10.1(svelte@4.2.7):
-    resolution: {integrity: sha512-xt6GvjPmSK8HTAbQgE3qiWriyGn0r6Eghm+bUA9k5f7Zld48YC1AmXCeRlZ6U8zuuKPMQvczNca1KQ6el8Fjfg==}
+  /bits-ui@0.10.3(svelte@4.2.7):
+    resolution: {integrity: sha512-7ELJdzkirkS3ZED1AdudngfIazASB8hbPhe8ml955cpvqeIP5+KyBe4drTjY4dz4B3YySOC28aasOuRmpRSDLw==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
       '@internationalized/date': 3.5.0
-      '@melt-ui/svelte': 0.64.3(svelte@4.2.7)
+      '@melt-ui/svelte': 0.64.4(svelte@4.2.7)
       nanoid: 5.0.4
       svelte: 4.2.7
     dev: false

@@ -1,30 +1,8 @@
 <script lang="ts">
-  import Logo from "$lib/components/Logo.svelte";
-  import { BarChart, Gauge, LayoutGrid, Settings } from "lucide-svelte";
   import { page } from "$app/stores";
-
-  const SIDEBARS = [
-    {
-      name: "Dashboard",
-      path: "/dashboard",
-      icon: LayoutGrid,
-    },
-    {
-      name: "Portfolio",
-      path: "/portfolio",
-      icon: Gauge,
-    },
-    {
-      name: "Setting",
-      path: "/setting",
-      icon: Settings,
-    },
-    {
-      name: "Metric",
-      path: "/metrics",
-      icon: BarChart,
-    },
-  ];
+  import Logo from "$lib/components/Logo.svelte";
+  import { SIDEBARS } from "$lib/constants/sidebar";
+  import { cn } from "$lib/utils/style";
 </script>
 
 <div class="border-r h-screen">
@@ -35,7 +13,11 @@
       </a>
     </li>
     {#each SIDEBARS as sidebar}
-      <li class="p-4" class:bg-gray-100={$page.url.pathname === sidebar.path}>
+      <li
+        class={cn("p-4 text-gray-400", {
+          "text-primary bg-gray-100": sidebar.path === $page.url.pathname,
+        })}
+      >
         <a href={sidebar.path}>
           <svelte:component this={sidebar.icon} />
         </a>
