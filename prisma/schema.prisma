@@ -10,6 +10,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+model User {
+  id              String @id @default(cuid())
+  clerkId         String @unique
+  attributes      Json
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  amount          String? @default("0")
+}
+
 model Currency {
   id              String @id @default(cuid())
   name            String?
@@ -19,6 +29,7 @@ model Currency {
   slug            String
   userId          String 
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
   @@unique([slug, symbol, userId], name: "slug_symbol_user_id")
   @@map("currencies")
