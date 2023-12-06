@@ -3,6 +3,7 @@
   import type { ExtendCurrency } from "$lib/utils/type";
   import { sumBy } from "lodash-es";
 
+  export let loading = false;
   export let currencies: ExtendCurrency[] = [];
 
   $: formattedCurrencies = [
@@ -18,10 +19,12 @@
 </script>
 
 <div
-  class="border col-span-4 md:col-span-2 xl:col-span-1 p-4 rounded-md shadow-md"
+  class="border col-span-4 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md"
 >
-  <h2 class="text-xl text-primary mb-4">Allocation</h2>
-  <div>
+  <h2 class="text-xl text-primary mb-4 font-medium">Allocation</h2>
+  {#if loading}
+    <div class="h-72 animate-pulse bg-gray-200" />
+  {:else}
     <PieChart
       data={{
         labels: formattedCurrencies.map((currency) => currency.name),
@@ -35,5 +38,5 @@
         ],
       }}
     />
-  </div>
+  {/if}
 </div>

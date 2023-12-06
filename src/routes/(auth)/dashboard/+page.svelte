@@ -2,7 +2,7 @@
   import { buttonVariants } from "$lib/components/ui/button";
   import Progress from "$lib/components/ui/progress/progress.svelte";
   import * as Table from "$lib/components/ui/table";
-  import * as Tooltip from "$lib/components/ui/tooltip";
+  import { Tooltip } from "$lib/components/ui/tooltip";
   import { suggestOrder } from "$lib/services/suggest-order";
   import { INVESTED } from "$lib/utils/constants";
   import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
@@ -20,26 +20,17 @@
   const fearAndGreedResult = createQuery({
     queryKey: ["fear-and-greed"],
     queryFn: async () => (await fetch("/api/cmc/fear-and-greed")).json(),
-    initialData: {
-      value: 0,
-    },
   });
 
   const nuplResult = createQuery({
     queryKey: ["nupl"],
     queryFn: async () => (await fetch("/api/crypto-quant/nupl")).json(),
-    initialData: {
-      value: 0,
-    },
   });
 
   const supplyInProfitResult = createQuery({
     queryKey: ["supply-in-profit"],
     queryFn: async () =>
       (await fetch("/api/crypto-quant/supply-in-profit")).json(),
-    initialData: {
-      value: 0,
-    },
   });
 
   $: formattedCurrencies =
@@ -60,56 +51,26 @@
 
 <div>
   <h1 class="text-2xl mb-3 text-primary">Report</h1>
-
-  {#if $result.isPending || $fearAndGreedResult.isPending || $nuplResult.isPending || $supplyInProfitResult.isPending}
-    <p class="mt-4">Loading...</p>
-  {:else if $result.data?.currencies.length === 0}
-    <p class="mt-4">
-      You don't have any currency yet. Please click <a
-        class={buttonVariants({ variant: "default" })}
-        href="/dashboard/portfolio-setting">Setup</a
+  <div class="space-y-4 w-full mt-4">
+    <div class="grid grid-cols-3 gap-4 w-full">
+      <div
+        class="border col-span-4 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md space-y-4"
       >
-      to add some currencies.
-    </p>
-  {:else}
-    <div class="space-y-4 w-full mt-4">
-      <div class="grid grid-cols-3 gap-4 w-full">
-        <div
-          class="border col-span-4 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md space-y-4"
-        >
-          <Tooltip.Root>
-            <Tooltip.Trigger class="block mt-4"
-              ><p>
-                Fear And Greed: {$fearAndGreedResult.data?.value?.toFixed(2)}
-              </p></Tooltip.Trigger
-            >
-            <Tooltip.Content>
-              <p>{`We should sell when it > 70`}</p>
-            </Tooltip.Content>
-          </Tooltip.Root>
-          <Tooltip.Root>
-            <Tooltip.Trigger class="block">
-              <p>
-                Supply In Profit: {$supplyInProfitResult.data?.value?.toFixed(
-                  2
-                )}
-              </p></Tooltip.Trigger
-            >
-            <Tooltip.Content>
-              <p>{`We should sell when it > 80`}</p>
-            </Tooltip.Content>
-          </Tooltip.Root>
-          <Tooltip.Root>
-            <Tooltip.Trigger class="block"
-              ><p>
-                Bitcoin NUPL: {$nuplResult.data?.value?.toFixed(2)}
-              </p></Tooltip.Trigger
-            >
-            <Tooltip.Content>
-              <p>{`We should sell when it > 0.5, we should buy when it < 0`}</p>
-            </Tooltip.Content>
-          </Tooltip.Root>
-
+        <h2 class="text-xl font-medium text-primary mb-">Index</h2>
+        {#if $fearAndGreedResult.isPending || $nuplResult.isPending || $supplyInProfitResult.isPending}
+          <div class="h-40 md:h-72 animate-pulse bg-gray-200" />
+        {:else}
+          <Tooltip content="We should sell when it > 70">
+            Fear And Greed: {$fearAndGreedResult.data?.value?.toFixed(2)}
+          </Tooltip>
+          <Tooltip content="We should sell when it > 80">
+            Supply In Profit: {$supplyInProfitResult.data?.value?.toFixed(2)}
+          </Tooltip>
+          <Tooltip
+            content="We should sell when it > 0.5, we should buy when it < 0"
+          >
+            Bitcoin NUPL: {$nuplResult.data?.value?.toFixed(2)}
+          </Tooltip>
           <p class="font-medium tex-3xl">
             {suggestOrder({
               currencies: formattedCurrencies,
@@ -118,10 +79,25 @@
               supplyInProfit: $supplyInProfitResult.data?.value,
             })}
           </p>
-        </div>
-        <AllocationChart currencies={formattedCurrencies} />
+        {/if}
       </div>
-      <div class="border p-5 rounded-md shadow-md">
+      <AllocationChart
+        currencies={formattedCurrencies}
+        loading={$result.isPending}
+      />
+    </div>
+    <div class="border p-5 rounded-md shadow-md">
+      {#if $result.isPending}
+        <div class="h-96 animate-pulse bg-gray-200" />
+      {:else if $result.data?.currencies?.length === 0}
+        <p class="mt-4">
+          You don't have any currency yet. Please click <a
+            class={buttonVariants({ variant: "default" })}
+            href="/dashboard/portfolio-setting">Setup</a
+          >
+          to add some currencies.
+        </p>
+      {:else}
         <Table.Root>
           <Table.Header>
             <Table.Row class="uppercase font-bold">
@@ -238,7 +214,7 @@
             </Table.Row>
           </Table.Body>
         </Table.Root>
-      </div>
+      {/if}
     </div>
-  {/if}
+  </div>
 </div>

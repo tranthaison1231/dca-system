@@ -5,18 +5,6 @@ import { Prisma } from "@prisma/client";
 import { error, json } from "@sveltejs/kit";
 
 export async function GET(event) {
-  if (!event.locals.session) {
-    return json(
-      {
-        status: "error",
-        message: "Not logged in",
-      },
-      {
-        status: 401,
-      }
-    );
-  }
-
   const currencies = await prisma.currency.findMany({
     where: {
       userId: event.locals.session.userId,
@@ -31,18 +19,6 @@ export async function GET(event) {
 
 export async function POST(event) {
   try {
-    if (!event.locals.session) {
-      return json(
-        {
-          status: "error",
-          message: "Not logged in",
-        },
-        {
-          status: 401,
-        }
-      );
-    }
-
     const body = await event.request.json();
     let slug = body.coinGeckoId;
 
