@@ -3,11 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const data = await prisma.currency.updateMany({
-    data: {
-      updatedAt: new Date(),
-    },
-  });
+  const data = await prisma.user.findMany({});
   console.log(data);
 }
 

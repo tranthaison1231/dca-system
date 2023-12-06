@@ -1,8 +1,7 @@
 import { WEBHOOK_SECRET } from "$env/static/private";
 import prisma from "$lib/db/prisma";
-import { error } from "@sveltejs/kit";
+import { error, type RequestEvent } from "@sveltejs/kit";
 import { Webhook, type WebhookRequiredHeaders } from "svix";
-import type { RequestEvent } from "./$types";
 
 type EventType = "user.created" | "user.updated" | "*";
 
