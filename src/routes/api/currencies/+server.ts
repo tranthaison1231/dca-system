@@ -81,6 +81,8 @@ export async function POST(event) {
       throw error(409, {
         message: "Currency already exist!",
       });
+    } else {
+      throw err;
     }
   }
 }
