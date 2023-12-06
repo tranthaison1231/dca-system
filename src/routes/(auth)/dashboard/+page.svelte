@@ -1,5 +1,4 @@
 <script lang="ts">
-  import PieChart from "$lib/components/charts/PieChart.svelte";
   import { buttonVariants } from "$lib/components/ui/button";
   import Progress from "$lib/components/ui/progress/progress.svelte";
   import * as Table from "$lib/components/ui/table";
@@ -11,6 +10,7 @@
   import { cn } from "$lib/utils/style";
   import { createQuery } from "@tanstack/svelte-query";
   import { sumBy } from "lodash-es";
+  import AllocationChart from "./AllocationChart.svelte";
 
   const result = createQuery({
     queryKey: ["currencies/listing"],
@@ -119,34 +119,7 @@
             })}
           </p>
         </div>
-        <div
-          class="border col-span-4 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md"
-        >
-          <PieChart
-            data={{
-              labels: $result.data?.currencies.map((currency) => currency.name),
-              datasets: [
-                {
-                  label: "Total",
-                  data: $result.data?.currencies.map(
-                    (currency) => currency.value
-                  ),
-                  backgroundColor: [
-                    "#FF6384",
-                    "#36A2EB",
-                    "#FFCE56",
-                    "#4BC0C0",
-                    "#9966FF",
-                    "#FF9F40",
-                    "#C0C0C0",
-                    "#00FF00",
-                    "#FF00FF",
-                  ],
-                },
-              ],
-            }}
-          />
-        </div>
+        <AllocationChart currencies={formattedCurrencies} />
       </div>
       <div class="border p-5 rounded-md shadow-md">
         <Table.Root>
@@ -180,9 +153,9 @@
                 <Table.Cell>{formatMoney(currency.price)}</Table.Cell>
                 <Table.Cell
                   class={cn({
-                    "text-red-500":
+                    "text-error":
                       currency.statistics.priceChangePercentage24h < 0,
-                    "text-green-500":
+                    "text-success":
                       currency.statistics.priceChangePercentage24h > 0,
                   })}
                   >{Math.round(
@@ -191,9 +164,9 @@
                 >
                 <Table.Cell
                   class={cn({
-                    "text-red-500":
+                    "text-error":
                       currency.statistics.priceChangePercentage7d < 0,
-                    "text-green-500":
+                    "text-success":
                       currency.statistics.priceChangePercentage7d > 0,
                   })}
                   >{Math.round(
@@ -202,9 +175,9 @@
                 >
                 <Table.Cell
                   class={cn({
-                    "text-red-500":
+                    "text-error":
                       currency.statistics.priceChangePercentage30d < 0,
-                    "text-green-500":
+                    "text-success":
                       currency.statistics.priceChangePercentage30d > 0,
                   })}
                   >{Math.round(
@@ -213,9 +186,9 @@
                 >
                 <Table.Cell
                   class={cn({
-                    "text-red-500":
+                    "text-error":
                       currency.statistics.priceChangePercentage60d < 0,
-                    "text-green-500":
+                    "text-success":
                       currency.statistics.priceChangePercentage60d > 0,
                   })}
                   >{Math.round(
@@ -258,8 +231,8 @@
               <Table.Cell colspan={7} class="font-bold">Profit</Table.Cell>
               <Table.Cell
                 class={cn("text-right", {
-                  "text-green-500": total - INVESTED > 0,
-                  "text-red-500": total - INVESTED < 0,
+                  "text-success": total - INVESTED > 0,
+                  "text-error": total - INVESTED < 0,
                 })}>{formatMoney(total - INVESTED)}</Table.Cell
               >
             </Table.Row>

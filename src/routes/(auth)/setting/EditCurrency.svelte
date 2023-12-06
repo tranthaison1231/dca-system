@@ -81,7 +81,7 @@
           bind:value={$form.amount}
           {...$constraints.amount}
         />
-        {#if $errors.amount}<span class="mt-1 w-full text-red-500"
+        {#if $errors.amount}<span class="mt-1 w-full text-error"
             >{$errors.amount}</span
           >{/if}
       </div>

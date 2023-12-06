@@ -6,6 +6,16 @@ import Footer from "./table-footer.svelte";
 import Head from "./table-head.svelte";
 import Header from "./table-header.svelte";
 import Row from "./table-row.svelte";
+import DataTable from "./table-data.svelte";
+import type { SvelteComponent } from "svelte";
+
+export interface Column {
+  title: string;
+  dataIndex?: string;
+  titleClass?: string;
+  cellClass?: string;
+  render?: (data: string) => SvelteComponent;
+}
 
 export {
   Root,
@@ -16,6 +26,7 @@ export {
   Head,
   Header,
   Row,
+  DataTable,
   //
   Root as Table,
   Body as TableBody,

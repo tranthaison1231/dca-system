@@ -29,10 +29,28 @@
     );
 
     new Chart(ctx, {
-      type: "pie",
+      type: "doughnut",
       data: data,
+      // plugins: [
+      //   {
+      //     id: "legendMargin",
+      //     beforeInit: function (chart) {
+      //       const fitValue = chart.legend!.fit;
+      //       chart.legend!.fit = function fit() {
+      //         fitValue.bind(chart.legend)();
+      //         return (this!.height += 20);
+      //       };
+      //     },
+      //   },
+      // ],
       options: {
+        aspectRatio: 1.4,
         responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+          },
+        },
       },
     });
   });

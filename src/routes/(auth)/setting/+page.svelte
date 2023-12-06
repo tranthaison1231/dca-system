@@ -1,5 +1,5 @@
 <script lang="ts">
-  import * as Table from "$lib/components/ui/table";
+  import { DataTable, type Column } from "$lib/components/ui/table";
   import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
   import { formatNumber } from "$lib/utils/number";
   import { createMutation, createQuery } from "@tanstack/svelte-query";
@@ -8,8 +8,9 @@
   import CreateCurrency from "./CreateCurrency.svelte";
   import EditCurrency from "./EditCurrency.svelte";
   import { sortBy } from "lodash-es";
+  import type { ExtendCurrency } from "$lib/utils/type";
 
-  const result = createQuery({
+  const result = createQuery<{ currencies: ExtendCurrency[] }>({
     queryKey: ["currencies"],
     queryFn: async () => (await fetch("/api/currencies")).json(),
   });
@@ -24,6 +25,23 @@
       $result.refetch();
     },
   });
+
+  const columns: Column[] = [
+    { dataIndex: "symbol", title: "Name" },
+    {
+      dataIndex: "amount",
+      title: "Amount",
+      titleClass: "text-right",
+      cellClass: "text-right",
+    },
+    {
+      title: "Action",
+      titleClass: "text-right",
+      cellClass: "text-right",
+    },
+  ];
+
+  $: dataSource = sortBy($result.data?.currencies, "createdAt");
 </script>
 
 <div>
@@ -32,68 +50,26 @@
     <div class="flex justify-end mb-5">
       <CreateCurrency />
     </div>
-    <Table.Root>
-      <Table.Header>
-        <Table.Row class="uppercase">
-          <Table.Head class="font-bold">Name</Table.Head>
-          <Table.Head class="font-bold text-right">Amount</Table.Head>
-          <Table.Head class="font-bold text-right">Action</Table.Head>
-        </Table.Row>
-      </Table.Header>
-      <Table.Body>
-        {#if $result.isPending}
-          {#each new Array(8).fill(0) as _}
-            <Table.Row>
-              <Table.Cell>
-                <div
-                  class="w-full h-6 animate-pulse bg-gray-200 rounded-full"
-                />
-              </Table.Cell>
-              <Table.Cell>
-                <div
-                  class="w-full h-6 animate-pulse bg-gray-200 rounded-full"
-                />
-              </Table.Cell>
-              <Table.Cell>
-                <div
-                  class="w-full h-6 animate-pulse bg-gray-200 rounded-full"
-                />
-              </Table.Cell>
-            </Table.Row>
-          {/each}
-        {:else if !$result.data?.currencies.length}
-          <Table.Row>
-            <Table.Cell
-              class="font-bold text-center h-96 text-gray-400"
-              colspan={3}
-              >Empty
-            </Table.Cell>
-          </Table.Row>
+    <DataTable {columns} {dataSource} loading={$result.isPending}>
+      <svelte:fragment slot="cell" let:source let:column let:value>
+        {#if column.title === "Action"}
+          <button on:click={() => $deleteCurrencyMutate.mutate(source.id)}
+            ><Trash color="red" /></button
+          >
+          <EditCurrency currency={source} />
+        {:else if column.title === "Amount"}
+          {formatNumber(value)}
+        {:else if column.title === "Name"}
+          <img
+            class="w-6 h-6 mr-2 inline"
+            alt={source.symbol}
+            src={source.url || getCryptoLogo(source.symbol)}
+          />
+          {source.symbol}
         {:else}
-          {#each sortBy($result.data?.currencies, "createdAt") ?? [] as currency, i (i)}
-            <Table.Row>
-              <Table.Cell>
-                <img
-                  class="w-6 h-6 mr-2 inline"
-                  alt={currency.symbol}
-                  src={currency.url || getCryptoLogo(currency.symbol)}
-                />
-                {currency.symbol}
-              </Table.Cell>
-              <Table.Cell class="text-right"
-                >{formatNumber(currency.amount)}</Table.Cell
-              >
-              <Table.Cell class="text-right space-x-2">
-                <button
-                  on:click={() => $deleteCurrencyMutate.mutate(currency.id)}
-                  ><Trash color="red" /></button
-                >
-                <EditCurrency {currency} />
-              </Table.Cell>
-            </Table.Row>
-          {/each}
+          {value}
         {/if}
-      </Table.Body>
-    </Table.Root>
+      </svelte:fragment>
+    </DataTable>
   </div>
 </div>

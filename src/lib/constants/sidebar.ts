@@ -1,4 +1,4 @@
-import { BarChart, Gauge, LayoutGrid, Settings } from "lucide-svelte";
+import { BarChart, Fish, Gauge, LayoutGrid, Settings } from "lucide-svelte";
 
 export const SIDEBARS = [
   {
@@ -20,5 +20,10 @@ export const SIDEBARS = [
     name: "Metric",
     path: "/metrics",
     icon: BarChart,
+  },
+  {
+    name: "Whales",
+    path: "/whales",
+    icon: Fish,
   },
 ];
