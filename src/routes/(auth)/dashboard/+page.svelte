@@ -102,7 +102,7 @@
   <div class="space-y-4 w-full mt-4">
     <div class="grid grid-cols-3 gap-4 w-full">
       <div
-        class="border col-span-4 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md space-y-4"
+        class="border col-span-3 md:col-span- xl:col-span-1 p-5 rounded-md shadow-md space-y-4"
       >
         <h2 class="text-xl font-medium text-primary mb-">Index</h2>
         {#if $fearAndGreedResult.isPending || $nuplResult.isPending || $supplyInProfitResult.isPending}
@@ -133,88 +133,97 @@
         currencies={formattedCurrencies}
         loading={$result.isPending}
       />
+      <div class="border p-5 rounded-md shadow-md col-span-3 md:col-span-1">
+        <iframe
+          width="100%"
+          height="420"
+          frameborder="0"
+          src="https://www.theblock.co/data/crypto-markets/prices/bitcoin-dominance/embed"
+          title="Bitcoin Dominance"
+        ></iframe>
+      </div>
+      <div class="border p-5 col-span-3 rounded-md shadow-md">
+        <Table.DataTable
+          {columns}
+          dataSource={formattedCurrencies.sort(
+            (a, b) => b.marketCap - a.marketCap
+          )}
+          loading={$result.isPending}
+        >
+          <svelte:fragment slot="empty">
+            <p class="font-normal">
+              You don't have any currency yet. Please click <a
+                class={buttonVariants({ variant: "default" })}
+                href="/setting">Setup</a
+              >
+              to add some currencies.
+            </p>
+          </svelte:fragment>
+          <svelte:fragment slot="cell" let:source let:column let:value>
+            {#if column.title === "Name"}
+              <img
+                class="w-5 h-5 mr-2 object-cover inline"
+                alt={source.symbol}
+                src={source.url || getCryptoLogo(source.symbol)}
+              />
+              {source.name}
+            {:else if column.title === "Amount"}
+              {formatNumber(value)}
+            {:else if column.title === "Price"}
+              {formatMoney(value)}
+            {:else if ["24h %", "7d %", "30d %", "60d %"].includes(column.title)}
+              <div
+                class={cn({
+                  "text-error": value < 0,
+                  "text-success": value > 0,
+                })}
+              >
+                {Math.round(value)}%
+              </div>
+            {:else if column.title === "Total"}
+              <div class="flex items-end flex-col gap-1">
+                <p>{formatMoney(source.value)}</p>
+                <p class="tex-xs text-gray-400">
+                  {formatNumber(source.percent, 2)}%
+                </p>
+                <Progress value={source.percent} />
+              </div>
+            {:else if column.title === "Market Cap"}
+              <div class="flex items-end flex-col gap-1">
+                <p>{formatMoney(source.marketCap)}</p>
+                <p class="tex-xs text-gray-400">
+                  {formatNumber(source.marketCapPercent, 2)}%
+                </p>
+                <Progress value={source.marketCapPercent} />
+              </div>
+            {:else}
+              {value}
+            {/if}
+          </svelte:fragment>
+          <svelte:fragment slot="footer">
+            <Table.Row>
+              <Table.Cell colspan={7} class="font-bold">Total</Table.Cell>
+              <Table.Cell class="text-right">{formatMoney(total)}</Table.Cell>
+              <Table.Cell class="text-right"
+                >{formatMoney(totalMarket)}</Table.Cell
+              >
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell colspan={7} class="font-bold">Invested</Table.Cell>
+              <Table.Cell class="text-right">{formatMoney(invest)}</Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell colspan={7} class="font-bold">Profit</Table.Cell>
+              <Table.Cell
+                class={cn("text-right", {
+                  "text-success": total - invest > 0,
+                  "text-error": total - invest < 0,
+                })}>{formatMoney(total - invest)}</Table.Cell
+              >
+            </Table.Row>
+          </svelte:fragment>
+        </Table.DataTable>
+      </div>
     </div>
-    <div class="border p-5 rounded-md shadow-md">
-      <Table.DataTable
-        {columns}
-        dataSource={formattedCurrencies.sort(
-          (a, b) => b.marketCap - a.marketCap
-        )}
-        loading={$result.isPending}
-      >
-        <svelte:fragment slot="empty">
-          <p class="font-normal">
-            You don't have any currency yet. Please click <a
-              class={buttonVariants({ variant: "default" })}
-              href="/setting">Setup</a
-            >
-            to add some currencies.
-          </p>
-        </svelte:fragment>
-        <svelte:fragment slot="cell" let:source let:column let:value>
-          {#if column.title === "Name"}
-            <img
-              class="w-5 h-5 mr-2 object-cover inline"
-              alt={source.symbol}
-              src={source.url || getCryptoLogo(source.symbol)}
-            />
-            {source.name}
-          {:else if column.title === "Amount"}
-            {formatNumber(value)}
-          {:else if column.title === "Price"}
-            {formatMoney(value)}
-          {:else if ["24h %", "7d %", "30d %", "60d %"].includes(column.title)}
-            <div
-              class={cn({
-                "text-error": value < 0,
-                "text-success": value > 0,
-              })}
-            >
-              {Math.round(value)}%
-            </div>
-          {:else if column.title === "Total"}
-            <div class="flex items-end flex-col gap-1">
-              <p>{formatMoney(source.value)}</p>
-              <p class="tex-xs text-gray-400">
-                {formatNumber(source.percent, 2)}%
-              </p>
-              <Progress value={source.percent} />
-            </div>
-          {:else if column.title === "Market Cap"}
-            <div class="flex items-end flex-col gap-1">
-              <p>{formatMoney(source.marketCap)}</p>
-              <p class="tex-xs text-gray-400">
-                {formatNumber(source.marketCapPercent, 2)}%
-              </p>
-              <Progress value={source.marketCapPercent} />
-            </div>
-          {:else}
-            {value}
-          {/if}
-        </svelte:fragment>
-        <svelte:fragment slot="footer">
-          <Table.Row>
-            <Table.Cell colspan={7} class="font-bold">Total</Table.Cell>
-            <Table.Cell class="text-right">{formatMoney(total)}</Table.Cell>
-            <Table.Cell class="text-right"
-              >{formatMoney(totalMarket)}</Table.Cell
-            >
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell colspan={7} class="font-bold">Invested</Table.Cell>
-            <Table.Cell class="text-right">{formatMoney(invest)}</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell colspan={7} class="font-bold">Profit</Table.Cell>
-            <Table.Cell
-              class={cn("text-right", {
-                "text-success": total - invest > 0,
-                "text-error": total - invest < 0,
-              })}>{formatMoney(total - invest)}</Table.Cell
-            >
-          </Table.Row>
-        </svelte:fragment>
-      </Table.DataTable>
-    </div>
-  </div>
-</Page>
+  </div></Page
+>
