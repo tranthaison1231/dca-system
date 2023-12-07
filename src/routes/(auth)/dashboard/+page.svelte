@@ -172,13 +172,21 @@
             >
               {Math.round(value)}%
             </div>
-          {:else if ["Total", "Market Cap"].includes(column.title)}
+          {:else if column.title === "Total"}
             <div class="flex items-end flex-col gap-1">
               <p>{formatMoney(source.value)}</p>
               <p class="tex-xs text-gray-400">
                 {formatNumber(source.percent, 2)}%
               </p>
               <Progress value={source.percent} />
+            </div>
+          {:else if column.title === "Market Cap"}
+            <div class="flex items-end flex-col gap-1">
+              <p>{formatMoney(source.marketCap)}</p>
+              <p class="tex-xs text-gray-400">
+                {formatNumber(source.marketCapPercent, 2)}%
+              </p>
+              <Progress value={source.marketCapPercent} />
             </div>
           {:else}
             {value}
