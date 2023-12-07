@@ -23,7 +23,7 @@
 >
   <h2 class="text-xl text-primary mb-4 font-medium">Allocation</h2>
   {#if loading}
-    <div class="h-72 animate-pulse bg-gray-200" />
+    <div class="h-96 animate-pulse bg-gray-200" />
   {:else}
     <PieChart
       data={{

@@ -106,7 +106,7 @@
       >
         <h2 class="text-xl font-medium text-primary mb-">Index</h2>
         {#if $fearAndGreedResult.isPending || $nuplResult.isPending || $supplyInProfitResult.isPending}
-          <div class="h-40 md:h-72 animate-pulse bg-gray-200" />
+          <div class="h-40 md:h-96 animate-pulse bg-gray-200" />
         {:else}
           <Tooltip content="We should sell when it > 70">
             Fear And Greed: {$fearAndGreedResult.data?.value?.toFixed(2)}
