@@ -1,4 +1,4 @@
-import { json, type Handle } from "@sveltejs/kit";
+// import { json, type Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import { handleClerk } from "clerk-sveltekit/server";
 import { CLERK_SECRET_KEY } from "$env/static/private";
