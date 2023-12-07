@@ -1,21 +1,20 @@
-import { getCMCCurrencyDetail } from "$lib/api/cmc-currency-detail";
 import prisma from "$lib/db/prisma";
+import { getCMCCurrencyDetail } from "$lib/externals/cmc-currency-detail";
 import { changeImageType } from "$lib/utils/image";
 import { Prisma } from "@prisma/client";
-import { error, json } from "@sveltejs/kit";
+import { error, json, type RequestEvent } from "@sveltejs/kit";
 
-export async function GET(event) {
+export const GET = async (event: RequestEvent) => {
   const currencies = await prisma.currency.findMany({
     where: {
       userId: event.locals.session.userId,
     },
   });
-
   return json({
     status: "success",
     currencies: currencies,
   });
-}
+};
 
 export async function POST(event) {
   try {

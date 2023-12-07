@@ -1,8 +1,18 @@
 import { VITE_CRYPTO_QUANT_API } from "$env/static/private";
-import { signIn } from "$lib/api/crypto-quant";
+import { signIn } from "$lib/externals/crypto-quant";
+import { RedisKey, redis } from "$lib/services/redis";
 import { json } from "@sveltejs/kit";
 
-export async function GET() {
+export const GET = async () => {
+  const cache = await redis.get(RedisKey.CRYPTO_QUANT_SUPPLY_IN_PROFIT);
+
+  if (cache) {
+    return json({
+      status: "success",
+      value: JSON.parse(cache),
+    });
+  }
+
   const end = Math.floor(Date.now());
   const start = end - 86400000;
   const { accessToken } = await signIn();
@@ -24,8 +34,15 @@ export async function GET() {
     throw data.error;
   }
 
+  await redis.set(
+    RedisKey.CRYPTO_QUANT_SUPPLY_IN_PROFIT,
+    JSON.stringify(data.result.data[data.result.data.length - 1][1]),
+    "EX",
+    60 * 60 * 8
+  );
+
   return json({
     status: "success",
     value: data.result.data[data.result.data.length - 1][1],
   });
-}
+};

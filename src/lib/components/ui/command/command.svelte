@@ -2,10 +2,6 @@
   import { cn } from "$lib/utils/style";
   import { Command as CommandPrimitive } from "cmdk-sv";
 
-  type $$Props = CommandPrimitive.CommandProps;
-
-  export let value: $$Props["value"] = undefined;
-
   let className: string | undefined | null = undefined;
   export { className as class };
 </script>
@@ -15,7 +11,6 @@
     "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
     className
   )}
-  bind:value
   {...$$restProps}
 >
   <slot />

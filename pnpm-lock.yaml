@@ -32,6 +32,9 @@ dependencies:
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
+  lossless-json:
+    specifier: ^3.0.2
+    version: 3.0.2
   lucide-svelte:
     specifier: ^0.294.0
     version: 0.294.0(svelte@4.2.7)
@@ -2323,6 +2326,10 @@ packages:
     hasBin: true
     dependencies:
       js-tokens: 4.0.0
+    dev: false
+
+  /lossless-json@3.0.2:
+    resolution: {integrity: sha512-IbNz6s05hNuQjIC3DL15ahu3S5V7AQAjMnjNGfucqW+r17XQN6CwmAwU2LU2KAJkfaVu/4A7gmlCMrq/ch4wug==}
     dev: false
 
   /lower-case@2.0.2:

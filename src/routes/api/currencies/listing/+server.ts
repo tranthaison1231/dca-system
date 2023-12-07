@@ -1,4 +1,4 @@
-import { getCMCCurrencyDetail } from "$lib/api/cmc-currency-detail";
+import { getCMCCurrencyDetail } from "$lib/externals/cmc-currency-detail";
 import prisma from "$lib/db/prisma";
 import { json } from "@sveltejs/kit";
 
