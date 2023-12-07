@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Logo from "$lib/components/Logo.svelte";
+  import Logo from "$lib/components/icons/Logo.svelte";
   import SignedIn from "clerk-sveltekit/client/SignedIn.svelte";
   import UserButton from "clerk-sveltekit/client/UserButton.svelte";
 </script>

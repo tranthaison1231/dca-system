@@ -1,4 +1,5 @@
-import { BarChart, Fish, Gauge, LayoutGrid, Settings } from "lucide-svelte";
+import Whale from "$lib/components/icons/Whale.svelte";
+import { BarChart, Gauge, LayoutGrid, Settings } from "lucide-svelte";
 
 export const SIDEBARS = [
   {
@@ -24,6 +25,6 @@ export const SIDEBARS = [
   {
     name: "Whales",
     path: "/whales",
-    icon: Fish,
+    icon: Whale,
   },
 ];

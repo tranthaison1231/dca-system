@@ -60,7 +60,7 @@
                 value = {
                   symbol: coin.symbol,
                   name: coin.name,
-                  coinGeckoId: coin.id,
+                  slug: coin.id,
                   url: coin.thumb,
                 };
                 open = false;

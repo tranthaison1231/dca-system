@@ -2,7 +2,7 @@ import prisma from "$lib/db/prisma";
 import { json, type RequestEvent } from "@sveltejs/kit";
 
 export async function GET(event: RequestEvent) {
-  const user = await prisma.user.findMany({
+  const user = await prisma.user.findFirst({
     where: {
       clerkId: event.locals.session.userId,
     },
@@ -23,6 +23,7 @@ export async function PUT(event: RequestEvent) {
     },
     data: {
       ...updatedUserDto,
+      amount: String(updatedUserDto.amount),
     },
   });
 

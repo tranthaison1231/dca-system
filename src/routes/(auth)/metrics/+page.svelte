@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Page from "$lib/components/layouts/Page.svelte";
   const CHARTS = [
     {
       src: "https://www.theblock.co/data/on-chain-metrics/bitcoin/transactions-on-the-bitcoin-network-daily/embed",
@@ -15,19 +16,20 @@
   ];
 </script>
 
-<h1 class="text-2xl text-primary">Metric</h1>
-<div class="mt-4 grid grid-cols-2 gap-4">
-  {#each CHARTS as chart}
-    <div
-      class="border col-span-4 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md"
-    >
-      <iframe
-        width="100%"
-        height="420"
-        frameborder="0"
-        src={chart.src}
-        title={chart.title}
-      ></iframe>
-    </div>
-  {/each}
-</div>
+<Page title="Metric">
+  <div class="grid grid-cols-2 gap-4">
+    {#each CHARTS as chart}
+      <div
+        class="border col-span-4 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md"
+      >
+        <iframe
+          width="100%"
+          height="420"
+          frameborder="0"
+          src={chart.src}
+          title={chart.title}
+        ></iframe>
+      </div>
+    {/each}
+  </div>
+</Page>

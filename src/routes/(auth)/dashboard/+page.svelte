@@ -1,18 +1,27 @@
 <script lang="ts">
   import { buttonVariants } from "$lib/components/ui/button";
-  import Progress from "$lib/components/ui/progress/progress.svelte";
   import * as Table from "$lib/components/ui/table";
   import { Tooltip } from "$lib/components/ui/tooltip";
   import { suggestOrder } from "$lib/services/suggest-order";
-  import { INVESTED } from "$lib/utils/constants";
   import { getCryptoLogo } from "$lib/utils/getCryptoLogo";
   import { formatMoney, formatNumber } from "$lib/utils/number";
   import { cn } from "$lib/utils/style";
+  import type { ExtendCurrency } from "$lib/utils/type";
   import { createQuery } from "@tanstack/svelte-query";
   import { sumBy } from "lodash-es";
   import AllocationChart from "./AllocationChart.svelte";
+  import Progress from "$lib/components/ui/progress/progress.svelte";
+  import Page from "$lib/components/layouts/Page.svelte";
+  import type { User } from "lucide-svelte";
 
-  const result = createQuery({
+  const meResult = createQuery<{ user: User }>({
+    queryKey: ["me"],
+    queryFn: async () => (await fetch("/api/users/me")).json(),
+  });
+
+  $: invest = Number($meResult.data?.user.amount);
+
+  const result = createQuery<{ currencies: ExtendCurrency[] }>({
     queryKey: ["currencies/listing"],
     queryFn: async () => (await fetch("/api/currencies/listing")).json(),
   });
@@ -47,10 +56,49 @@
 
   $: total = sumBy($result.data?.currencies, "value");
   $: totalMarket = sumBy($result.data?.currencies, "marketCap");
+
+  const columns: Table.Column[] = [
+    { dataIndex: "name", title: "Name" },
+    {
+      dataIndex: "amount",
+      title: "Amount",
+      titleClass: "text-right",
+      cellClass: "text-right",
+    },
+    {
+      dataIndex: "price",
+      title: "Price",
+    },
+    {
+      dataIndex: "statistics.priceChangePercentage24h",
+      title: "24h %",
+    },
+    {
+      dataIndex: "statistics.priceChangePercentage7d",
+      title: "7d %",
+    },
+    {
+      dataIndex: "statistics.priceChangePercentage30d",
+      title: "30d %",
+    },
+    {
+      dataIndex: "statistics.priceChangePercentage60d",
+      title: "60d %",
+    },
+    {
+      title: "Total",
+      titleClass: "text-right",
+      cellClass: "text-right",
+    },
+    {
+      title: "Market Cap",
+      titleClass: "text-right",
+      cellClass: "text-right",
+    },
+  ];
 </script>
 
-<div>
-  <h1 class="text-2xl mb-3 text-primary">Report</h1>
+<Page title="Dashboard">
   <div class="space-y-4 w-full mt-4">
     <div class="grid grid-cols-3 gap-4 w-full">
       <div
@@ -87,134 +135,78 @@
       />
     </div>
     <div class="border p-5 rounded-md shadow-md">
-      {#if $result.isPending}
-        <div class="h-96 animate-pulse bg-gray-200" />
-      {:else if $result.data?.currencies?.length === 0}
-        <p class="mt-4">
-          You don't have any currency yet. Please click <a
-            class={buttonVariants({ variant: "default" })}
-            href="/dashboard/portfolio-setting">Setup</a
-          >
-          to add some currencies.
-        </p>
-      {:else}
-        <Table.Root>
-          <Table.Header>
-            <Table.Row class="uppercase font-bold">
-              <Table.Head>Name</Table.Head>
-              <Table.Head class="text-right">Amount</Table.Head>
-              <Table.Head>Price</Table.Head>
-              <Table.Head>24h %</Table.Head>
-              <Table.Head>7d %</Table.Head>
-              <Table.Head>30d %</Table.Head>
-              <Table.Head>60d %</Table.Head>
-              <Table.Head class="text-right">Total</Table.Head>
-              <Table.Head class="text-right">Market Cap</Table.Head>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {#each formattedCurrencies.sort((a, b) => b.marketCap - a.marketCap) as currency, i (i)}
-              <Table.Row>
-                <Table.Cell>
-                  <img
-                    class="w-5 h-5 mr-2 object-cover inline"
-                    alt={currency.symbol}
-                    src={currency.url || getCryptoLogo(currency.symbol)}
-                  />
-                  {currency.name}
-                </Table.Cell>
-                <Table.Cell class="text-right"
-                  >{formatNumber(currency.amount)}</Table.Cell
-                >
-                <Table.Cell>{formatMoney(currency.price)}</Table.Cell>
-                <Table.Cell
-                  class={cn({
-                    "text-error":
-                      currency.statistics.priceChangePercentage24h < 0,
-                    "text-success":
-                      currency.statistics.priceChangePercentage24h > 0,
-                  })}
-                  >{Math.round(
-                    currency.statistics.priceChangePercentage24h
-                  )}%</Table.Cell
-                >
-                <Table.Cell
-                  class={cn({
-                    "text-error":
-                      currency.statistics.priceChangePercentage7d < 0,
-                    "text-success":
-                      currency.statistics.priceChangePercentage7d > 0,
-                  })}
-                  >{Math.round(
-                    currency.statistics.priceChangePercentage7d
-                  )}%</Table.Cell
-                >
-                <Table.Cell
-                  class={cn({
-                    "text-error":
-                      currency.statistics.priceChangePercentage30d < 0,
-                    "text-success":
-                      currency.statistics.priceChangePercentage30d > 0,
-                  })}
-                  >{Math.round(
-                    currency.statistics.priceChangePercentage30d
-                  )}%</Table.Cell
-                >
-                <Table.Cell
-                  class={cn({
-                    "text-error":
-                      currency.statistics.priceChangePercentage60d < 0,
-                    "text-success":
-                      currency.statistics.priceChangePercentage60d > 0,
-                  })}
-                  >{Math.round(
-                    currency.statistics.priceChangePercentage60d
-                  )}%</Table.Cell
-                >
-                <Table.Cell class="text-right mr-0">
-                  <div class="flex items-end flex-col gap-1">
-                    <p>{formatMoney(currency.value)}</p>
-                    <p class="tex-xs text-gray-400">
-                      {formatNumber(currency.percent, 2)}%
-                    </p>
-                    <Progress value={currency.percent} />
-                  </div>
-                </Table.Cell>
-                <Table.Cell>
-                  <div class="flex items-end flex-col gap-1">
-                    <p>{formatMoney(currency.marketCap)}</p>
-                    <p class="tex-xs text-gray-400">
-                      {formatNumber(currency.marketCapPercent, 2)}%
-                    </p>
-                    <Progress value={currency.marketCapPercent} />
-                  </div></Table.Cell
-                >
-              </Table.Row>
-            {/each}
-            <Table.Row>
-              <Table.Cell colspan={7} class="font-bold">Total</Table.Cell>
-              <Table.Cell class="text-right">{formatMoney(total)}</Table.Cell>
-              <Table.Cell class="text-right"
-                >{formatMoney(totalMarket)}</Table.Cell
-              >
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell colspan={7} class="font-bold">Invested</Table.Cell>
-              <Table.Cell class="text-right">{formatMoney(INVESTED)}</Table.Cell
-              >
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell colspan={7} class="font-bold">Profit</Table.Cell>
-              <Table.Cell
-                class={cn("text-right", {
-                  "text-success": total - INVESTED > 0,
-                  "text-error": total - INVESTED < 0,
-                })}>{formatMoney(total - INVESTED)}</Table.Cell
-              >
-            </Table.Row>
-          </Table.Body>
-        </Table.Root>
-      {/if}
+      <Table.DataTable
+        {columns}
+        dataSource={formattedCurrencies.sort(
+          (a, b) => b.marketCap - a.marketCap
+        )}
+        loading={$result.isPending}
+      >
+        <svelte:fragment slot="empty">
+          <p class="font-normal">
+            You don't have any currency yet. Please click <a
+              class={buttonVariants({ variant: "default" })}
+              href="/setting">Setup</a
+            >
+            to add some currencies.
+          </p>
+        </svelte:fragment>
+        <svelte:fragment slot="cell" let:source let:column let:value>
+          {#if column.title === "Name"}
+            <img
+              class="w-5 h-5 mr-2 object-cover inline"
+              alt={source.symbol}
+              src={source.url || getCryptoLogo(source.symbol)}
+            />
+            {source.name}
+          {:else if column.title === "Amount"}
+            {formatNumber(value)}
+          {:else if column.title === "Price"}
+            {formatMoney(value)}
+          {:else if ["24h %", "7d %", "30d %", "60d %"].includes(column.title)}
+            <div
+              class={cn({
+                "text-error": value < 0,
+                "text-success": value > 0,
+              })}
+            >
+              {Math.round(value)}%
+            </div>
+          {:else if ["Total", "Market Cap"].includes(column.title)}
+            <div class="flex items-end flex-col gap-1">
+              <p>{formatMoney(source.value)}</p>
+              <p class="tex-xs text-gray-400">
+                {formatNumber(source.percent, 2)}%
+              </p>
+              <Progress value={source.percent} />
+            </div>
+          {:else}
+            {value}
+          {/if}
+        </svelte:fragment>
+        <svelte:fragment slot="footer">
+          <Table.Row>
+            <Table.Cell colspan={7} class="font-bold">Total</Table.Cell>
+            <Table.Cell class="text-right">{formatMoney(total)}</Table.Cell>
+            <Table.Cell class="text-right"
+              >{formatMoney(totalMarket)}</Table.Cell
+            >
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell colspan={7} class="font-bold">Invested</Table.Cell>
+            <Table.Cell class="text-right">{formatMoney(invest)}</Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell colspan={7} class="font-bold">Profit</Table.Cell>
+            <Table.Cell
+              class={cn("text-right", {
+                "text-success": total - invest > 0,
+                "text-error": total - invest < 0,
+              })}>{formatMoney(total - invest)}</Table.Cell
+            >
+          </Table.Row>
+        </svelte:fragment>
+      </Table.DataTable>
     </div>
   </div>
-</div>
+</Page>

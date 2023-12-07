@@ -20,7 +20,7 @@ export async function GET(event) {
 export async function POST(event) {
   try {
     const body = await event.request.json();
-    let slug = body.coinGeckoId;
+    let slug = body.slug;
 
     const currencyByCoinGeckoId = await getCMCCurrencyDetail(slug);
 

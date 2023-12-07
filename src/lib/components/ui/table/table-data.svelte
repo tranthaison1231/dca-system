@@ -30,21 +30,29 @@
       {/each}
     {:else if !dataSource.length}
       <Table.Row>
-        <Table.Cell class="font-bold text-center h-96 text-gray-400" colspan={3}
-          >Empty
+        <Table.Cell
+          class="font-bold text-center h-96 text-gray-400"
+          colspan={columns.length}
+        >
+          <slot name="empty">Empty</slot>
         </Table.Cell>
       </Table.Row>
     {:else}
       {#each dataSource as source}
         <Table.Row>
           {#each columns as column}
-            {@const value = get(source, column.dataIndex)}
+            {@const value = column.dataIndex
+              ? get(source, column.dataIndex)
+              : ""}
             <Table.Cell class={column.cellClass}>
-              <slot name="cell" {source} {column} {value} />
+              <slot name="cell" {source} {column} {value}>
+                {value}
+              </slot>
             </Table.Cell>
           {/each}
         </Table.Row>
       {/each}
+      <slot name="footer" />
     {/if}
   </Table.Body>
 </Table.Root>

@@ -48,6 +48,7 @@
   const { form, errors, constraints, enhance, reset } = superForm(
     superValidateSync(updateCurrencySchema),
     {
+      id: "create-currency",
       SPA: true,
       validators: updateCurrencySchema,
       taintedMessage: false,
@@ -71,18 +72,20 @@
     </Dialog.Header>
     <form method="POST" use:enhance>
       <div class="flex flex-col">
-        <Label class="mb-1">Coin</Label>
+        <Label label="Coin" class="mb-2" />
         <CryptoSearch bind:value={coin} />
       </div>
       <div class="mt-4">
-        <Label>Amount</Label>
-        <Input
-          type="number"
-          step="any"
-          min="0"
-          bind:value={$form.amount}
-          {...$constraints.amount}
-        />
+        <Label label="Amount">
+          <Input
+            type="number"
+            step="any"
+            min="0"
+            bind:value={$form.amount}
+            {...$constraints.amount}
+          />
+        </Label>
+
         {#if $errors.amount}<span class="mt-1 w-full text-error"
             >{$errors.amount}</span
           >{/if}

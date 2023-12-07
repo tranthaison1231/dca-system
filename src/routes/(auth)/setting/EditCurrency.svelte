@@ -63,24 +63,27 @@
       <Dialog.Title>Edit currency</Dialog.Title>
     </Dialog.Header>
     <form method="POST" use:enhance>
-      <Label>Coin</Label>
-      <div class="flex gap-2 items-center">
-        <img
-          src={currency?.url}
-          alt={currency.name}
-          class="w-5 h-5 object-cover"
-        />
-        <span>{currency?.name}</span>
-      </div>
+      <Label label="Coin">
+        <div class="flex gap-2 items-center">
+          <img
+            src={currency?.url}
+            alt={currency.name}
+            class="w-5 h-5 object-cover"
+          />
+          <span>{currency?.name}</span>
+        </div>
+      </Label>
+
       <div class="mt-4">
-        <Label>Amount</Label>
-        <Input
-          type="number"
-          step="any"
-          min="0"
-          bind:value={$form.amount}
-          {...$constraints.amount}
-        />
+        <Label label="Amount">
+          <Input
+            type="number"
+            step="any"
+            min="0"
+            bind:value={$form.amount}
+            {...$constraints.amount}
+          />
+        </Label>
         {#if $errors.amount}<span class="mt-1 w-full text-error"
             >{$errors.amount}</span
           >{/if}
