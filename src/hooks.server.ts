@@ -2,6 +2,7 @@
 import { sequence } from "@sveltejs/kit/hooks";
 import { handleClerk } from "clerk-sveltekit/server";
 import { CLERK_SECRET_KEY } from "$env/static/private";
+import type { Handle } from "@sveltejs/kit";
 
 // async function authMiddleware({ event, resolve }) {
 //   if (event.url.pathname.startsWith("/api") && !event.locals.session) {
