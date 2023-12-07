@@ -1,6 +1,6 @@
 import { WEBHOOK_SECRET } from "$env/static/private";
 import prisma from "$lib/db/prisma";
-import { error, type RequestEvent } from "@sveltejs/kit";
+import { error, json, type RequestEvent } from "@sveltejs/kit";
 import { Webhook, type WebhookRequiredHeaders } from "svix";
 
 type EventType = "user.created" | "user.updated" | "*";
@@ -50,7 +50,15 @@ async function handler(event: RequestEvent) {
       },
       update: { attributes },
     });
+    return json({
+      status: "success",
+      message: "User updated successfully",
+    });
   }
+  return json({
+    status: "error",
+    message: "Invalid event type",
+  });
 }
 
 export const GET = handler;
