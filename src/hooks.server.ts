@@ -4,7 +4,11 @@ import { handleClerk } from "clerk-sveltekit/server";
 import { CLERK_SECRET_KEY } from "$env/static/private";
 
 async function authMiddleware({ event, resolve }) {
-  if (event.url.pathname.startsWith("/api") && !event.locals.session) {
+  if (
+    event.url.pathname.startsWith("/api") &&
+    !event.url.pathname.startsWith("/api/webhooks") &&
+    !event.locals.session
+  ) {
     return json(
       {
         status: "error",
