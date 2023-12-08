@@ -209,8 +209,8 @@
               <Table.Cell colspan={8} class="font-bold">Total</Table.Cell>
               <Table.Cell class="text-right">{formatMoney(total)}</Table.Cell>
               <Table.Cell class="text-right"
-                >{formatMoney(totalMarket)}</Table.Cell
-              >
+                >{formatMoney(totalMarket)}
+              </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell colspan={8} class="font-bold">Invested</Table.Cell>
