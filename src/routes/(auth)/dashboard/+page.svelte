@@ -86,6 +86,10 @@
       title: "60d %",
     },
     {
+      dataIndex: "statistics.priceChangePercentage90d",
+      title: "90d %",
+    },
+    {
       title: "Total",
       titleClass: "text-right",
       cellClass: "text-right",
@@ -171,7 +175,7 @@
               {formatNumber(value)}
             {:else if column.title === "Price"}
               {formatMoney(value)}
-            {:else if ["24h %", "7d %", "30d %", "60d %"].includes(column.title)}
+            {:else if ["24h %", "7d %", "30d %", "60d %", "90d %"].includes(column.title)}
               <div
                 class={cn({
                   "text-error": value < 0,
@@ -202,18 +206,18 @@
           </svelte:fragment>
           <svelte:fragment slot="footer">
             <Table.Row>
-              <Table.Cell colspan={7} class="font-bold">Total</Table.Cell>
+              <Table.Cell colspan={8} class="font-bold">Total</Table.Cell>
               <Table.Cell class="text-right">{formatMoney(total)}</Table.Cell>
               <Table.Cell class="text-right"
                 >{formatMoney(totalMarket)}</Table.Cell
               >
             </Table.Row>
             <Table.Row>
-              <Table.Cell colspan={7} class="font-bold">Invested</Table.Cell>
+              <Table.Cell colspan={8} class="font-bold">Invested</Table.Cell>
               <Table.Cell class="text-right">{formatMoney(invest)}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell colspan={7} class="font-bold">Profit</Table.Cell>
+              <Table.Cell colspan={8} class="font-bold">Profit</Table.Cell>
               <Table.Cell
                 class={cn("text-right", {
                   "text-success": total - invest > 0,

@@ -12,8 +12,8 @@ dependencies:
     specifier: ^5.13.2
     version: 5.13.2(svelte@4.2.7)
   bits-ui:
-    specifier: ^0.11.3
-    version: 0.11.3(svelte@4.2.7)
+    specifier: ^0.11.5
+    version: 0.11.5(svelte@4.2.7)
   chart.js:
     specifier: ^4.4.1
     version: 4.4.1
@@ -48,8 +48,8 @@ dependencies:
     specifier: ^1.11.0
     version: 1.11.0(@sveltejs/kit@1.27.7)(svelte@4.2.7)(zod@3.22.4)
   svix:
-    specifier: ^1.14.0
-    version: 1.14.0
+    specifier: ^1.15.0
+    version: 1.15.0
   tailwind-merge:
     specifier: ^2.1.0
     version: 2.1.0
@@ -1361,8 +1361,8 @@ packages:
     resolution: {integrity: sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==}
     engines: {node: '>=8'}
 
-  /bits-ui@0.11.3(svelte@4.2.7):
-    resolution: {integrity: sha512-WV8XCkLW1u9vStdifgAiCmz5UW3u65Jm05SLuj0SOxQP6pkZIwnt1Nq61QOWsOEUeqYcQrp2VZsX1bhMuTVNpg==}
+  /bits-ui@0.11.5(svelte@4.2.7):
+    resolution: {integrity: sha512-kpWdsLjai2WXIz2hRBRVG8ZqbZ+NFuegCfH4pL7u0kfz08DUFGGTY5VplKuQhvMtw+NiiFyv6gswlJHkYtdhVg==}
     peerDependencies:
       svelte: ^4.0.0
     dependencies:
@@ -3187,8 +3187,8 @@ packages:
       - encoding
     dev: false
 
-  /svix@1.14.0:
-    resolution: {integrity: sha512-FuavzkxHTDDVnFzvWmY/35P+1K5pLjJiuGiAH3YncmUnk6FAraZONzWqoBb+ucWsXCJisWvemAl4yMqu4WVNGg==}
+  /svix@1.15.0:
+    resolution: {integrity: sha512-oV11/VIpD77QymPEIjGr8XvQwcJxPIRO8XVpWJb33ZX2qs1q7jYlVaSJ6ABYThKbmnxIGyJr5+RpchVOSE7pZg==}
     dependencies:
       '@stablelib/base64': 1.0.1
       es6-promise: 4.2.8

@@ -15,7 +15,7 @@
   "dependencies": {
     "@prisma/client": "5.7.0",
     "@tanstack/svelte-query": "^5.13.2",
-    "bits-ui": "^0.11.3",
+    "bits-ui": "^0.11.5",
     "chart.js": "^4.4.1",
     "clerk-sveltekit": "^0.3.0",
     "clsx": "^2.0.0",
@@ -27,7 +27,7 @@
     "prisma": "^5.7.0",
     "svelte-sonner": "^0.3.6",
     "sveltekit-superforms": "^1.11.0",
-    "svix": "^1.14.0",
+    "svix": "^1.15.0",
     "tailwind-merge": "^2.1.0",
     "tailwind-variants": "^0.1.18",
     "zod": "^3.22.4"
