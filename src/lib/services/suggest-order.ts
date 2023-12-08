@@ -7,25 +7,25 @@ interface Index {
   nupl: number;
 }
 
-export const calPrice = ({ fearAndGreed, supplyInProfit, nupl }: Index) => {
+export const calPrice = (
+  currencies: ExtendCurrency[],
+  { fearAndGreed, supplyInProfit, nupl }: Index
+) => {
   let price = 30;
-  if (fearAndGreed > 80 || supplyInProfit > 95 || nupl > 0.5 || nupl < 0) {
+
+  const usdt = currencies.find((currency) => currency.symbol === "USDT");
+
+  const highRisk =
+    fearAndGreed > 80 || supplyInProfit > 95 || nupl > 0.5 || nupl < 0;
+
+  if (highRisk && usdt && usdt.percent <= 30) {
     price = 100;
   }
   return price;
 };
 
-const calShouldSell = (
-  currencies: ExtendCurrency[],
-  { supplyInProfit, nupl, fearAndGreed }: Index
-) => {
+const calShouldSell = ({ supplyInProfit, nupl, fearAndGreed }: Index) => {
   let shouldSell = false;
-
-  const usdt = currencies.find((currency) => currency.symbol === "USDT");
-
-  if (usdt && usdt.percent < 30) {
-    shouldSell = true;
-  }
 
   if (fearAndGreed > 70 || supplyInProfit > 80 || nupl > 0.5) {
     shouldSell = true;
@@ -40,7 +40,7 @@ export const suggestOrder = (
 ) => {
   if (!currencies.length) return "";
 
-  const price = calPrice({
+  const price = calPrice(currencies, {
     fearAndGreed,
     supplyInProfit,
     nupl,
@@ -51,7 +51,7 @@ export const suggestOrder = (
     "alpha"
   );
 
-  const shouldSell = calShouldSell(currencies, {
+  const shouldSell = calShouldSell({
     supplyInProfit,
     nupl,
     fearAndGreed,
