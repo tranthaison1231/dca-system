@@ -124,8 +124,7 @@
             Bitcoin NUPL: {$nuplResult.data?.value?.toFixed(2)}
           </Tooltip>
           <p class="font-medium tex-3xl">
-            {suggestOrder({
-              currencies: formattedCurrencies,
+            {suggestOrder(formattedCurrencies, {
               nupl: $nuplResult.data?.value,
               fearAndGreed: $fearAndGreedResult.data?.value,
               supplyInProfit: $supplyInProfitResult.data?.value,

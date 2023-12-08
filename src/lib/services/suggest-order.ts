@@ -1,41 +1,67 @@
 import type { ExtendCurrency } from "$lib/utils/type";
 import { last, sortBy } from "lodash-es";
 
-interface SuggestOrder {
+interface Index {
   fearAndGreed: number;
   supplyInProfit: number;
   nupl: number;
-  currencies: ExtendCurrency[];
 }
 
-export const suggestOrder = ({
-  currencies,
-  supplyInProfit,
-  nupl,
-  fearAndGreed,
-}: SuggestOrder) => {
-  if (!currencies.length) return "";
-
+export const calPrice = ({ fearAndGreed, supplyInProfit, nupl }: Index) => {
   let price = 30;
   if (fearAndGreed > 80 || supplyInProfit > 95 || nupl > 0.5 || nupl < 0) {
     price = 100;
   }
-  const usdt = currencies.find((item) => item.symbol === "USDT");
+  return price;
+};
 
-  const shouldSell = fearAndGreed > 70 || supplyInProfit > 80 || nupl > 0.5;
+const calShouldSell = (
+  currencies: ExtendCurrency[],
+  { supplyInProfit, nupl, fearAndGreed }: Index
+) => {
+  let shouldSell = false;
 
-  const sortedCurrenciesByAlpha = sortBy(currencies, "alpha");
+  const usdt = currencies.find((currency) => currency.symbol === "USDT");
 
-  if (shouldSell) {
-    if (
-      usdt &&
-      usdt.percent > 30 &&
-      sortedCurrenciesByAlpha[0]?.symbol === "USDT"
-    ) {
-      return `Nên mua $${price} ${last(sortedCurrenciesByAlpha)?.symbol}`;
-    }
-    return `Nên bán $${price} ${sortedCurrenciesByAlpha[1]?.symbol}`;
+  if (usdt && usdt.percent < 30) {
+    shouldSell = true;
   }
 
-  return `Nên mua $30 ${last(sortedCurrenciesByAlpha)?.symbol}`;
+  if (fearAndGreed > 70 || supplyInProfit > 80 || nupl > 0.5) {
+    shouldSell = true;
+  }
+
+  return shouldSell;
+};
+
+export const suggestOrder = (
+  currencies: ExtendCurrency[],
+  { supplyInProfit, nupl, fearAndGreed }: Index
+) => {
+  if (!currencies.length) return "";
+
+  const price = calPrice({
+    fearAndGreed,
+    supplyInProfit,
+    nupl,
+  });
+
+  const sortedCurrenciesWithoutUSDTByAlpha = sortBy(
+    currencies.filter((currency) => currency.symbol !== "USDT"),
+    "alpha"
+  );
+
+  const shouldSell = calShouldSell(currencies, {
+    supplyInProfit,
+    nupl,
+    fearAndGreed,
+  });
+
+  if (shouldSell) {
+    return `Nên bán $${price} ${sortedCurrenciesWithoutUSDTByAlpha[0]?.symbol}`;
+  }
+
+  return `Nên mua $${price} ${
+    last(sortedCurrenciesWithoutUSDTByAlpha)?.symbol
+  }`;
 };
