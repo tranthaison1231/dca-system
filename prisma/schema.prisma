@@ -34,3 +34,15 @@ model Currency {
   @@unique([slug, symbol, userId], name: "slug_symbol_user_id")
   @@map("currencies")
 }
+
+model Transaction {
+  id              String @id @default(cuid())
+  userId          String
+  currencyId      String 
+  amount          String
+  timestamp       DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@map("transactions")
+}
