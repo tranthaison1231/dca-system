@@ -44,10 +44,10 @@
   );
 
   $: form.set({
-    amount: Number($meResult.data?.user.amount),
+    amount: Number($meResult.data?.user?.amount),
   });
 
-  $: userAttributes = $meResult.data?.user.attributes;
+  $: userAttributes = $meResult.data?.user?.attributes;
 </script>
 
 <form
