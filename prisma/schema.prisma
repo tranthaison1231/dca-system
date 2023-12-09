@@ -35,11 +35,18 @@ model Currency {
   @@map("currencies")
 }
 
+enum TransactionType {
+  SELL 
+  BUY
+}
+
 model Transaction {
   id              String @id @default(cuid())
   userId          String
-  currencyId      String 
+  currencyId      String
+  type            TransactionType 
   amount          String
+  price           String
   timestamp       DateTime
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

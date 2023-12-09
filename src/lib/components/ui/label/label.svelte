@@ -4,6 +4,7 @@
 
   type $$Events = LabelPrimitive.Events;
 
+  export let required = false;
   export let label: string;
   let className: string | undefined | null = undefined;
   export { className as class };
@@ -11,12 +12,17 @@
 
 <LabelPrimitive.Root
   class={cn(
-    "text-sm space-y-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+    "text-sm block space-y-2 font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
     className
   )}
   {...$$restProps}
   on:mousedown
 >
-  <p>{label}</p>
+  <p>
+    {label}
+    {#if required}
+      <span class="text-error">*</span>
+    {/if}
+  </p>
   <slot />
 </LabelPrimitive.Root>

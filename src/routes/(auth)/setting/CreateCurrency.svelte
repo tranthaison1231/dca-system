@@ -68,28 +68,26 @@
   </Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[425px]">
     <Dialog.Header>
-      <Dialog.Title>Create new currency</Dialog.Title>
+      <Dialog.Title>Add currency</Dialog.Title>
     </Dialog.Header>
     <form method="POST" use:enhance>
       <div class="flex flex-col">
         <Label label="Coin" class="mb-2" />
         <CryptoSearch bind:value={coin} />
       </div>
-      <div class="mt-4">
-        <Label label="Amount">
-          <Input
-            type="number"
-            step="any"
-            min="0"
-            bind:value={$form.amount}
-            {...$constraints.amount}
-          />
-        </Label>
+      <Label label="Amount" required class="mt-4">
+        <Input
+          type="number"
+          step="any"
+          min="0"
+          bind:value={$form.amount}
+          {...$constraints.amount}
+        />
+      </Label>
 
-        {#if $errors.amount}<span class="mt-1 w-full text-error"
-            >{$errors.amount}</span
-          >{/if}
-      </div>
+      {#if $errors.amount}<span class="mt-1 w-full text-error"
+          >{$errors.amount}</span
+        >{/if}
       <Dialog.Footer class="mt-5">
         <Button type="submit" loading={$createCurrencyMutate.isPending}
           >Save</Button

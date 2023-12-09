@@ -12,7 +12,8 @@
   import type { User } from "@prisma/client";
   import { createQuery } from "@tanstack/svelte-query";
   import { sumBy } from "lodash-es";
-  import { Eye, Plus } from "lucide-svelte";
+  import { Eye } from "lucide-svelte";
+  import AddTransaction from "./AddTransaction.svelte";
   import AllocationChart from "./AllocationChart.svelte";
 
   const meResult = createQuery<{ user: User }>({
@@ -207,7 +208,7 @@
             {:else if column.title === "Action"}
               <div class="flex flex-col items-end gap-1">
                 <Tooltip content="Add transaction">
-                  <Plus />
+                  <AddTransaction currency={source} />
                 </Tooltip>
                 <Tooltip content="View transactions">
                   <a href={`/currencies/${source.id}`} rel="noreferrer">

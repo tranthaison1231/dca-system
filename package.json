@@ -20,6 +20,7 @@
     "clerk-sveltekit": "^0.3.0",
     "clsx": "^2.0.0",
     "cmdk-sv": "^0.0.12",
+    "dayjs": "^1.11.10",
     "ioredis": "^5.3.2",
     "lodash-es": "^4.17.21",
     "lossless-json": "^3.0.2",
