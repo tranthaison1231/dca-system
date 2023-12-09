@@ -19,19 +19,16 @@ export const GET = async (event: RequestEvent) => {
 export async function POST(event) {
   try {
     const body = await event.request.json();
-    let slug = body.slug;
 
-    const currencyByCoinGeckoId = await getCMCCurrencyDetail(slug);
+    console.log(body);
 
-    if (!currencyByCoinGeckoId.data) {
-      slug = body.symbol;
-      const currencyBySymbol = await getCMCCurrencyDetail(slug);
-      if (!currencyBySymbol.data) {
-        throw error(409, {
-          message: "Currency not found on CoinMarketCap!",
-        });
-      }
-    }
+    const res = await Promise.any([
+      getCMCCurrencyDetail(body.symbol),
+      getCMCCurrencyDetail(body.name),
+      getCMCCurrencyDetail(body.slug),
+    ]);
+
+    let slug = res.data.slug;
 
     const currency = await prisma.currency.create({
       data: {
@@ -56,8 +53,12 @@ export async function POST(event) {
       throw error(409, {
         message: "Currency already exist!",
       });
-    } else {
-      throw err;
     }
+    if (err instanceof AggregateError) {
+      throw error(400, {
+        message: err.errors[0].message,
+      });
+    }
+    throw err;
   }
 }

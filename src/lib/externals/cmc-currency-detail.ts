@@ -3,6 +3,11 @@ export const getCMCCurrencyDetail = async (slug: string) => {
     `https://api.coinmarketcap.com/data-api/v3/cryptocurrency/detail?slug=${slug}`
   );
 
-  const data = await res.json();
-  return data;
+  const json = await res.json();
+
+  if (!json.data) {
+    throw new Error("No data from CoinMarketCap!");
+  }
+
+  return json;
 };
