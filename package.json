@@ -14,7 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "5.7.0",
-    "@tanstack/svelte-query": "^5.13.2",
+    "@tanstack/svelte-query": "^5.13.4",
     "bits-ui": "^0.11.6",
     "chart.js": "^4.4.1",
     "clerk-sveltekit": "^0.3.0",

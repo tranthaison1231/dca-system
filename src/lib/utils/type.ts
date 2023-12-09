@@ -2,6 +2,7 @@ import type { Currency } from "@prisma/client";
 
 export interface ExtendCurrency extends Currency {
   percent: number;
+  price: number;
   value: number;
   marketCap: number;
   statistics: {

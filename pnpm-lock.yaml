@@ -9,8 +9,8 @@ dependencies:
     specifier: 5.7.0
     version: 5.7.0(prisma@5.7.0)
   '@tanstack/svelte-query':
-    specifier: ^5.13.2
-    version: 5.13.2(svelte@4.2.7)
+    specifier: ^5.13.4
+    version: 5.13.4(svelte@4.2.7)
   bits-ui:
     specifier: ^0.11.6
     version: 0.11.6(svelte@4.2.7)
@@ -1175,16 +1175,16 @@ packages:
       tslib: 2.6.2
     dev: false
 
-  /@tanstack/query-core@5.12.1:
-    resolution: {integrity: sha512-WbZztNmKq0t6QjdNmHzezbi/uifYo9j6e2GLJkodsYaYUlzMbAp91RDyeHkIZrm7EfO4wa6Sm5sxJZm5SPlh6w==}
+  /@tanstack/query-core@5.13.4:
+    resolution: {integrity: sha512-8+rJucXvC/xlr4OrxHhEIob/cTlbT4fgmz1VsvB0D12FRStKaXeLORNGcOhSAynRd2NL74SV/Qq0IIb4DedLcA==}
     dev: false
 
-  /@tanstack/svelte-query@5.13.2(svelte@4.2.7):
-    resolution: {integrity: sha512-WtgHNUDaYERNMMzYDdiOH53b2r8I4vlNKS2Pmm5v8CXKNkkFLOY/JcLFqQRel3V8Rb4qM0BMdCfOFVtcg6CAiw==}
+  /@tanstack/svelte-query@5.13.4(svelte@4.2.7):
+    resolution: {integrity: sha512-wR/jyZQ6/YOa+Tcz3Beb+DSgB518BUnDVP8E9NmGrSKbRmrV9QXrjr/BjW62LrIKWk0PPMTZ6fCvs+LJUm48bw==}
     peerDependencies:
       svelte: ^3.54.0 || ^4.0.0 || ^5.0.0-next.0
     dependencies:
-      '@tanstack/query-core': 5.12.1
+      '@tanstack/query-core': 5.13.4
       svelte: 4.2.7
     dev: false
 

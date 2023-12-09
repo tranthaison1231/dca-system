@@ -20,8 +20,6 @@ export async function POST(event) {
   try {
     const body = await event.request.json();
 
-    console.log(body);
-
     const res = await Promise.any([
       getCMCCurrencyDetail(body.symbol),
       getCMCCurrencyDetail(body.name),

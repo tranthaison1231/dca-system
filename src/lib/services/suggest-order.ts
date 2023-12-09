@@ -1,3 +1,4 @@
+import { formatNumber } from "$lib/utils/number";
 import type { ExtendCurrency } from "$lib/utils/type";
 import { last, sortBy } from "lodash-es";
 
@@ -34,6 +35,16 @@ const calShouldSell = ({ supplyInProfit, nupl, fearAndGreed }: Index) => {
   return shouldSell;
 };
 
+export const getMessage = (
+  shouldSell: boolean,
+  price: number,
+  currency: ExtendCurrency
+) => {
+  return `${shouldSell ? "Should sell" : "Should buy"} $${price} ${
+    currency.symbol
+  } (${formatNumber(price / currency.price, 3)})`;
+};
+
 export const suggestOrder = (
   currencies: ExtendCurrency[],
   { supplyInProfit, nupl, fearAndGreed }: Index
@@ -58,10 +69,10 @@ export const suggestOrder = (
   });
 
   if (shouldSell) {
-    return `Nên bán $${price} ${sortedCurrenciesWithoutUSDTByAlpha[0]?.symbol}`;
+    const coinShouldSell = sortedCurrenciesWithoutUSDTByAlpha[0]!;
+    return getMessage(shouldSell, price, coinShouldSell);
   }
+  const coinShouldBuy = last(sortedCurrenciesWithoutUSDTByAlpha)!;
 
-  return `Nên mua $${price} ${
-    last(sortedCurrenciesWithoutUSDTByAlpha)?.symbol
-  }`;
+  return getMessage(shouldSell, price, coinShouldBuy);
 };
