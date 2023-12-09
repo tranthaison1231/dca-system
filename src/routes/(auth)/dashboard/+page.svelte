@@ -21,7 +21,7 @@
     queryFn: async () => (await fetch("/api/users/me")).json(),
   });
 
-  $: invest = Number($meResult.data?.user.amount);
+  $: invest = Number($meResult.data?.user?.amount);
 
   const result = createQuery<{ currencies: ExtendCurrency[] }>({
     queryKey: ["currencies/listing"],
