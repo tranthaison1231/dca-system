@@ -8,7 +8,7 @@
 </script>
 
 <Tooltip.Root>
-  <Tooltip.Trigger class="block mt-4">
+  <Tooltip.Trigger class="block">
     <slot />
   </Tooltip.Trigger>
   <Tooltip.Content

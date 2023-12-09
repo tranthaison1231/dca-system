@@ -32,6 +32,7 @@ export async function GET(event) {
   );
 
   const formattedCurrencies = cmcCurrencies.map((currency) => ({
+    id: currency.id,
     name: currency.name,
     symbol: currency.symbol,
     slug: currency.coinGeckoId,

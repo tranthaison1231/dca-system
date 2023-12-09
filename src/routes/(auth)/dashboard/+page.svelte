@@ -1,5 +1,7 @@
 <script lang="ts">
+  import Page from "$lib/components/layouts/Page.svelte";
   import { buttonVariants } from "$lib/components/ui/button";
+  import Progress from "$lib/components/ui/progress/progress.svelte";
   import * as Table from "$lib/components/ui/table";
   import { Tooltip } from "$lib/components/ui/tooltip";
   import { suggestOrder } from "$lib/services/suggest-order";
@@ -7,12 +9,11 @@
   import { formatMoney, formatNumber } from "$lib/utils/number";
   import { cn } from "$lib/utils/style";
   import type { ExtendCurrency } from "$lib/utils/type";
+  import type { User } from "@prisma/client";
   import { createQuery } from "@tanstack/svelte-query";
   import { sumBy } from "lodash-es";
+  import { Eye, Plus } from "lucide-svelte";
   import AllocationChart from "./AllocationChart.svelte";
-  import Progress from "$lib/components/ui/progress/progress.svelte";
-  import Page from "$lib/components/layouts/Page.svelte";
-  import type { User } from "lucide-svelte";
 
   const meResult = createQuery<{ user: User }>({
     queryKey: ["me"],
@@ -98,6 +99,10 @@
       title: "Market Cap",
       titleClass: "text-right",
       cellClass: "text-right",
+    },
+    {
+      title: "Action",
+      titleClass: "text-right",
     },
   ];
 </script>
@@ -198,6 +203,17 @@
                   {formatNumber(source.marketCapPercent, 2)}%
                 </p>
                 <Progress value={source.marketCapPercent} />
+              </div>
+            {:else if column.title === "Action"}
+              <div class="flex flex-col items-end gap-1">
+                <Tooltip content="Add transaction">
+                  <Plus />
+                </Tooltip>
+                <Tooltip content="View transactions">
+                  <a href={`/currencies/${source.id}`} rel="noreferrer">
+                    <Eye />
+                  </a>
+                </Tooltip>
               </div>
             {:else}
               {value}
