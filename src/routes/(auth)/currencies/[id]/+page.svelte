@@ -5,7 +5,10 @@
   import { cn } from "$lib/utils/style";
   import type { ExtendCurrency } from "$lib/utils/type";
   import type { Transaction } from "@prisma/client";
-  import { createQuery } from "@tanstack/svelte-query";
+  import { createMutation, createQuery } from "@tanstack/svelte-query";
+  import { Trash } from "lucide-svelte";
+  import { toast } from "svelte-sonner";
+  import AddTransaction from "../../dashboard/AddTransaction.svelte";
 
   const currencyQuery = createQuery<{ currency: ExtendCurrency }>({
     queryKey: ["currencies", $page.params.id],
@@ -17,6 +20,17 @@
     queryKey: [`transactions-by-currency-${$page.params.id}`],
     queryFn: async () =>
       (await fetch(`/api/currencies/${$page.params.id}/transactions`)).json(),
+  });
+
+  const deleteTransactionMutate = createMutation({
+    mutationFn: async (id: string) =>
+      fetch(`/api/currencies/${$page.params.id}/transactions/${id}`, {
+        method: "DELETE",
+      }),
+    onSuccess: () => {
+      toast.success("Transaction has been deleted!");
+      $transactionsQuery.refetch();
+    },
   });
 
   $: dataSource = $transactionsQuery.data?.transactions ?? [];
@@ -40,6 +54,9 @@
     },
     {
       title: "Cost",
+    },
+    {
+      title: "Action",
     },
   ];
 
@@ -80,6 +97,11 @@
 </div>
 
 <div class="border p-4 rounded-md shadow-md mt-4">
+  {#if $currencyQuery.data?.currency}
+    <div class="flex justify-end mb-5">
+      <AddTransaction currency={$currencyQuery.data.currency} />
+    </div>
+  {/if}
   <DataTable {columns} {dataSource} loading={$transactionsQuery.isPending}>
     <svelte:fragment slot="cell" let:source let:column let:value>
       {#if column.title === "Date"}
@@ -95,6 +117,10 @@
         </p>
       {:else if column.title === "Cost"}
         {Number(source.price) * Number(source.amount)}
+      {:else if column.title === "Action"}
+        <button on:click={() => $deleteTransactionMutate.mutate(source.id)}
+          ><Trash color="red" />
+        </button>
       {:else}
         {value}
       {/if}
