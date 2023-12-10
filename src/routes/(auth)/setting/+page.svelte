@@ -49,7 +49,7 @@
 <Page title="Setting">
   <div class="grid grid-cols-3 gap-4">
     <UpdateProfile />
-    <div class="border p-5 col-span-3 md:col-span-2 rounded-md shadow-xl">
+    <div class="border p-4 col-span-3 md:col-span-2 rounded-md shadow-xl">
       <div class="flex justify-end mb-5">
         <CreateCurrency />
       </div>

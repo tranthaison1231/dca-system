@@ -20,7 +20,7 @@
   <div class="grid grid-cols-2 gap-4">
     {#each CHARTS as chart}
       <div
-        class="border col-span-4 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md"
+        class="border col-span-4 md:col-span-2 xl:col-span-1 p-4 rounded-md shadow-md"
       >
         <iframe
           width="100%"

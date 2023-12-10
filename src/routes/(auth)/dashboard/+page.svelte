@@ -112,7 +112,7 @@
   <div class="space-y-4 w-full mt-4">
     <div class="grid grid-cols-3 gap-4 w-full">
       <div
-        class="border col-span-3 md:col-span- xl:col-span-1 p-5 rounded-md shadow-md space-y-4"
+        class="border col-span-3 md:col-span- xl:col-span-1 p-4 rounded-md shadow-md space-y-4"
       >
         <h2 class="text-xl font-medium text-primary mb-">Index</h2>
         {#if $fearAndGreedResult.isPending || $nuplResult.isPending || $supplyInProfitResult.isPending}
@@ -142,7 +142,7 @@
         currencies={formattedCurrencies}
         loading={$result.isPending}
       />
-      <div class="border p-5 rounded-md shadow-md col-span-3 md:col-span-1">
+      <div class="border p-4 rounded-md shadow-md col-span-3 md:col-span-1">
         <iframe
           width="100%"
           height="420"
@@ -151,7 +151,7 @@
           title="Bitcoin Dominance"
         ></iframe>
       </div>
-      <div class="border p-5 col-span-3 rounded-md shadow-md">
+      <div class="border p-4 col-span-3 rounded-md shadow-md">
         <Table.DataTable
           {columns}
           dataSource={formattedCurrencies.sort(

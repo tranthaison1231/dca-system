@@ -19,7 +19,7 @@
 </script>
 
 <div
-  class="border col-span-3 md:col-span-2 xl:col-span-1 p-5 rounded-md shadow-md"
+  class="border col-span-3 md:col-span-2 xl:col-span-1 p-4 rounded-md shadow-md"
 >
   <h2 class="text-xl text-primary mb-4 font-medium">Allocation</h2>
   {#if loading}

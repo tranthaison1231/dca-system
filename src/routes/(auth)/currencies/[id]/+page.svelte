@@ -3,8 +3,15 @@
   import { DataTable } from "$lib/components/ui/table";
   import { formatDate } from "$lib/utils/date";
   import { cn } from "$lib/utils/style";
+  import type { ExtendCurrency } from "$lib/utils/type";
   import type { Transaction } from "@prisma/client";
   import { createQuery } from "@tanstack/svelte-query";
+
+  const currencyQuery = createQuery<{ currency: ExtendCurrency }>({
+    queryKey: ["currencies", $page.params.id],
+    queryFn: async () =>
+      (await fetch(`/api/currencies/${$page.params.id}`)).json(),
+  });
 
   const transactionsQuery = createQuery<{ transactions: Transaction[] }>({
     queryKey: [`transactions-by-currency-${$page.params.id}`],
@@ -31,10 +38,48 @@
       title: "Amount",
       dataIndex: "amount",
     },
+    {
+      title: "Cost",
+    },
   ];
+
+  $: totalCost = dataSource.reduce(
+    (total, transaction) =>
+      total + Number(transaction.price) * Number(transaction.amount),
+    0
+  );
 </script>
 
-<div class="border p-5 rounded-md shadow-md">
+<div>
+  {$currencyQuery.data?.currency.name}
+  <img
+    src={$currencyQuery.data?.currency.url}
+    alt={$currencyQuery.data?.currency.name}
+  />
+</div>
+<div class="flex mt-4 gap-4">
+  <div class="border p-4 rounded-md shadow-md">
+    <p>
+      {Number($currencyQuery.data?.currency.amount) *
+        Number($currencyQuery.data?.currency.price)}
+    </p>
+    <p>Holdings Value</p>
+  </div>
+  <div class="border p-4 rounded-md shadow-md">
+    <p>{totalCost}</p>
+    <p>Total Cost</p>
+  </div>
+  <div class="border p-4 rounded-md shadow-md">
+    <p>{totalCost}</p>
+    <p>Average Net Cost</p>
+  </div>
+  <div class="border p-4 rounded-md shadow-md">
+    <p>{totalCost}</p>
+    <p>Profit / Loss</p>
+  </div>
+</div>
+
+<div class="border p-4 rounded-md shadow-md mt-4">
   <DataTable {columns} {dataSource} loading={$transactionsQuery.isPending}>
     <svelte:fragment slot="cell" let:source let:column let:value>
       {#if column.title === "Date"}
@@ -48,6 +93,8 @@
         >
           {source.type === "BUY" ? "Buy" : "Sell"}
         </p>
+      {:else if column.title === "Cost"}
+        {Number(source.price) * Number(source.amount)}
       {:else}
         {value}
       {/if}
