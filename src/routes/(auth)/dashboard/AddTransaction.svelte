@@ -6,11 +6,12 @@
   import { createTransactionSchema } from "$lib/utils/schema";
   import type { ExtendCurrency } from "$lib/utils/type";
   import { createMutation } from "@tanstack/svelte-query";
-  import dayjs from "dayjs";
   import { Plus } from "lucide-svelte";
   import { toast } from "svelte-sonner";
   import { superForm, superValidateSync } from "sveltekit-superforms/client";
   import type * as z from "zod";
+  import * as Select from "$lib/components/ui/select";
+  import type { Selected } from "bits-ui";
 
   export let open = false;
   export let currency: ExtendCurrency;
@@ -22,7 +23,7 @@
       method: "POST",
       body: JSON.stringify({
         ...data,
-        timestamp: dayjs(data.timestamp).toISOString(),
+        timestamp: data.timestamp.toISOString(),
       }),
     });
     const json = await res.json();
@@ -39,7 +40,6 @@
     },
     onSuccess: () => {
       toast.success("Transaction has been created!");
-      open = false;
     },
   });
 
@@ -47,8 +47,9 @@
     superValidateSync(
       {
         price: currency.price,
-        amount: 0,
+        amount: 1,
         timestamp: new Date(),
+        type: "BUY",
       },
       createTransactionSchema
     ),
@@ -64,29 +65,44 @@
       },
     }
   );
+
+  function handleSelectedChange(
+    selected: Selected<"SELL" | "BUY"> | undefined
+  ) {
+    if (selected?.value) {
+      $form.type = selected.value;
+    }
+  }
 </script>
 
 <Dialog.Root bind:open onOpenChange={() => reset()}>
   <Dialog.Trigger>
     <Plus />
   </Dialog.Trigger>
-  <Dialog.Content class="sm:max-w-[425px]">
+  <Dialog.Content class="sm:max-w-[500px]">
     <Dialog.Header>
       <Dialog.Title>Add Transaction</Dialog.Title>
     </Dialog.Header>
     <form method="POST" use:enhance>
-      <!-- <Label label="Type" required class="mt-4">
-        <Input
-          type="number"
-          step="any"
-          min="0"
-          bind:value={$form.type}
-          {...$constraints.type}
-        />
-      </Label>
+      <Label label="Type" required></Label>
+      <Select.Root
+        selected={{
+          label: $form.type,
+          value: $form.type,
+        }}
+        onSelectedChange={handleSelectedChange}
+      >
+        <Select.Trigger class="w-full mt-2">
+          <Select.Value placeholder="Select type" />
+        </Select.Trigger>
+        <Select.Content>
+          <Select.Item value="SELL" label="SELL">SELL</Select.Item>
+          <Select.Item value="BUY" label="BUY">BUY</Select.Item>
+        </Select.Content>
+      </Select.Root>
       {#if $errors.type}<span class="mt-1 w-full text-error"
           >{$errors.type}</span
-        >{/if} -->
+        >{/if}
       <Label label="Price per coin" required class="mt-4">
         <Input
           type="number"
@@ -96,7 +112,6 @@
           {...$constraints.price}
         />
       </Label>
-
       {#if $errors.price}<span class="mt-1 w-full text-error"
           >{$errors.price}</span
         >{/if}
@@ -109,13 +124,15 @@
           {...$constraints.amount}
         />
       </Label>
-
+      <Label label="Total Spent" class="mt-4">
+        <Input disabled value={$form.price * $form.amount} />
+      </Label>
       {#if $errors.amount}<span class="mt-1 w-full text-error"
           >{$errors.amount}</span
         >{/if}
       <Label label="Date" required class="mt-4">
         <Input
-          type="date"
+          type="datetime-local"
           bind:value={$form.timestamp}
           {...$constraints.timestamp}
         />

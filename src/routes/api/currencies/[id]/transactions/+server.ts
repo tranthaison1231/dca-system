@@ -1,4 +1,3 @@
-import { TransactionType } from "@prisma/client";
 import prisma from "$lib/db/prisma";
 import { json, type RequestEvent } from "@sveltejs/kit";
 
@@ -25,7 +24,7 @@ export const POST = async (event: RequestEvent) => {
     data: {
       userId: event.locals.session.userId,
       currencyId: currencyId!,
-      type: TransactionType.BUY,
+      type: body.type,
       amount: String(body.amount),
       price: String(body.price),
       timestamp: body.timestamp,

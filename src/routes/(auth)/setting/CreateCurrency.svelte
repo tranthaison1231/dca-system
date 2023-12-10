@@ -72,7 +72,7 @@
     </Dialog.Header>
     <form method="POST" use:enhance>
       <div class="flex flex-col">
-        <Label label="Coin" class="mb-2" />
+        <Label label="Coin" class="mb-2" required />
         <CryptoSearch bind:value={coin} />
       </div>
       <Label label="Amount" required class="mt-4">
@@ -84,7 +84,6 @@
           {...$constraints.amount}
         />
       </Label>
-
       {#if $errors.amount}<span class="mt-1 w-full text-error"
           >{$errors.amount}</span
         >{/if}

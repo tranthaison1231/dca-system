@@ -1,4 +1,3 @@
-import { TransactionType } from "@prisma/client";
 import * as z from "zod";
 
 export const updateCurrencySchema = z.object({
@@ -17,8 +16,10 @@ export const createCurrencySchema = z.object({
 });
 
 export const createTransactionSchema = z.object({
-  amount: z.coerce.number().min(0),
+  amount: z.coerce.number().min(0).positive(),
   price: z.coerce.number().min(0),
   timestamp: z.coerce.date(),
-  type: z.enum([TransactionType.BUY, TransactionType.SELL]),
+  type: z.enum(["BUY", "SELL"]),
 });
+
+export type CreateTransactionSchema = z.infer<typeof createTransactionSchema>;
