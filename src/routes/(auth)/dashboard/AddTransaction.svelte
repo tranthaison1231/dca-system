@@ -47,7 +47,7 @@
     superValidateSync(
       {
         price: currency.price,
-        amount: 1,
+        amount: 0.01,
         timestamp: new Date(),
         type: "BUY",
       },
@@ -120,16 +120,24 @@
           type="number"
           step="any"
           min="0"
+          max={currency.amount}
           bind:value={$form.amount}
           {...$constraints.amount}
         />
-      </Label>
-      <Label label="Total Spent" class="mt-4">
-        <Input disabled value={$form.price * $form.amount} />
+        <svelte:fragment slot="extra">
+          {#if $form.type === "SELL"}
+            <span class="text-gray-500">
+              Balance: {currency.amount}
+            </span>
+          {/if}
+        </svelte:fragment>
       </Label>
       {#if $errors.amount}<span class="mt-1 w-full text-error"
           >{$errors.amount}</span
         >{/if}
+      <Label label="Total Spent" class="mt-4">
+        <Input disabled value={$form.price * $form.amount} />
+      </Label>
       <Label label="Date" required class="mt-4">
         <Input
           type="datetime-local"

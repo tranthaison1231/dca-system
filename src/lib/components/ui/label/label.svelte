@@ -18,11 +18,14 @@
   {...$$restProps}
   on:mousedown
 >
-  <p>
-    {label}
-    {#if required}
-      <span class="text-error">*</span>
-    {/if}
-  </p>
+  <div class="flex justify-between">
+    <p>
+      {label}
+      {#if required}
+        <span class="text-error">*</span>
+      {/if}
+    </p>
+    <slot name="extra" />
+  </div>
   <slot />
 </LabelPrimitive.Root>

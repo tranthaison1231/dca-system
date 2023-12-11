@@ -9,6 +9,7 @@
   import { Trash } from "lucide-svelte";
   import { toast } from "svelte-sonner";
   import AddTransaction from "../../dashboard/AddTransaction.svelte";
+  import { formatNumber } from "$lib/utils/number";
 
   const currencyQuery = createQuery<{ currency: ExtendCurrency }>({
     queryKey: ["currencies", $page.params.id],
@@ -65,6 +66,11 @@
       total + Number(transaction.price) * Number(transaction.amount),
     0
   );
+
+  $: amount = dataSource.reduce(
+    (total, transaction) => total + Number(transaction.amount),
+    0
+  );
 </script>
 
 <div>
@@ -81,6 +87,10 @@
         Number($currencyQuery.data?.currency.price)}
     </p>
     <p>Holdings Value</p>
+  </div>
+  <div class="border p-4 rounded-md shadow-md">
+    <p>{amount}</p>
+    <p>Amount</p>
   </div>
   <div class="border p-4 rounded-md shadow-md">
     <p>{totalCost}</p>
@@ -115,6 +125,16 @@
         >
           {source.type === "BUY" ? "Buy" : "Sell"}
         </p>
+      {:else if column.title === "Amount"}
+        {#if source.type === "BUY"}
+          <p class="text-success">
+            +{formatNumber(Number(source.amount))}
+          </p>
+        {:else}
+          <p class="text-error">
+            -{formatNumber(Number(source.amount))}
+          </p>
+        {/if}
       {:else if column.title === "Cost"}
         {Number(source.price) * Number(source.amount)}
       {:else if column.title === "Action"}

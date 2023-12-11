@@ -32,6 +32,9 @@ dependencies:
   cmdk-sv:
     specifier: ^0.0.12
     version: 0.0.12(svelte@4.2.7)
+  dayjs:
+    specifier: ^1.11.10
+    version: 1.11.10
   formsnap:
     specifier: ^0.4.1
     version: 0.4.1(svelte@4.2.7)(sveltekit-superforms@1.11.0)(zod@3.22.4)
@@ -2025,6 +2028,10 @@ packages:
 
   /csstype@3.1.2:
     resolution: {integrity: sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==}
+    dev: false
+
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
     dev: false
 
   /debug@4.3.4:
