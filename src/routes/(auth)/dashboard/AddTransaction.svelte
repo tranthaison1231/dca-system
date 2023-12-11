@@ -143,7 +143,10 @@
       {#if $errors.amount}<span class="mt-1 w-full text-error"
           >{$errors.amount}</span
         >{/if}
-      <Label label="Total Spent" class="mt-4">
+      <Label
+        label={$form.type === "BUY" ? "Total Spent" : "Total Received"}
+        class="mt-4"
+      >
         <Input disabled value={$form.price * $form.amount} />
       </Label>
       <Label label="Date" required class="mt-4">
