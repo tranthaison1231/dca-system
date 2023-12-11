@@ -144,7 +144,9 @@
           >{$errors.amount}</span
         >{/if}
       <Label
-        label={$form.type === "BUY" ? "Total Spent" : "Total Received"}
+        label={$form.type === "BUY"
+          ? "Total Spent (USDT)"
+          : "Total Received (USDT)"}
         class="mt-4"
       >
         <Input disabled value={$form.price * $form.amount} />

@@ -3,9 +3,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const data = await prisma.user.updateMany({
+  const data = await prisma.currency.updateMany({
+    where: {
+      symbol: "USDT",
+    },
     data: {
-      amount: null,
+      averagePrice: null,
     },
   });
   console.log(data);

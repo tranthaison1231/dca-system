@@ -53,7 +53,8 @@
 
   $: invest =
     $result.data?.currencies.reduce(
-      (total, curr) => total + Number(curr.amount) * Number(curr.averagePrice),
+      (total, curr) =>
+        total + Number(curr.amount) * Number(curr.averagePrice ?? curr.price),
       0
     ) ?? 0;
 
@@ -187,7 +188,7 @@
             {:else if column.title === "Price"}
               {formatMoney(value)}
             {:else if column.title === "Average Price"}
-              {#if Number(source.amount) > 0}
+              {#if Number(source.amount) > 0 && source.averagePrice}
                 <p
                   class={cn({
                     "text-error":
@@ -225,16 +226,18 @@
                 <Progress value={source.marketCapPercent} />
               </div>
             {:else if column.title === "Action"}
-              <div class="flex flex-col items-end gap-1">
-                <Tooltip content="Add transaction">
-                  <AddTransaction currency={source} />
-                </Tooltip>
-                <Tooltip content="View transactions">
-                  <a href={`/currencies/${source.id}`} rel="noreferrer">
-                    <Eye />
-                  </a>
-                </Tooltip>
-              </div>
+              {#if source.symbol !== "USDT"}
+                <div class="flex flex-col items-end gap-1">
+                  <Tooltip content="Add transaction">
+                    <AddTransaction currency={source} />
+                  </Tooltip>
+                  <Tooltip content="View transactions">
+                    <a href={`/currencies/${source.id}`} rel="noreferrer">
+                      <Eye />
+                    </a>
+                  </Tooltip>
+                </div>
+              {/if}
             {:else}
               {value}
             {/if}

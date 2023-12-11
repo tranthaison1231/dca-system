@@ -24,7 +24,7 @@ model Currency {
   name            String?
   symbol          String
   amount          String
-  averagePrice    String   @default("0")
+  averagePrice    String?
   url             String 
   slug            String
   userId          String 

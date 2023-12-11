@@ -21,6 +21,21 @@ export const POST = async (event: RequestEvent) => {
   const body = await event.request.json();
   const currencyId = event.params.id;
 
+  const usdt = await prisma.currency.findFirst({
+    where: {
+      symbol: "USDT",
+      userId: event.locals.session.userId,
+    },
+  });
+  const cost = body.price * body.amount;
+
+  if (cost > Number(usdt?.amount)) {
+    return json({
+      status: "error",
+      message: "Insufficient balance",
+    });
+  }
+
   const transaction = await prisma.transaction.create({
     data: {
       userId: event.locals.session.userId,
@@ -31,6 +46,26 @@ export const POST = async (event: RequestEvent) => {
       timestamp: body.timestamp,
     },
   });
+
+  if (body.type === "BUY") {
+    await prisma.currency.update({
+      where: {
+        id: usdt?.id!,
+      },
+      data: {
+        amount: String(Number(usdt?.amount) - cost),
+      },
+    });
+  } else {
+    await prisma.currency.update({
+      where: {
+        id: usdt?.id!,
+      },
+      data: {
+        amount: String(Number(usdt?.amount) + cost),
+      },
+    });
+  }
 
   await updateCurrencyAfterTransaction(currencyId!);
 
