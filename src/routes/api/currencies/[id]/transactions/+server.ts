@@ -1,4 +1,5 @@
 import prisma from "$lib/db/prisma";
+import { updateCurrencyAfterTransaction } from "$lib/services/currencies";
 import { json, type RequestEvent } from "@sveltejs/kit";
 
 export const GET = async (event: RequestEvent) => {
@@ -30,6 +31,9 @@ export const POST = async (event: RequestEvent) => {
       timestamp: body.timestamp,
     },
   });
+
+  await updateCurrencyAfterTransaction(currencyId!);
+
   return json({
     status: "success",
     transaction: transaction,

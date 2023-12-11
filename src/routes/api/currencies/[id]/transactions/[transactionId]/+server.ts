@@ -1,9 +1,11 @@
 import prisma from "$lib/db/prisma";
 import { json } from "@sveltejs/kit";
 import type { RequestEvent } from "./$types";
+import { updateCurrencyAfterTransaction } from "$lib/services/currencies";
 
 export const DELETE = async (event: RequestEvent) => {
   const transactionId = event.params.transactionId;
+  const currencyId = event.params.id!;
 
   if (!transactionId) {
     return json({
@@ -17,6 +19,8 @@ export const DELETE = async (event: RequestEvent) => {
       id: transactionId,
     },
   });
+
+  await updateCurrencyAfterTransaction(currencyId);
 
   return json({
     status: "success",

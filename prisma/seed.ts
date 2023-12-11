@@ -3,8 +3,12 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  const data = await prisma.user.findMany({});
-  console.log(data.length);
+  const data = await prisma.user.updateMany({
+    data: {
+      amount: null,
+    },
+  });
+  console.log(data);
 }
 
 main()

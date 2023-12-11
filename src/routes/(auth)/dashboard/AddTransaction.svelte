@@ -5,7 +5,7 @@
   import Label from "$lib/components/ui/label/label.svelte";
   import { createTransactionSchema } from "$lib/utils/schema";
   import type { ExtendCurrency } from "$lib/utils/type";
-  import { createMutation } from "@tanstack/svelte-query";
+  import { createMutation, useQueryClient } from "@tanstack/svelte-query";
   import { Plus } from "lucide-svelte";
   import { toast } from "svelte-sonner";
   import { superForm, superValidateSync } from "sveltekit-superforms/client";
@@ -15,6 +15,8 @@
 
   export let open = false;
   export let currency: ExtendCurrency;
+
+  const clientQuery = useQueryClient();
 
   async function createTransaction(
     data: z.infer<typeof createTransactionSchema>
@@ -40,6 +42,10 @@
     },
     onSuccess: () => {
       toast.success("Transaction has been created!");
+      clientQuery.invalidateQueries({ queryKey: ["currencies/listing"] });
+      clientQuery.invalidateQueries({
+        queryKey: [`transactions-by-currency-${currency.id}`],
+      });
     },
   });
 
@@ -77,7 +83,9 @@
 
 <Dialog.Root bind:open onOpenChange={() => reset()}>
   <Dialog.Trigger>
-    <Plus />
+    <slot name="trigger">
+      <Plus />
+    </slot>
   </Dialog.Trigger>
   <Dialog.Content class="sm:max-w-[500px]">
     <Dialog.Header>
@@ -120,7 +128,7 @@
           type="number"
           step="any"
           min="0"
-          max={currency.amount}
+          max={$form.type === "SELL" ? currency.amount : undefined}
           bind:value={$form.amount}
           {...$constraints.amount}
         />

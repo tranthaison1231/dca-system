@@ -23,7 +23,6 @@ export async function PUT(event: RequestEvent) {
     },
     data: {
       ...updatedUserDto,
-      amount: String(updatedUserDto.amount),
     },
   });
 

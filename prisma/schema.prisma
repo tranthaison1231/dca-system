@@ -17,7 +17,6 @@ model User {
   attributes      Json
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-  amount          String? @default("0")
 }
 
 model Currency {
@@ -25,6 +24,7 @@ model Currency {
   name            String?
   symbol          String
   amount          String
+  averagePrice    String   @default("0")
   url             String 
   slug            String
   userId          String 

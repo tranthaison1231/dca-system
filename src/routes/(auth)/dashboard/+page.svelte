@@ -9,19 +9,11 @@
   import { formatMoney, formatNumber } from "$lib/utils/number";
   import { cn } from "$lib/utils/style";
   import type { ExtendCurrency } from "$lib/utils/type";
-  import type { User } from "@prisma/client";
   import { createQuery } from "@tanstack/svelte-query";
   import { sumBy } from "lodash-es";
   import { Eye } from "lucide-svelte";
   import AddTransaction from "./AddTransaction.svelte";
   import AllocationChart from "./AllocationChart.svelte";
-
-  const meResult = createQuery<{ user: User }>({
-    queryKey: ["me"],
-    queryFn: async () => (await fetch("/api/users/me")).json(),
-  });
-
-  $: invest = Number($meResult.data?.user?.amount);
 
   const result = createQuery<{ currencies: ExtendCurrency[] }>({
     queryKey: ["currencies/listing"],
@@ -59,6 +51,12 @@
   $: total = sumBy($result.data?.currencies, "value");
   $: totalMarket = sumBy($result.data?.currencies, "marketCap");
 
+  $: invest =
+    $result.data?.currencies.reduce(
+      (total, curr) => total + Number(curr.amount) * Number(curr.averagePrice),
+      0
+    ) ?? 0;
+
   const columns: Table.Column[] = [
     { dataIndex: "name", title: "Name" },
     {
@@ -70,6 +68,14 @@
     {
       dataIndex: "price",
       title: "Price",
+      titleClass: "text-right",
+      cellClass: "text-right",
+    },
+    {
+      dataIndex: "averagePrice",
+      title: "Average Price",
+      titleClass: "text-right",
+      cellClass: "text-right",
     },
     {
       dataIndex: "statistics.priceChangePercentage24h",
@@ -180,6 +186,19 @@
               {formatNumber(value)}
             {:else if column.title === "Price"}
               {formatMoney(value)}
+            {:else if column.title === "Average Price"}
+              {#if Number(source.amount) > 0}
+                <p
+                  class={cn({
+                    "text-error":
+                      Number(source.averagePrice) - Number(source.price) > 0,
+                    "text-success":
+                      Number(source.averagePrice) - Number(source.price) <= 0,
+                  })}
+                >
+                  {formatMoney(value)}
+                </p>
+              {/if}
             {:else if ["24h %", "7d %", "30d %", "60d %", "90d %"].includes(column.title)}
               <div
                 class={cn({
@@ -222,18 +241,18 @@
           </svelte:fragment>
           <svelte:fragment slot="footer">
             <Table.Row>
-              <Table.Cell colspan={8} class="font-bold">Total</Table.Cell>
+              <Table.Cell colspan={9} class="font-bold">Total</Table.Cell>
               <Table.Cell class="text-right">{formatMoney(total)}</Table.Cell>
               <Table.Cell class="text-right"
                 >{formatMoney(totalMarket)}
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell colspan={8} class="font-bold">Invested</Table.Cell>
+              <Table.Cell colspan={9} class="font-bold">Invested</Table.Cell>
               <Table.Cell class="text-right">{formatMoney(invest)}</Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell colspan={8} class="font-bold">Profit</Table.Cell>
+              <Table.Cell colspan={9} class="font-bold">Profit</Table.Cell>
               <Table.Cell
                 class={cn("text-right", {
                   "text-success": total - invest > 0,

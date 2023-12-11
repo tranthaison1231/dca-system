@@ -42,6 +42,7 @@ export async function GET(event) {
     amount: Number(currency.amount),
     value: Number(currency.amount) * currency.data?.statistics?.price,
     marketCap: currency.data?.statistics?.marketCap ?? 0,
+    averagePrice: currency.averagePrice,
   }));
 
   return json({

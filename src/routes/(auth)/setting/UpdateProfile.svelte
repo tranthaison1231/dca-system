@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Button from "$lib/components/ui/button/button.svelte";
   import Input from "$lib/components/ui/input/input.svelte";
   import Label from "$lib/components/ui/label/label.svelte";
   import { updateProfileSchema } from "$lib/utils/schema";
@@ -28,23 +27,16 @@
     },
   });
 
-  const { form, errors, constraints, enhance } = superForm(
-    superValidateSync(updateProfileSchema),
-    {
-      id: "profile",
-      SPA: true,
-      validators: updateProfileSchema,
-      taintedMessage: false,
-      onUpdate: async ({ form }) => {
-        if (form.valid) {
-          $updateProfileMutate.mutate(form.data);
-        }
-      },
-    }
-  );
-
-  $: form.set({
-    amount: Number($meResult.data?.user?.amount),
+  const { enhance } = superForm(superValidateSync(updateProfileSchema), {
+    id: "profile",
+    SPA: true,
+    validators: updateProfileSchema,
+    taintedMessage: false,
+    onUpdate: async ({ form }) => {
+      if (form.valid) {
+        $updateProfileMutate.mutate(form.data);
+      }
+    },
   });
 
   $: userAttributes = $meResult.data?.user?.attributes;
@@ -73,19 +65,5 @@
         }`}
       />
     </Label>
-    <Label label="Amount">
-      <Input
-        type="number"
-        min={0}
-        bind:value={$form.amount}
-        {...$constraints.amount}
-      />
-    </Label>
-    {#if $errors.amount}<span class="mt-1 w-full text-error"
-        >{$errors.amount}</span
-      >{/if}
   </div>
-  <Button class="mt-4" type="submit" loading={$updateProfileMutate.isPending}
-    >Update</Button
-  >
 </form>

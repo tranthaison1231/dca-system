@@ -45,7 +45,7 @@
     },
   });
 
-  const { form, errors, constraints, enhance, reset } = superForm(
+  const { enhance, reset } = superForm(
     superValidateSync(updateCurrencySchema),
     {
       id: "create-currency",
@@ -75,18 +75,6 @@
         <Label label="Coin" class="mb-2" required />
         <CryptoSearch bind:value={coin} />
       </div>
-      <Label label="Amount" required class="mt-4">
-        <Input
-          type="number"
-          step="any"
-          min="0"
-          bind:value={$form.amount}
-          {...$constraints.amount}
-        />
-      </Label>
-      {#if $errors.amount}<span class="mt-1 w-full text-error"
-          >{$errors.amount}</span
-        >{/if}
       <Dialog.Footer class="mt-5">
         <Button type="submit" loading={$createCurrencyMutate.isPending}
           >Save</Button
