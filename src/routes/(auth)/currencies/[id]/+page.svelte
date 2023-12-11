@@ -97,7 +97,9 @@
     <p>Holdings Value</p>
   </div>
   <div class="card">
-    <p class="text-xl font-medium">{$currencyQuery.data?.currency.amount}</p>
+    <p class="text-xl font-medium">
+      {formatNumber(Number($currencyQuery.data?.currency.amount))}
+    </p>
     <p>Amount</p>
   </div>
   <div class="card">

@@ -6,18 +6,20 @@ export const updateCurrencyAfterTransaction = async (currencyId: string) => {
       currencyId: currencyId,
     },
   });
-  const amount = transactions.reduce(
-    (total, transaction) => total + Number(transaction.amount),
-    0
-  );
+  const amount = transactions.reduce((total, transaction) => {
+    if (transaction.type === "BUY") {
+      return total + Number(transaction.amount);
+    } else {
+      return total - Number(transaction.amount);
+    }
+  }, 0);
 
   const totalCost = transactions.reduce((total, transaction) => {
     if (transaction.type === "BUY") {
-      total = Number(transaction.price) * Number(transaction.amount);
+      return total + Number(transaction.price) * Number(transaction.amount);
     } else {
-      total = total - Number(transaction.price) * Number(transaction.amount);
+      return total - Number(transaction.price) * Number(transaction.amount);
     }
-    return total;
   }, 0);
 
   const averagePrice = totalCost / amount;
