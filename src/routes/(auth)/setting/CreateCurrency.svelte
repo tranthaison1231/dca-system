@@ -1,7 +1,6 @@
 <script lang="ts">
   import Button from "$lib/components/ui/button/button.svelte";
   import * as Dialog from "$lib/components/ui/dialog";
-  import Input from "$lib/components/ui/input/input.svelte";
   import Label from "$lib/components/ui/label/label.svelte";
   import { updateCurrencySchema } from "$lib/utils/schema";
   import type { Currency } from "@prisma/client";
