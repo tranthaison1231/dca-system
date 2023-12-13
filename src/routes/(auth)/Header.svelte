@@ -6,7 +6,7 @@
 </script>
 
 <div class="border-b py-3 h-[57px]">
-  <div class="flex justify-end px-6">
+  <div class="flex justify-end px-3">
     <div class="flex w-full">
       <a class="block md:hidden" href="/dashboard">
         <Logo />

@@ -11,7 +11,7 @@
   <div class="w-full">
     <Header />
     <div
-      class="p-6 overflow-y-scroll w-full h-[calc(100dvh-118px)] md:h-[calc(100dvh-57px)]"
+      class="p-3 overflow-y-scroll w-full h-[calc(100dvh-118px)] md:h-[calc(100dvh-57px)]"
     >
       <slot />
     </div>
