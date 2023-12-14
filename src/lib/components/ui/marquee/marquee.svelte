@@ -7,8 +7,8 @@
 
   export let gap = "0px";
 
-  let containerWidth;
-  let marqueeWidth;
+  let containerWidth: number;
+  let marqueeWidth: number;
 
   $: duration =
     marqueeWidth < containerWidth

@@ -3,7 +3,7 @@ import { sequence } from "@sveltejs/kit/hooks";
 import { handleClerk } from "clerk-sveltekit/server";
 import { CLERK_SECRET_KEY } from "$env/static/private";
 
-async function authMiddleware({ event, resolve }) {
+async function authMiddleware({ event, resolve }: Parameters<Handle>[0]) {
   if (
     event.url.pathname.startsWith("/api") &&
     !event.url.pathname.startsWith("/api/webhooks") &&

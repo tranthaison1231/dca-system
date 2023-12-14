@@ -6,7 +6,7 @@ export const memorize = <T extends Function>(
   fn: T,
   ttl = 30 * 60
 ) => {
-  return async (...args) => {
+  return async (...args: unknown[]) => {
     try {
       const data = await redis.get(key);
       if (data) {

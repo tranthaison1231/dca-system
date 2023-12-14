@@ -39,7 +39,13 @@
     },
   });
 
-  $: userAttributes = $meResult.data?.user?.attributes;
+  $: userAttributes = $meResult.data?.user?.attributes as {
+    first_name: string;
+    last_name: string;
+    email_addresses: {
+      email_address: string;
+    }[];
+  };
 </script>
 
 <form
@@ -61,7 +67,7 @@
       <Input
         disabled
         value={`${
-          userAttributes?.["email_addresses"][0]["email_address"] ?? ""
+          userAttributes?.["email_addresses"][0]?.["email_address"] ?? ""
         }`}
       />
     </Label>
