@@ -28,20 +28,21 @@ async function handler(event: RequestEvent) {
       heads as WebhookRequiredHeaders
     ) as Event;
   } catch (err) {
-    throw error(400, {
+    error(400, {
       message: "Invalid signature",
     });
   }
 
-  const eventType: EventType = evt.type;
+  const eventType: EventType | undefined = evt?.type;
   if (eventType === "user.created" || eventType === "user.updated") {
-    const { id, ...attributes } = evt.data;
+    const { id, ...attributes } = evt?.data ?? {};
 
     if (typeof id !== "string") {
-      throw error(400, {
+      return error(400, {
         message: "ID must be a string",
       });
     }
+
     await prisma.user.upsert({
       where: { clerkId: id },
       create: {

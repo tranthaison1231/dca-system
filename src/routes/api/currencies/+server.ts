@@ -48,14 +48,14 @@ export async function POST(event) {
       err instanceof Prisma.PrismaClientKnownRequestError &&
       err.code === "P2002"
     ) {
-      throw error(409, {
-        message: "Currency already exist!",
-      });
+      error(409, {
+                message: "Currency already exist!",
+              });
     }
     if (err instanceof AggregateError) {
-      throw error(400, {
-        message: err.errors[0].message,
-      });
+      error(400, {
+                message: err.errors[0].message,
+              });
     }
     throw err;
   }
