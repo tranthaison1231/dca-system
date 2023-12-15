@@ -16,7 +16,7 @@ export const GET = async (event: RequestEvent) => {
   });
 };
 
-export async function POST(event) {
+export async function POST(event: RequestEvent) {
   try {
     const body = await event.request.json();
 
@@ -49,13 +49,13 @@ export async function POST(event) {
       err.code === "P2002"
     ) {
       error(409, {
-                message: "Currency already exist!",
-              });
+        message: "Currency already exist!",
+      });
     }
     if (err instanceof AggregateError) {
       error(400, {
-                message: err.errors[0].message,
-              });
+        message: err.errors[0].message,
+      });
     }
     throw err;
   }

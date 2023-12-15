@@ -77,7 +77,7 @@ export async function GET() {
         ],
       }),
       method: "POST",
-    }
+    },
   );
   console.log(res);
   const data = await res.json();
