@@ -1,8 +1,8 @@
 import { getCMCCurrencyDetail } from "$lib/externals/cmc-currency-detail";
 import prisma from "$lib/db/prisma";
-import { json } from "@sveltejs/kit";
+import { json, type RequestEvent } from "@sveltejs/kit";
 
-export async function GET(event) {
+export async function GET(event: RequestEvent) {
   if (!event.locals.session) {
     return json(
       {
@@ -11,7 +11,7 @@ export async function GET(event) {
       },
       {
         status: 401,
-      }
+      },
     );
   }
 
@@ -28,7 +28,7 @@ export async function GET(event) {
         ...currency,
         ...data,
       };
-    })
+    }),
   );
 
   const formattedCurrencies = cmcCurrencies.map((currency) => ({

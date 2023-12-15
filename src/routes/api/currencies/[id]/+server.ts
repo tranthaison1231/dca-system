@@ -1,8 +1,9 @@
 import prisma from "$lib/db/prisma";
 import { getCMCCurrencyDetail } from "$lib/externals/cmc-currency-detail.js";
 import { json } from "@sveltejs/kit";
+import type { RequestEvent } from "./$types";
 
-export async function GET(event) {
+export async function GET(event: RequestEvent) {
   const currencyId = event.params.id;
 
   const currency = await prisma.currency.findFirst({
@@ -29,7 +30,7 @@ export async function GET(event) {
   });
 }
 
-export async function PUT(event) {
+export async function PUT(event: RequestEvent) {
   const body = await event.request.json();
   const currencyId = event.params.id;
 
@@ -48,7 +49,7 @@ export async function PUT(event) {
   });
 }
 
-export async function DELETE(event) {
+export async function DELETE(event: RequestEvent) {
   const currencyId = event.params.id;
 
   await prisma.currency.delete({
