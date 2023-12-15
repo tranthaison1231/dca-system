@@ -17,7 +17,7 @@
       queryKey: ["coingecko-search", { search: $search }],
       queryFn: async () =>
         (await fetch(`/api/coingecko/search?query=${$search || "b"}`)).json(),
-    }))
+    })),
   );
 
   const handleChange = debounce((e) => {

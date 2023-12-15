@@ -29,7 +29,7 @@
       {
         amount: Number(currency.amount),
       },
-      updateCurrencySchema
+      updateCurrencySchema,
     ),
     {
       SPA: true,
@@ -50,7 +50,7 @@
           }
         }
       },
-    }
+    },
   );
 </script>
 

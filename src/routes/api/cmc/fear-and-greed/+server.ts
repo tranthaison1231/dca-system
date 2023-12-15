@@ -7,7 +7,7 @@ export async function GET() {
     `https://api.coinmarketcap.com/data-api/v3/fear-greed/chart?end=${end}&start=${start}`,
     {
       method: "GET",
-    }
+    },
   );
   const { data } = await res.json();
 

@@ -1,6 +1,6 @@
 import { json } from "@sveltejs/kit";
-import { last } from "lodash-es";
 import dayjs from "dayjs";
+import { last } from "lodash-es";
 
 export async function GET() {
   const dateRange = [
