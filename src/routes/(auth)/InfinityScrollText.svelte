@@ -5,7 +5,7 @@
 
   // const goldResult = createQuery({
   //   queryKey: ["gold"],
-  //   queryFn: async () => (await fetch(`/api/gold`)).json(),
+  //   queryFn: async () => (await fetch(`/api/index/gold`)).json(),
   // });
 </script>
 

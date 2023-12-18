@@ -8,26 +8,23 @@
 
   const fearAndGreedResult = createQuery({
     queryKey: ["fear-and-greed"],
-    queryFn: async () => (await fetch("/api/cmc/fear-and-greed")).json(),
+    queryFn: async () => (await fetch("/api/index/fear-and-greed")).json(),
   });
 
   const nuplResult = createQuery({
     queryKey: ["nupl"],
-    queryFn: async () => (await fetch("/api/crypto-quant/nupl")).json(),
+    queryFn: async () => (await fetch("/api/index/nupl")).json(),
   });
 
   const supplyInProfitResult = createQuery({
     queryKey: ["supply-in-profit"],
-    queryFn: async () =>
-      (await fetch("/api/crypto-quant/supply-in-profit")).json(),
+    queryFn: async () => (await fetch("/api/index/supply-in-profit")).json(),
   });
 
   const bitcoinRsi = createQuery({
     queryKey: ["bitcoin-rsi"],
-    queryFn: async () => (await fetch("/api/crypto-waves/bitcoin-rsi")).json(),
+    queryFn: async () => (await fetch("/api/index/bitcoin-rsi")).json(),
   });
-
-  $: console.log($bitcoinRsi.data?.value);
 </script>
 
 <div
@@ -54,6 +51,7 @@
         nupl: $nuplResult.data?.value,
         fearAndGreed: $fearAndGreedResult.data?.value,
         supplyInProfit: $supplyInProfitResult.data?.value,
+        bitcoinRSI: $bitcoinRsi.data?.value?.rsi_1d,
       })}
     </p>
   {/if}

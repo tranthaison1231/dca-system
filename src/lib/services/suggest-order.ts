@@ -6,11 +6,12 @@ interface Index {
   fearAndGreed: number;
   supplyInProfit: number;
   nupl: number;
+  bitcoinRSI: number;
 }
 
 export const calPrice = (
   currencies: ExtendCurrency[],
-  { fearAndGreed, supplyInProfit, nupl }: Index
+  { fearAndGreed, supplyInProfit, nupl }: Index,
 ) => {
   let price = 30;
 
@@ -25,10 +26,20 @@ export const calPrice = (
   return price;
 };
 
-const calShouldSell = ({ supplyInProfit, nupl, fearAndGreed }: Index) => {
+const calShouldSell = ({
+  supplyInProfit,
+  nupl,
+  fearAndGreed,
+  bitcoinRSI,
+}: Index) => {
   let shouldSell = false;
 
-  if (fearAndGreed > 70 || supplyInProfit > 80 || nupl > 0.5) {
+  if (
+    fearAndGreed >= 70 ||
+    supplyInProfit >= 80 ||
+    nupl >= 0.5 ||
+    bitcoinRSI >= 70
+  ) {
     shouldSell = true;
   }
 
@@ -38,7 +49,7 @@ const calShouldSell = ({ supplyInProfit, nupl, fearAndGreed }: Index) => {
 export const getMessage = (
   shouldSell: boolean,
   price: number,
-  currency: ExtendCurrency
+  currency: ExtendCurrency,
 ) => {
   return `${shouldSell ? "Should sell" : "Should buy"} $${price} ${
     currency.symbol
@@ -47,7 +58,7 @@ export const getMessage = (
 
 export const suggestOrder = (
   currencies: ExtendCurrency[],
-  { supplyInProfit, nupl, fearAndGreed }: Index
+  { supplyInProfit, bitcoinRSI, nupl, fearAndGreed }: Index,
 ) => {
   if (!currencies.length) return "";
 
@@ -55,17 +66,19 @@ export const suggestOrder = (
     fearAndGreed,
     supplyInProfit,
     nupl,
+    bitcoinRSI,
   });
 
   const sortedCurrenciesWithoutUSDTByAlpha = sortBy(
     currencies.filter((currency) => currency.symbol !== "USDT"),
-    "alpha"
+    "alpha",
   );
 
   const shouldSell = calShouldSell({
     supplyInProfit,
     nupl,
     fearAndGreed,
+    bitcoinRSI,
   });
 
   if (shouldSell) {
