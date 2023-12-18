@@ -12,7 +12,7 @@
       name: "Others",
       value: sumBy(
         currencies.filter((currency) => currency.percent <= 10),
-        "value"
+        "value",
       ),
     },
   ];

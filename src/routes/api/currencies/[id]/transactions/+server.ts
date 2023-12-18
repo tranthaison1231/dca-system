@@ -27,6 +27,14 @@ export const POST = async (event: RequestEvent) => {
       userId: event.locals.session.userId,
     },
   });
+
+  if (!usdt) {
+    return json({
+      status: "error",
+      message: "Please add your usdt to porfolio!",
+    });
+  }
+
   const cost = body.price * body.amount;
 
   if (cost > Number(usdt?.amount)) {
