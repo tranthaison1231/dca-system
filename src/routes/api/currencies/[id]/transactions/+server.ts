@@ -40,20 +40,6 @@ export const POST = async (event: RequestEvent) => {
     );
   }
 
-  const cost = body.price * body.amount;
-
-  if (cost > Number(usdt?.amount)) {
-    return json(
-      {
-        status: "error",
-        message: "Insufficient balance",
-      },
-      {
-        status: 400,
-      },
-    );
-  }
-
   const transaction = await prisma.transaction.create({
     data: {
       userId: event.locals.session.userId,
@@ -65,7 +51,21 @@ export const POST = async (event: RequestEvent) => {
     },
   });
 
+  const cost = body.price * body.amount;
+
   if (body.type === "BUY") {
+    if (cost > Number(usdt?.amount)) {
+      return json(
+        {
+          status: "error",
+          message: "Insufficient balance",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
     await prisma.currency.update({
       where: {
         id: usdt?.id!,
