@@ -29,19 +29,29 @@ export const POST = async (event: RequestEvent) => {
   });
 
   if (!usdt) {
-    return json({
-      status: "error",
-      message: "Please add your usdt to porfolio!",
-    });
+    return json(
+      {
+        status: "error",
+        message: "Please add your usdt to porfolio!",
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   const cost = body.price * body.amount;
 
   if (cost > Number(usdt?.amount)) {
-    return json({
-      status: "error",
-      message: "Insufficient balance",
-    });
+    return json(
+      {
+        status: "error",
+        message: "Insufficient balance",
+      },
+      {
+        status: 400,
+      },
+    );
   }
 
   const transaction = await prisma.transaction.create({
