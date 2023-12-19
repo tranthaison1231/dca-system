@@ -19,7 +19,7 @@
   const clientQuery = useQueryClient();
 
   async function createTransaction(
-    data: z.infer<typeof createTransactionSchema>
+    data: z.infer<typeof createTransactionSchema>,
   ) {
     const res = await fetch(`/api/currencies/${currency.id}/transactions`, {
       method: "POST",
@@ -37,7 +37,7 @@
 
   const createTransactionMutate = createMutation({
     mutationFn: createTransaction,
-    onError: (error) => {
+    onError: (error: Error) => {
       toast.error(error.message);
     },
     onSuccess: () => {
@@ -46,6 +46,7 @@
       clientQuery.invalidateQueries({
         queryKey: [`transactions-by-currency-${currency.id}`],
       });
+      open = false;
     },
   });
 
@@ -57,7 +58,7 @@
         timestamp: new Date(),
         type: "BUY",
       },
-      createTransactionSchema
+      createTransactionSchema,
     ),
     {
       id: `create-transaction-${currency.id}`,
@@ -69,11 +70,11 @@
           $createTransactionMutate.mutate(form.data);
         }
       },
-    }
+    },
   );
 
   function handleSelectedChange(
-    selected: Selected<"SELL" | "BUY"> | undefined
+    selected: Selected<"SELL" | "BUY"> | undefined,
   ) {
     if (selected?.value) {
       $form.type = selected.value;
