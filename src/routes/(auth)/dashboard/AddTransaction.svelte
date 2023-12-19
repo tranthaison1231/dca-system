@@ -12,6 +12,7 @@
   import type * as z from "zod";
   import * as Select from "$lib/components/ui/select";
   import type { Selected } from "bits-ui";
+  import DatePicker from "$lib/components/ui/date-picker/date-picker.svelte";
 
   export let open = false;
   export let currency: ExtendCurrency;
@@ -82,7 +83,7 @@
   }
 </script>
 
-<Dialog.Root bind:open onOpenChange={() => reset()}>
+<Dialog.Root bind:open onOpenChange={() => reset()} closeOnOutsideClick={false}>
   <Dialog.Trigger>
     <slot name="trigger">
       <Plus />
@@ -153,10 +154,11 @@
         <Input disabled value={$form.price * $form.amount} />
       </Label>
       <Label label="Date" required class="mt-4">
-        <Input
-          type="datetime-local"
+        <DatePicker
           bind:value={$form.timestamp}
-          {...$constraints.timestamp}
+          format="dd-MM-yyyy HH:mm"
+          timePrecision="minute"
+          closeOnSelection
         />
       </Label>
       {#if $errors.timestamp}<span class="mt-1 w-full text-error"

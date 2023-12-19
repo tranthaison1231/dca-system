@@ -32,7 +32,7 @@
 
   const createCurrencyMutate = createMutation({
     mutationFn: createCurrency,
-    onError: (error) => {
+    onError: (error: Error) => {
       toast.error(error.message);
     },
     onSuccess: () => {
@@ -57,7 +57,7 @@
           $createCurrencyMutate.mutate(form.data);
         }
       },
-    }
+    },
   );
 </script>
 
