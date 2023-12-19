@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 export const GET = async () => {
   const mrd = dayjs().subtract(1, "day").startOf("day").unix();
 
+  console.log(mrd);
   const res = await fetch(
     `https://www.mesmerdata.com/n2/mesmer_charts.php?q=79&mrd=${mrd}`,
   );
