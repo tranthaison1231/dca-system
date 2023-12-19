@@ -32,6 +32,7 @@
     onSuccess: () => {
       toast.success("Transaction has been deleted!");
       $transactionsQuery.refetch();
+      $currencyQuery.refetch();
     },
   });
 
